@@ -4,6 +4,7 @@ import 'DenemeHesaplama.dart';
 import 'GecmisSinavlar.dart';
 import 'package:yks_deneme_takip2/HomeScreen.dart';
 import 'LoginPage.dart';
+import 'KonuTakip.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         '/gecmisSinavlariGor': (context) => GecmisSinavlar(),
         '/Anasayfa':(context)=>AnaSayfa(),
         '/girisYap':(context)=>LoginPage(),
+        '/KonuTakip':(context)=> ChecklistPage()
       },
     );
   }

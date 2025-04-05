@@ -126,7 +126,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                                   "Konu Takip",
                                   "Hangi dersten hangi konuları bitirdiğine bak",
                                   Icons.book,
-                                  '/Anasayfa', // Route name
+                                  '/KonuTakip', // Route name
                                 ),
                               ],
                             ),

@@ -64,7 +64,7 @@ class MenuDrawer extends StatelessWidget {
                   icon: Icons.track_changes,
                   color: Colors.black,
                   title: "Konu Takip",
-                  routeName: '/iki',
+                  routeName: '/KonuTakip',
                 ),
                 _buildDivider(),
                 _buildMenuItem(
