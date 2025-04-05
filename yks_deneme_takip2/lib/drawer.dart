@@ -5,12 +5,12 @@ import 'package:provider/provider.dart';
 class MenuDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // ChangeNotifierProvider widget'ı ile LogoSaglayici'yi sağla
+
     return ChangeNotifierProvider(
       create: (context) => LogoSaglayici(),
       child: Builder(
         builder: (context) {
-          // LogoSaglayici'den veriyi al
+
           final logoSaglayici = Provider.of<LogoSaglayici>(context);
 
           return Drawer(
@@ -18,23 +18,23 @@ class MenuDrawer extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                // DrawerHeader'da resim göster
+
                 DrawerHeader(
                   child: logoSaglayici.yukleniyor
-                      ? Center(child: CircularProgressIndicator())  // Yükleniyorsa gösterecek
+                      ? Center(child: CircularProgressIndicator())
                       : logoSaglayici.imageURL == null
                       ? Text("Foto gelcek")
 
-// Hata durumu veya resim yüklenmemişse
+
                       : Image.network(
-                    logoSaglayici.imageURL!,  // Resim URL'sini göster
+                    logoSaglayici.imageURL!,
                     fit: BoxFit.cover,
                     width: double.infinity,
-                    height: 100,  // Gerekirse yükseklik ayarla
+                    height: 100,
                   ),
                 ),
 
-                // Menü öğeleri
+
                 _buildMenuItem(
                   context,
                   icon: Icons.home,
@@ -90,7 +90,7 @@ class MenuDrawer extends StatelessWidget {
     );
   }
 
-  // Menü öğesinin oluşturulması
+
   Widget _buildMenuItem(
       BuildContext context, {
         required IconData icon,
@@ -109,8 +109,8 @@ class MenuDrawer extends StatelessWidget {
       ),
       trailing: Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
       onTap: () {
-        Navigator.pop(context); // Drawer'ı kapat
-        Navigator.pushNamed(context, routeName); // Sayfayı yönlendir
+        Navigator.pop(context);
+        Navigator.pushNamed(context, routeName);
       },
     );
   }

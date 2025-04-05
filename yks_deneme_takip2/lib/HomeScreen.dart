@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
+import 'HomeScreen.dart';
 import 'package:yks_deneme_takip2/drawer.dart'; // Timer için gerekli
 
 class AnaSayfa extends StatefulWidget {
