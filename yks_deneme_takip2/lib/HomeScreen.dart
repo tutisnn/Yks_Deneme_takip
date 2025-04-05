@@ -52,7 +52,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
     return Scaffold(
       drawer: MenuDrawer(),
       appBar: AppBar(
-        title: Text('Ana Sayfa'),
+        title: Text('Ana- Sayfa'),
         backgroundColor: Color.fromRGBO(242, 242, 242, 1),
       ),
       backgroundColor: Color.fromRGBO(242, 242, 242, 1),
