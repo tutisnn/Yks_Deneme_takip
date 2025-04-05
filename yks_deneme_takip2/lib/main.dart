@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
         '/denemehesapla': (context) => Denemehesaplama(),
         '/gecmisSinavlariGor': (context) => GecmisSinavlar(),
         '/Anasayfa':(context)=>AnaSayfa(),
+        '/girisYap':(context)=>LoginPage(),
       },
     );
   }
