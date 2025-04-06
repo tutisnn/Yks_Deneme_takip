@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="19c0b314-08e0-482a-ae82-f065229ed9e9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/yks_deneme_takip2/assets/fonts/BungeeSpice-Regular.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yks_deneme_takip2/lib/DenemeHesaplama.dart" beforeDir="false" afterPath="$PROJECT_DIR$/yks_deneme_takip2/lib/DenemeHesaplama.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yks_deneme_takip2/lib/GecmisSinavlar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/yks_deneme_takip2/lib/GecmisSinavlar.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yks_deneme_takip2/lib/HomeScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/yks_deneme_takip2/lib/HomeScreen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yks_deneme_takip2/lib/KonuTakip.dart" beforeDir="false" afterPath="$PROJECT_DIR$/yks_deneme_takip2/lib/KonuTakip.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yks_deneme_takip2/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/yks_deneme_takip2/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yks_deneme_takip2/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yks_deneme_takip2/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yks_deneme_takip2/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/yks_deneme_takip2/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
