@@ -165,8 +165,8 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(backgroundColor:  const Color(0xFFF5F5F5),
-     drawer: MenuDrawer(),
-     appBar: AppBar(title: Text("Deneme Sınavı Hesaplama")),
+      drawer: MenuDrawer(),
+      appBar: AppBar(title: Text("Deneme Sınavı Hesaplama")),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(

@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'drawer.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+const Color lilacBackground = Color(0xFFF3E5F5);
+const Color lilacAccent = Color(0xFFB39DDB);
+const Color lilacDeep = Color(0xFF9575CD);
 
 class ChecklistPage extends StatefulWidget {
   const ChecklistPage({super.key});
@@ -59,21 +64,65 @@ class _ChecklistPageState extends State<ChecklistPage> with TickerProviderStateM
   }
 
   Widget buildChecklist(Map<String, List<String>> topics) {
-    return ListView(
-      children: topics.entries.map((entry) {
-        String category = entry.key;
-        return ExpansionTile(
-          title: Text(category, style: const TextStyle(fontWeight: FontWeight.bold)),
-          children: entry.value.map((topic) {
-            bool isChecked = completedTopics[category]?.contains(topic) ?? false;
-            return CheckboxListTile(
-              title: Text(topic),
-              value: isChecked,
-              onChanged: (_) => toggleTopic(category, topic),
-            );
-          }).toList(),
-        );
-      }).toList(),
+    return Container(
+      color: lilacBackground,
+      child: ListView(
+        padding: EdgeInsets.all(12),
+        children: topics.entries.map((entry) {
+          String category = entry.key;
+          return Container(
+            margin: EdgeInsets.only(bottom: 16),
+            decoration: BoxDecoration(
+              color: lilacAccent.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: lilacDeep.withOpacity(0.1),
+                  blurRadius: 6,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: ExpansionTile(
+              collapsedBackgroundColor: Colors.transparent,
+              backgroundColor: Colors.transparent,
+              title: Text(
+                category,
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: lilacDeep,
+                ),
+              ),
+              children: entry.value.map((topic) {
+                bool isChecked = completedTopics[category]?.contains(topic) ?? false;
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: lilacAccent.withOpacity(0.5)),
+                    ),
+                    child: CheckboxListTile(
+                      activeColor: lilacDeep,
+                      title: Text(
+                        topic,
+                        style: GoogleFonts.quicksand(
+                          decoration: isChecked ? TextDecoration.lineThrough : null,
+                          color: isChecked ? Colors.grey : Colors.black,
+                        ),
+                      ),
+                      value: isChecked,
+                      onChanged: (_) => toggleTopic(category, topic),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          );
+        }).toList(),
+      ),
     );
   }
 
@@ -82,11 +131,17 @@ class _ChecklistPageState extends State<ChecklistPage> with TickerProviderStateM
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        backgroundColor: lilacBackground,
         appBar: AppBar(
-          title: const Text("Konu Takibi"),
-          backgroundColor: const Color.fromRGBO(143, 148, 251, 1),
+          title: Text(
+            "Konu Takibi",
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: lilacDeep,
           bottom: TabBar(
             controller: _tabController,
+            labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+            indicatorColor: Colors.white,
             tabs: const [
               Tab(text: "TYT"),
               Tab(text: "AYT"),

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'HomeScreen.dart';
-import 'package:yks_deneme_takip2/drawer.dart'; // Timer için gerekli
+import 'package:yks_deneme_takip2/drawer.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+const Color primaryLilac = Color(0xFFD1C4E9);
+const Color accentLilac = Color(0xFF9575CD);
 
 class AnaSayfa extends StatefulWidget {
   const AnaSayfa({super.key});
@@ -22,7 +26,6 @@ class _AnaSayfaState extends State<AnaSayfa> {
     examDate = DateTime(2025, 6, 15);
     updateRemainingTime();
 
-    // Timer'ı her saniye bir güncelleyerek kalan süreyi doğru şekilde hesapla
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         updateRemainingTime();
@@ -32,11 +35,10 @@ class _AnaSayfaState extends State<AnaSayfa> {
 
   @override
   void dispose() {
-    _timer.cancel(); // Sayfa kapatıldığında timer'ı durdur
+    _timer.cancel();
     super.dispose();
   }
 
-  // Kalan süreyi hesaplamak
   void updateRemainingTime() {
     final now = DateTime.now();
     remainingTime = examDate.difference(now);
@@ -53,7 +55,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
       drawer: MenuDrawer(),
       appBar: AppBar(
         title: Text('HomeScreen'),
-        backgroundColor: Color.fromRGBO(242, 242, 242, 1),
+        backgroundColor: accentLilac,
       ),
       backgroundColor: Color.fromRGBO(242, 242, 242, 1),
       body: SafeArea(
@@ -64,30 +66,26 @@ class _AnaSayfaState extends State<AnaSayfa> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 50),
-
-                // Kalan süreyi güncellenmiş şekilde göster
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Denemeden Gerçek Başarıya",
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
+                        fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(115, 120, 119, 1),
-                        fontSize: 42,
-                        height: 1.2,
+                        color: accentLilac,
                       ),
                     ),
                     Text(
                       "YKS Netlerini Hesapla\nBaşarıyı Planla!",
-                      style: TextStyle(
+                      style: GoogleFonts.quicksand(
+                        fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        fontSize: 42,
-                        height: 1.2,
+                        color: Colors.deepPurple,
                       ),
                     ),
                     SizedBox(height: 24),
-
                     Container(
                       height: 280,
                       child: Row(
@@ -99,14 +97,14 @@ class _AnaSayfaState extends State<AnaSayfa> {
                                   "AnaSayfa",
                                   "\n",
                                   Icons.home,
-                                  '/', // Route name
+                                  '/',
                                 ),
                                 SizedBox(height: 8),
                                 buildMenuItem(
                                   "Deneme Sınavı Hesapla",
                                   "Toplan netini hangi dersten ne kadar net yapıldığını öğren",
                                   Icons.calculate,
-                                  '/denemehesapla', // Route name
+                                  '/denemehesapla',
                                 ),
                               ],
                             ),
@@ -119,14 +117,14 @@ class _AnaSayfaState extends State<AnaSayfa> {
                                   "Geçmiş Denemeler",
                                   "Geçmiş Denemelerini inceleme şansı bul",
                                   Icons.history,
-                                  '/gecmisSinavlariGor', // Route name
+                                  '/gecmisSinavlariGor',
                                 ),
                                 SizedBox(height: 8),
                                 buildMenuItem(
                                   "Konu Takip",
                                   "Hangi dersten hangi konuları bitirdiğine bak",
                                   Icons.book,
-                                  '/KonuTakip', // Route name
+                                  '/KonuTakip',
                                 ),
                               ],
                             ),
@@ -139,13 +137,13 @@ class _AnaSayfaState extends State<AnaSayfa> {
                       padding: EdgeInsets.all(24),
                       margin: EdgeInsets.symmetric(vertical: 16),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: primaryLilac,
                         borderRadius: BorderRadius.circular(24),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black12,
+                            color: accentLilac.withOpacity(0.2),
                             blurRadius: 10,
-                            offset: Offset(0, 4), // Yatay ve dikey gölge
+                            offset: Offset(0, 4),
                           ),
                         ],
                       ),
@@ -176,7 +174,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                             style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black, // Zengin bir renk tonu
+                              color: accentLilac,
                             ),
                           ),
                         ],
@@ -192,6 +190,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
     );
   }
 
+
   Widget buildMenuItem(String title, String subtitle, IconData icon, String routeName) {
     return InkWell(
       onTap: () {
@@ -199,29 +198,46 @@ class _AnaSayfaState extends State<AnaSayfa> {
         Navigator.pushNamed(context, routeName);
       },
       child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-        ),
         width: double.infinity,
-        padding: EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon),
-            SizedBox(height: 12),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              subtitle,
+        height: 120,
+        decoration: BoxDecoration(
+          color: primaryLilac,
+          borderRadius: BorderRadius.circular(32),
+          boxShadow: [
+            BoxShadow(
+              color: accentLilac.withOpacity(0.25),
+              blurRadius: 12,
+              offset: Offset(0, 6),
             ),
           ],
+        ),
+        padding: EdgeInsets.all(12),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 32, color: Colors.deepPurple),
+              SizedBox(height: 10),
+              Text(
+                title,
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              if (subtitle.trim().isNotEmpty)
+                Text(
+                  subtitle,
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    color: Colors.black54,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+            ],
+          ),
         ),
       ),
     );

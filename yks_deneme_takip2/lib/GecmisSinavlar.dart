@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:yks_deneme_takip2/drawer.dart';
 
+const Color lilacLight = Color(0xFFF3E5F5);
+
 class GecmisSinavlar extends StatefulWidget {
   const GecmisSinavlar({super.key});
 
@@ -41,7 +43,7 @@ class GecmisSinavlarState extends State<GecmisSinavlar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: lilacLight,
       drawer: MenuDrawer(),
       appBar: AppBar(
         title: const Text("Çözülen Sınavlar"),
@@ -68,7 +70,7 @@ class GecmisSinavlarState extends State<GecmisSinavlar> {
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white, // Kartın arka planı
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
@@ -134,7 +136,12 @@ class GecmisSinavlarState extends State<GecmisSinavlar> {
                             showLegends: false,
                           ),
                           chartValuesOptions: const ChartValuesOptions(
-                            showChartValues: false,
+                            showChartValues: true,
+                            showChartValuesInPercentage: false,
+                            chartValueStyle: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
