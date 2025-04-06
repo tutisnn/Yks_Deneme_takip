@@ -23,7 +23,7 @@ class MenuDrawer extends StatelessWidget {
                   child: logoSaglayici.yukleniyor
                       ? Center(child: CircularProgressIndicator())
                       : logoSaglayici.imageURL == null
-                      ? Text("Foto gelcek")
+                      ? Text("Aşağıdaki butona basin apiden foto gelcek")
 
 
                       : Image.network(

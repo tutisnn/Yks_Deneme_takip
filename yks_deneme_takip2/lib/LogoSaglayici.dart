@@ -12,17 +12,27 @@ class LogoSaglayici extends ChangeNotifier {
     yukleniyor = true;
     notifyListeners();
     try {
-      int randomId = Random().nextInt(1000) + 1;
-      final uri = Uri.parse('https://picsum.photos/id/$randomId/info');
+      // Fetch the logos list from the API
+      final uri = Uri.parse('https://67f24369ec56ec1a36d295de.mockapi.io/api/YksDenemeTakip/logos');
       print("API isteği yapılıyor: $uri");
       final response = await http.get(uri);
 
       if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body);
-        imageURL = jsonData['download_url'];
+        final List<dynamic> jsonData = jsonDecode(response.body);
+
+        // Get a random logo from the list
+        int randomIndex = Random().nextInt(jsonData.length);
+        final logoData = jsonData[randomIndex];
+
+        // Assuming 'logoImageLink' contains the Imgur link, directly use it
+        String imgurLink = logoData['logoImageLink'];
+
+        // Convert Imgur link by adding parameters for size and quality
+        imageURL = imgurLink; //'$imgurLink?maxwidth=760&fidelity=grand';
+
         print("Resim URL: $imageURL");
       } else {
-        throw Exception('Resim yüklenemedi');
+        throw Exception('Resimler yüklenemedi');
       }
     } catch (e) {
       print("Hata: $e");
