@@ -98,21 +98,3 @@ Görev dağılımını, proje sayfalarını aramızda paylaşarak gerçekleştir
 
 
 
-##  Diğer Notlar
-
-- Proje Flutter 3.7.0 SDK ile geliştirilmiştir.
-- UI/UX testleri yapılmış, kullanıcı deneyimi odaklı sade bir yapı benimsenmiştir.
-- `pubspec.yaml`, `analysis_options.yaml` ve asset yapısı düzenlenmiştir.
-
----
-
-## Başlamak İçin
-
-```bash
-flutter pub get
-flutter run
-```
-
----
-
-> Proje geliştiricileri olarak umarız ki bu uygulama, YKS’ye hazırlanan öğrenciler için faydalı bir araç olur. 
