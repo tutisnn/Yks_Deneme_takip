@@ -54,7 +54,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
     return Scaffold(
       drawer: MenuDrawer(),
       appBar: AppBar(
-        title: Text('HomeScreen'),
+        title: Text('Anasayfa'),
         backgroundColor: Color.fromRGBO(242, 242, 242, 1),
       ),
       backgroundColor: Color.fromRGBO(242, 242, 242, 1),
