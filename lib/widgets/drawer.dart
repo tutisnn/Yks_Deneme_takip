@@ -1,8 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:yks_deneme_takip/logo_saglayici.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yks_deneme_takip/logo_saglayici.dart';
 
-class MenuDrawer extends StatelessWidget {
+class MenuDrawer extends StatefulWidget {
+  const MenuDrawer({super.key});
+
+  @override
+  State<MenuDrawer> createState() => _MenuDrawerState();
+}
+
+class _MenuDrawerState extends State<MenuDrawer> {
+  String? userName;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserName();
+  }
+
+  Future<void> _loadUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('username');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -16,17 +39,14 @@ class MenuDrawer extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-
                 DrawerHeader(
                   padding: EdgeInsets.zero,
                   margin: EdgeInsets.zero,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                  ),
+                  decoration: const BoxDecoration(color: Colors.white),
                   child: logoSaglayici.yukleniyor
-                      ? Center(child: CircularProgressIndicator())
+                      ? const Center(child: CircularProgressIndicator())
                       : logoSaglayici.imageURL == null
-                      ? Center(
+                      ? const Center(
                     child: Text(
                       "Aşağıdaki butona basınız, apiden foto gelecek",
                       style: TextStyle(fontSize: 14),
@@ -44,6 +64,22 @@ class MenuDrawer extends StatelessWidget {
                   ),
                 ),
 
+                // Loginden aldıgımız kullanici adi
+                if (userName != null && userName!.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 8,
+                    ),
+                    child: Text(
+                      "Merhaba, $userName ",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+
                 _buildMenuItem(
                   context,
                   icon: Icons.home,
@@ -52,7 +88,6 @@ class MenuDrawer extends StatelessWidget {
                   routeName: '/Anasayfa',
                 ),
                 _buildDivider(),
-
                 _buildMenuItem(
                   context,
                   icon: Icons.person,
@@ -61,7 +96,6 @@ class MenuDrawer extends StatelessWidget {
                   routeName: '/girisYap',
                 ),
                 _buildDivider(),
-
                 _buildMenuItem(
                   context,
                   icon: Icons.calculate,
@@ -70,7 +104,6 @@ class MenuDrawer extends StatelessWidget {
                   routeName: '/denemehesapla',
                 ),
                 _buildDivider(),
-
                 _buildMenuItem(
                   context,
                   icon: Icons.track_changes,
@@ -79,7 +112,6 @@ class MenuDrawer extends StatelessWidget {
                   routeName: '/KonuTakip',
                 ),
                 _buildDivider(),
-
                 _buildMenuItem(
                   context,
                   icon: Icons.history,
@@ -99,10 +131,10 @@ class MenuDrawer extends StatelessWidget {
                     onPressed: () {
                       logoSaglayici.fetchRandomImage();
                     },
-                    child: Text("Tıklayınız Apiden foto gelecek"),
+                    child: const Text("Tıklayınız Apiden foto gelecek"),
                   ),
                 ),
-                SizedBox(height: 12),
+                const SizedBox(height: 12),
               ],
             ),
           );
@@ -111,8 +143,7 @@ class MenuDrawer extends StatelessWidget {
     );
   }
 
-
-//her menüm elemani için widgwt
+  //Her menu itemi için build widget
   Widget _buildMenuItem(
       BuildContext context, {
         required IconData icon,
@@ -124,12 +155,9 @@ class MenuDrawer extends StatelessWidget {
       leading: Icon(icon, color: color),
       title: Text(
         title,
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-        ),
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
       ),
-      trailing: Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+      trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
       onTap: () {
         Navigator.pop(context);
         Navigator.pushNamed(context, routeName);
@@ -138,7 +166,6 @@ class MenuDrawer extends StatelessWidget {
   }
 
   //divider icin widget
-
   Widget _buildDivider() {
     return Divider(
       thickness: 1,
