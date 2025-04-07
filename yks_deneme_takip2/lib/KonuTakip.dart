@@ -77,7 +77,7 @@ class _ChecklistPageState extends State<ChecklistPage> with TickerProviderStateM
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: lilacDeep.withOpacity(0.1),
+                  color: Color.fromRGBO(242, 242, 242, 1),
                   blurRadius: 6,
                   offset: Offset(0, 4),
                 ),
@@ -91,7 +91,7 @@ class _ChecklistPageState extends State<ChecklistPage> with TickerProviderStateM
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
-                  color: lilacDeep,
+                  color: Colors.black,
                 ),
               ),
               children: entry.value.map((topic) {
@@ -131,13 +131,13 @@ class _ChecklistPageState extends State<ChecklistPage> with TickerProviderStateM
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        backgroundColor: lilacBackground,
+        backgroundColor: Color.fromRGBO(242, 242, 242, 1),
         appBar: AppBar(
           title: Text(
             "Konu Takibi",
             style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
           ),
-          backgroundColor: lilacDeep,
+          backgroundColor: Color.fromRGBO(242, 242, 242, 1),
           bottom: TabBar(
             controller: _tabController,
             labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),

@@ -5,7 +5,7 @@ import 'package:yks_deneme_takip2/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const Color lilac = Color(0xFF9575CD);
-const Color mint = Color(0xFFB2DFDB);
+
 
 class Denemehesaplama extends StatefulWidget {
   @override
@@ -133,7 +133,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
       drawer: MenuDrawer(),
       appBar: AppBar(
         title: Text("Deneme Sınavı Hesaplama", style: GoogleFonts.poppins()),
-        backgroundColor: lilac,
+        backgroundColor: Color.fromRGBO(242, 242, 242, 1),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -184,7 +184,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-            backgroundColor: mint,
+            backgroundColor: Colors.grey[200] ,
           ),
           onPressed: calculateExamResults,
           child: Text(

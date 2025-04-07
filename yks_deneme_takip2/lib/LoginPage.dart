@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                         margin: const EdgeInsets.only(top: 50),
                         child: const Center(
                           child: Text(
-                            "Login",
+                            "YKS Deneme Takip ",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 40,
@@ -200,15 +200,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 70),
-                  FadeInUp(
-                    duration: const Duration(milliseconds: 2000),
-                    child: const Text(
-                      "Forgot Password?",
-                      style: TextStyle(
-                        color: Color.fromRGBO(143, 148, 251, 1),
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
             )

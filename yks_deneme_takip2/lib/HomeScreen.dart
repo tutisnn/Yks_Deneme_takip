@@ -55,7 +55,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
       drawer: MenuDrawer(),
       appBar: AppBar(
         title: Text('HomeScreen'),
-        backgroundColor: accentLilac,
+        backgroundColor: Color.fromRGBO(242, 242, 242, 1),
       ),
       backgroundColor: Color.fromRGBO(242, 242, 242, 1),
       body: SafeArea(
@@ -65,7 +65,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 50),
+                // SizedBox(height: 30),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -95,14 +95,14 @@ class _AnaSayfaState extends State<AnaSayfa> {
                               children: [
                                 buildMenuItem(
                                   "AnaSayfa",
-                                  "\n",
+                                  "\n \u200B",
                                   Icons.home,
                                   '/',
                                 ),
                                 SizedBox(height: 8),
                                 buildMenuItem(
                                   "Deneme Sınavı Hesapla",
-                                  "Toplan netini hangi dersten ne kadar net yapıldığını öğren",
+                                  "Toplan netini hangi dersten ne kadar net yapıldığını öğren \n ads",
                                   Icons.calculate,
                                   '/denemehesapla',
                                 ),
@@ -174,7 +174,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                             style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
-                              color: accentLilac,
+                              color: Colors.black,
                             ),
                           ),
                         ],
@@ -189,8 +189,6 @@ class _AnaSayfaState extends State<AnaSayfa> {
       ),
     );
   }
-
-
   Widget buildMenuItem(String title, String subtitle, IconData icon, String routeName) {
     return InkWell(
       onTap: () {
@@ -199,7 +197,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
       },
       child: Container(
         width: double.infinity,
-        height: 120,
+
         decoration: BoxDecoration(
           color: primaryLilac,
           borderRadius: BorderRadius.circular(32),
@@ -214,6 +212,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
         padding: EdgeInsets.all(12),
         child: Center(
           child: Column(
+            mainAxisSize: MainAxisSize.min, // içeriğe göre yükseklik
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, size: 32, color: Colors.deepPurple),
@@ -235,6 +234,8 @@ class _AnaSayfaState extends State<AnaSayfa> {
                     color: Colors.black54,
                   ),
                   textAlign: TextAlign.center,
+                  maxLines: 2, // maksimum 2 satırda kes
+                  overflow: TextOverflow.ellipsis, // taşarsa üç nokta koy
                 ),
             ],
           ),
@@ -242,4 +243,6 @@ class _AnaSayfaState extends State<AnaSayfa> {
       ),
     );
   }
+
 }
+

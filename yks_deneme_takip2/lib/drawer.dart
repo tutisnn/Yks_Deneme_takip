@@ -5,35 +5,44 @@ import 'package:provider/provider.dart';
 class MenuDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return ChangeNotifierProvider(
       create: (context) => LogoSaglayici(),
       child: Builder(
         builder: (context) {
-
           final logoSaglayici = Provider.of<LogoSaglayici>(context);
 
           return Drawer(
-            backgroundColor: Color.fromRGBO(242, 242, 242, 1),
+            backgroundColor: const Color.fromRGBO(242, 242, 242, 1), // pastel gri ton
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
 
                 DrawerHeader(
+                  padding: EdgeInsets.zero,
+                  margin: EdgeInsets.zero,
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Arka plan rengi sadeleştirildi
+                  ),
                   child: logoSaglayici.yukleniyor
                       ? Center(child: CircularProgressIndicator())
                       : logoSaglayici.imageURL == null
-                      ? Text("Aşağıdaki butona basin apiden foto gelcek")
-
-
-                      : Image.network(
-                    logoSaglayici.imageURL!,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: 100,
+                      ? Center(
+                    child: Text(
+                      "Aşağıdaki butona basın, apiden foto gelecek",
+                      style: TextStyle(fontSize: 14),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                      : ClipRRect(
+                    borderRadius: BorderRadius.circular(0), // Dilersen 8 verebilirsin
+                    child: Image.network(
+                      logoSaglayici.imageURL!,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
                   ),
                 ),
-
 
                 _buildMenuItem(
                   context,
@@ -43,6 +52,7 @@ class MenuDrawer extends StatelessWidget {
                   routeName: '/Anasayfa',
                 ),
                 _buildDivider(),
+
                 _buildMenuItem(
                   context,
                   icon: Icons.person,
@@ -51,6 +61,7 @@ class MenuDrawer extends StatelessWidget {
                   routeName: '/girisYap',
                 ),
                 _buildDivider(),
+
                 _buildMenuItem(
                   context,
                   icon: Icons.calculate,
@@ -59,6 +70,7 @@ class MenuDrawer extends StatelessWidget {
                   routeName: '/denemehesapla',
                 ),
                 _buildDivider(),
+
                 _buildMenuItem(
                   context,
                   icon: Icons.track_changes,
@@ -67,6 +79,7 @@ class MenuDrawer extends StatelessWidget {
                   routeName: '/KonuTakip',
                 ),
                 _buildDivider(),
+
                 _buildMenuItem(
                   context,
                   icon: Icons.history,
@@ -74,22 +87,29 @@ class MenuDrawer extends StatelessWidget {
                   title: "Geçmiş Sınavlar",
                   routeName: '/gecmisSinavlariGor',
                 ),
-                TextButton(
-                  onPressed: () {
-                    logoSaglayici.fetchRandomImage();
-                  },
-                  child: Text("Tıkla Apiden foto gelcek"),
-                )
+                _buildDivider(),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepPurple.shade100, // pastel renk
+                      foregroundColor: Colors.black,
+                    ),
+                    onPressed: () {
+                      logoSaglayici.fetchRandomImage();
+                    },
+                    child: Text("Tıkla Apiden foto gelecek"),
+                  ),
+                ),
+                SizedBox(height: 12),
               ],
-
             ),
-
           );
         },
       ),
     );
   }
-
 
   Widget _buildMenuItem(
       BuildContext context, {
@@ -115,7 +135,6 @@ class MenuDrawer extends StatelessWidget {
     );
   }
 
-  // Divider widget'ı
   Widget _buildDivider() {
     return Divider(
       thickness: 1,
