@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'LogoSaglayici.dart';
+import 'package:yks_deneme_takip/LogoSaglayici.dart';
 import 'package:provider/provider.dart';
 
 class MenuDrawer extends StatelessWidget {
@@ -12,7 +12,7 @@ class MenuDrawer extends StatelessWidget {
           final logoSaglayici = Provider.of<LogoSaglayici>(context);
 
           return Drawer(
-            backgroundColor: const Color.fromRGBO(242, 242, 242, 1), // pastel gri ton
+            backgroundColor: const Color.fromRGBO(242, 242, 242, 1),
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
@@ -21,20 +21,20 @@ class MenuDrawer extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   margin: EdgeInsets.zero,
                   decoration: BoxDecoration(
-                    color: Colors.white, // Arka plan rengi sadeleştirildi
+                    color: Colors.white,
                   ),
                   child: logoSaglayici.yukleniyor
                       ? Center(child: CircularProgressIndicator())
                       : logoSaglayici.imageURL == null
                       ? Center(
                     child: Text(
-                      "Aşağıdaki butona basın, apiden foto gelecek",
+                      "Aşağıdaki butona basınız, apiden foto gelecek",
                       style: TextStyle(fontSize: 14),
                       textAlign: TextAlign.center,
                     ),
                   )
                       : ClipRRect(
-                    borderRadius: BorderRadius.circular(0), // Dilersen 8 verebilirsin
+                    borderRadius: BorderRadius.circular(0),
                     child: Image.network(
                       logoSaglayici.imageURL!,
                       fit: BoxFit.cover,
@@ -93,13 +93,13 @@ class MenuDrawer extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple.shade100, // pastel renk
+                      backgroundColor: Colors.deepPurple.shade100,
                       foregroundColor: Colors.black,
                     ),
                     onPressed: () {
                       logoSaglayici.fetchRandomImage();
                     },
-                    child: Text("Tıkla Apiden foto gelecek"),
+                    child: Text("Tıklayınız Apiden foto gelecek"),
                   ),
                 ),
                 SizedBox(height: 12),
@@ -111,6 +111,8 @@ class MenuDrawer extends StatelessWidget {
     );
   }
 
+
+//her menüm elemani için widgwt
   Widget _buildMenuItem(
       BuildContext context, {
         required IconData icon,
@@ -134,6 +136,8 @@ class MenuDrawer extends StatelessWidget {
       },
     );
   }
+
+  //divider icin widget
 
   Widget _buildDivider() {
     return Divider(

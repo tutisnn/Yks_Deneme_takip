@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'drawer.dart';
+import 'package:yks_deneme_takip/widgets/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const Color lilacBackground = Color(0xFFF3E5F5);
 const Color lilacAccent = Color(0xFFB39DDB);
 const Color lilacDeep = Color(0xFF9575CD);
 
-class ChecklistPage extends StatefulWidget {
-  const ChecklistPage({super.key});
+class Konutakip extends StatefulWidget {
+  const Konutakip({super.key});
 
   @override
-  State<ChecklistPage> createState() => _ChecklistPageState();
+  State<Konutakip> createState() => _KonutakipState();
 }
 
-class _ChecklistPageState extends State<ChecklistPage> with TickerProviderStateMixin {
+class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
   late TabController _tabController;
 
+  //Her alana ait dersler ve bu derslerin konusu konular
   Map<String, List<String>> tytTopics = {
     "Matematik": ["Temel Kavramlar", "Sayılar", "Rasyonel Sayılar"],
     "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Paragraf"],
@@ -44,6 +45,8 @@ class _ChecklistPageState extends State<ChecklistPage> with TickerProviderStateM
     "Matematik": ["Türev", "İntegral"],
   };
 
+  //// Biten dersleri işaretleyip takip etmek için oluşturulan yapı
+
   Map<String, Set<String>> completedTopics = {};
 
   @override
@@ -63,6 +66,44 @@ class _ChecklistPageState extends State<ChecklistPage> with TickerProviderStateM
     });
   }
 
+  //Ana widget
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        backgroundColor: Color.fromRGBO(242, 242, 242, 1),
+        appBar: AppBar(
+          title: Text(
+            "Konu Takibi",
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Color.fromRGBO(242, 242, 242, 1),
+          bottom: TabBar(
+            controller: _tabController,
+            labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+            indicatorColor: Colors.white,
+            tabs: const [
+              Tab(text: "TYT"),
+              Tab(text: "AYT"),
+              Tab(text: "EA"),
+            ],
+          ),
+        ),
+        drawer: MenuDrawer(),
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            buildChecklist(tytTopics),
+            buildChecklist(aytTopics),
+            buildChecklist(eaTopics),
+          ],
+        ),
+      ),
+    );
+  }
+
+  //Dersleri ve konuları içeren checklist widgeti
   Widget buildChecklist(Map<String, List<String>> topics) {
     return Container(
       color: lilacBackground,
@@ -122,42 +163,6 @@ class _ChecklistPageState extends State<ChecklistPage> with TickerProviderStateM
             ),
           );
         }).toList(),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        backgroundColor: Color.fromRGBO(242, 242, 242, 1),
-        appBar: AppBar(
-          title: Text(
-            "Konu Takibi",
-            style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: Color.fromRGBO(242, 242, 242, 1),
-          bottom: TabBar(
-            controller: _tabController,
-            labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-            indicatorColor: Colors.white,
-            tabs: const [
-              Tab(text: "TYT"),
-              Tab(text: "AYT"),
-              Tab(text: "EA"),
-            ],
-          ),
-        ),
-        drawer: MenuDrawer(),
-        body: TabBarView(
-          controller: _tabController,
-          children: [
-            buildChecklist(tytTopics),
-            buildChecklist(aytTopics),
-            buildChecklist(eaTopics),
-          ],
-        ),
       ),
     );
   }

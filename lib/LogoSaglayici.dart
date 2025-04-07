@@ -12,7 +12,7 @@ class LogoSaglayici extends ChangeNotifier {
     yukleniyor = true;
     notifyListeners();
     try {
-      // Fetch the logos list from the API
+      //Burda kendi logolarımızı yerleştidiğiöiz  apimziden alıyoruz
       final uri = Uri.parse('https://67f24369ec56ec1a36d295de.mockapi.io/api/YksDenemeTakip/logos');
       print("API isteği yapılıyor: $uri");
       final response = await http.get(uri);
@@ -20,15 +20,12 @@ class LogoSaglayici extends ChangeNotifier {
       if (response.statusCode == 200) {
         final List<dynamic> jsonData = jsonDecode(response.body);
 
-        // Get a random logo from the list
         int randomIndex = Random().nextInt(jsonData.length);
         final logoData = jsonData[randomIndex];
 
-        // Assuming 'logoImageLink' contains the Imgur link, directly use it
-        String imgurLink = logoData['logoImageLink'];
 
-        // Convert Imgur link by adding parameters for size and quality
-        imageURL = imgurLink; //'$imgurLink?maxwidth=760&fidelity=grand';
+        imageURL  = logoData['logoImageLink'];
+
 
         print("Resim URL: $imageURL");
       } else {

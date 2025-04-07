@@ -1,11 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:yks_deneme_takip/drawer.dart';
+import  'package:yks_deneme_takip/widgets/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const Color lilac = Color(0xFF9575CD);
-
 
 class Denemehesaplama extends StatefulWidget {
   @override
@@ -13,35 +13,62 @@ class Denemehesaplama extends StatefulWidget {
 }
 
 class DenemehesaplamaState extends State<Denemehesaplama> {
-  TextEditingController examNameController = TextEditingController();
+  final TextEditingController examNameController = TextEditingController();
 
-  TextEditingController turkceCorrect = TextEditingController();
-  TextEditingController turkceWrong = TextEditingController();
 
-  TextEditingController matematikCorrect = TextEditingController();
-  TextEditingController matematikWrong = TextEditingController();
+  //Kullanıcıların Her ders için girdiği doğru yanlış için controllerlar
+  final Map<String, Map<String, dynamic>> controllers = {
+    'Türkçe': {
+      'correct': TextEditingController(),
+      'wrong': TextEditingController(),
+      'icon': Icons.menu_book,
+    },
+    'Matematik': {
+      'correct': TextEditingController(),
+      'wrong': TextEditingController(),
+      'icon': Icons.calculate,
+    },
+    'Tarih': {
+      'correct': TextEditingController(),
+      'wrong': TextEditingController(),
+      'icon': Icons.history_edu,
+    },
+    'Coğrafya': {
+      'correct': TextEditingController(),
+      'wrong': TextEditingController(),
+      'icon': Icons.public,
+    },
+    'Felsefe': {
+      'correct': TextEditingController(),
+      'wrong': TextEditingController(),
+      'icon': Icons.psychology,
+    },
+    'Din': {
+      'correct': TextEditingController(),
+      'wrong': TextEditingController(),
+      'icon': Icons.mosque,
+    },
+    'Fizik': {
+      'correct': TextEditingController(),
+      'wrong': TextEditingController(),
+      'icon': Icons.science,
+    },
+    'Kimya': {
+      'correct': TextEditingController(),
+      'wrong': TextEditingController(),
+      'icon': Icons.biotech,
+    },
+    'Biyoloji': {
+      'correct': TextEditingController(),
+      'wrong': TextEditingController(),
+      'icon': Icons.eco,
+    },
+  };
 
-  TextEditingController tarihCorrect = TextEditingController();
-  TextEditingController tarihWrong = TextEditingController();
 
-  TextEditingController cografyaCorrect = TextEditingController();
-  TextEditingController cografyaWrong = TextEditingController();
 
-  TextEditingController felsefeCorrect = TextEditingController();
-  TextEditingController felsefeWrong = TextEditingController();
 
-  TextEditingController dinCorrect = TextEditingController();
-  TextEditingController dinWrong = TextEditingController();
-
-  TextEditingController fizikCorrect = TextEditingController();
-  TextEditingController fizikWrong = TextEditingController();
-
-  TextEditingController kimyaCorrect = TextEditingController();
-  TextEditingController kimyaWrong = TextEditingController();
-
-  TextEditingController biyolojiCorrect = TextEditingController();
-  TextEditingController biyolojiWrong = TextEditingController();
-
+  //Kullanıcının girdiği sınav adını, net sayısını, doğru ve yanlış toplamlarını SharedPreferences kullanarak cihazda kalıcı olarak saklamak için fonksiypnalt
   void _saveExamToDevice(double toplamNet, int toplamDogru, int toplamYanlis) async {
     final prefs = await SharedPreferences.getInstance();
     List<String> examList = prefs.getStringList('examList') ?? [];
@@ -66,6 +93,8 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
     super.initState();
   }
 
+
+  //Net Hesaplama,Gösterme Fonksiyonları
   double calculateNet(TextEditingController correct, TextEditingController wrong) {
     int correctAnswers = int.tryParse(correct.text) ?? 0;
     int wrongAnswers = int.tryParse(wrong.text) ?? 0;
@@ -73,20 +102,15 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
   }
 
   void calculateExamResults() {
-    double turkceNet = calculateNet(turkceCorrect, turkceWrong);
-    double matematikNet = calculateNet(matematikCorrect, matematikWrong);
-    double tarihNet = calculateNet(tarihCorrect, tarihWrong);
-    double cografyaNet = calculateNet(cografyaCorrect, cografyaWrong);
-    double felsefeNet = calculateNet(felsefeCorrect, felsefeWrong);
-    double dinNet = calculateNet(dinCorrect, dinWrong);
-    double fizikNet = calculateNet(fizikCorrect, fizikWrong);
-    double kimyaNet = calculateNet(kimyaCorrect, kimyaWrong);
-    double biyolojiNet = calculateNet(biyolojiCorrect, biyolojiWrong);
-    double toplamNet = turkceNet + matematikNet + tarihNet + cografyaNet + felsefeNet + dinNet + fizikNet + kimyaNet + biyolojiNet;
+    double toplamNet = 0;
+    int toplamDogru = 0;
+    int toplamYanlis = 0;
 
-    int toplamDogru = (int.tryParse(turkceCorrect.text) ?? 0) + (int.tryParse(matematikCorrect.text) ?? 0) + (int.tryParse(tarihCorrect.text) ?? 0) + (int.tryParse(cografyaCorrect.text) ?? 0) + (int.tryParse(felsefeCorrect.text) ?? 0) + (int.tryParse(dinCorrect.text) ?? 0) + (int.tryParse(fizikCorrect.text) ?? 0) + (int.tryParse(kimyaCorrect.text) ?? 0) + (int.tryParse(biyolojiCorrect.text) ?? 0);
-
-    int toplamYanlis = (int.tryParse(turkceWrong.text) ?? 0) + (int.tryParse(matematikWrong.text) ?? 0) + (int.tryParse(tarihWrong.text) ?? 0) + (int.tryParse(cografyaWrong.text) ?? 0) + (int.tryParse(felsefeWrong.text) ?? 0) + (int.tryParse(dinWrong.text) ?? 0) + (int.tryParse(fizikWrong.text) ?? 0) + (int.tryParse(kimyaWrong.text) ?? 0) + (int.tryParse(biyolojiWrong.text) ?? 0);
+    controllers.forEach((_, controller) {
+      toplamNet += calculateNet(controller['correct']!, controller['wrong']!);
+      toplamDogru += int.tryParse(controller['correct']!.text) ?? 0;
+      toplamYanlis += int.tryParse(controller['wrong']!.text) ?? 0;
+    });
 
     showDialog(
       context: context,
@@ -94,18 +118,13 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
         return AlertDialog(
           title: Text("Net Sonuçları"),
           content: Text(
-            "Sınav Adı: ${examNameController.text}\n"
-                "Türkçe: ${turkceNet.toStringAsFixed(2)}\n"
-                "Matematik: ${matematikNet.toStringAsFixed(2)}\n"
-                "Tarih: ${tarihNet.toStringAsFixed(2)}\n"
-                "Coğrafya: ${cografyaNet.toStringAsFixed(2)}\n"
-                "Felsefe: ${felsefeNet.toStringAsFixed(2)}\n"
-                "Din: ${dinNet.toStringAsFixed(2)}\n"
-                "Fizik: ${fizikNet.toStringAsFixed(2)}\n"
-                "Kimya: ${kimyaNet.toStringAsFixed(2)}\n"
-                "Biyoloji: ${biyolojiNet.toStringAsFixed(2)}\n"
-                "\nToplam Net: ${toplamNet.toStringAsFixed(2)}"
-                "\nToplam Doğru: $toplamDogru\n"
+            "Sınav Adı: ${examNameController.text}\n" +
+                controllers.entries.map((e) {
+                  final net = calculateNet(e.value['correct']!, e.value['wrong']!);
+                  return "${e.key}: ${net.toStringAsFixed(2)}";
+                }).join("\n") +
+                "\n\nToplam Net: ${toplamNet.toStringAsFixed(2)}" +
+                "\nToplam Doğru: $toplamDogru\n" +
                 "Toplam Yanlış: $toplamYanlis\n",
           ),
           actions: [
@@ -126,6 +145,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
     );
   }
 
+  //Ana Widget
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,14 +187,13 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
               ],
             ),
             SizedBox(height: 10),
-            buildSubjectRow("Türkçe", Icons.auto_stories, turkceCorrect, turkceWrong),
-            buildSubjectRow("Matematik", Icons.functions, matematikCorrect, matematikWrong),
-            buildSubjectRow("Tarih", Icons.lens, tarihCorrect, tarihWrong),
-            buildSubjectRow("Felsefe", Icons.nature_people, felsefeCorrect, felsefeWrong),
-            buildSubjectRow("Din", Icons.church, dinCorrect, dinWrong),
-            buildSubjectRow("Fizik", Icons.flash_on, fizikCorrect, fizikWrong),
-            buildSubjectRow("Kimya", Icons.science, kimyaCorrect, kimyaWrong),
-            buildSubjectRow("Biyoloji", Icons.local_florist, biyolojiCorrect, biyolojiWrong),
+            ...controllers.entries.map((entry) => buildSubjectRow(
+              entry.key,
+
+             entry.value['icon'],
+              entry.value['correct']!,
+              entry.value['wrong']!,
+            )),
           ],
         ),
       ),
@@ -184,7 +203,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-            backgroundColor: Colors.grey[200] ,
+            backgroundColor: Colors.grey[200],
           ),
           onPressed: calculateExamResults,
           child: Text(
@@ -200,6 +219,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
     );
   }
 
+  // Her ders Satırı için genel widget
   Widget buildSubjectRow(String name, IconData icon, TextEditingController correctController, TextEditingController wrongController) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -233,6 +253,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
     );
   }
 
+  //Her doğru/yanlış kutusu için genel widget
   Widget buildNumberBox(TextEditingController controller) {
     return SizedBox(
       height: 48,
