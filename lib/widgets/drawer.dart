@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yks_deneme_takip/LogoSaglayici.dart';
+import 'package:yks_deneme_takip/logo_saglayici.dart';
 import 'package:provider/provider.dart';
 
 class MenuDrawer extends StatelessWidget {
