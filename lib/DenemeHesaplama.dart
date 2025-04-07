@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:yks_deneme_takip2/drawer.dart';
+import 'package:yks_deneme_takip/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const Color lilac = Color(0xFF9575CD);

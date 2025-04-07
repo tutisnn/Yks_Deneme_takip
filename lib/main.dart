@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'drawer.dart';
 import 'DenemeHesaplama.dart';
 import 'GecmisSinavlar.dart';
-import 'package:yks_deneme_takip2/HomeScreen.dart';
+import 'package:yks_deneme_takip/HomeScreen.dart';
 import 'LoginPage.dart';
 import 'KonuTakip.dart';
 

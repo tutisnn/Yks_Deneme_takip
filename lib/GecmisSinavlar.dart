@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:yks_deneme_takip2/drawer.dart';
+import 'package:yks_deneme_takip/drawer.dart';
 
 const Color lilacLight = Color(0xFFF3E5F5);
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'HomeScreen.dart';
-import 'package:yks_deneme_takip2/drawer.dart';
+import 'package:yks_deneme_takip/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const Color primaryLilac = Color(0xFFD1C4E9);
