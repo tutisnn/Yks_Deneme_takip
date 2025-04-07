@@ -1,10 +1,10 @@
-# 📚 YKS Deneme Takip Uygulaması
+#  YKS Deneme Takip Uygulaması
 
 Bu Flutter projesi, YKS’ye hazırlanan öğrencilerin deneme sınavlarını takip etmelerini sağlamak amacıyla geliştirilmiştir. Kullanıcılar deneme sonuçlarını sisteme girerek başarılarını takip edebilir, grafiklerle gelişimlerini gözlemleyebilir ve motivasyonlarını koruyabilirler.  
 
 ---
 
-## 📁 Proje Şeması
+##  Proje Şeması
 
 ```
 lib/ 
@@ -27,7 +27,7 @@ assets/
     ├── light-1.png
     └── light-2.png
 ```
-## 📱 Proje Sayfaları ve Görevleri
+##  Proje Sayfaları ve Görevleri
 - **home_page**: Uygulama menüsü ve sayaç içerir.
 - **login_page**: Kullanıcının giriş yapmasını sağlar. 
 - **deneme_hesaplama_page**: Kullanıcı deneme sonucu netini hesaplar, görüntüler ve isterse kaydeder.
@@ -38,14 +38,14 @@ assets/
 
 ---
 
-## 🎨 Drawer Menüdeki Logo ve API Bilgisi
+##  Drawer Menüdeki Logo ve API Bilgisi
 
 Drawer menüsünde gösterilen logo, `LogoSaglayici` adlı özel bir sınıf tarafından sağlanmaktadır. Bu sınıf, logoları **MockAPI** üzerinden kendi oluşturuduğumuz apiden dinamik olarak çeker. Kendi apimizi oluşturmamızın sebebi kendi logo fotograflarımızı kullanmak istememizdi.Kendi oluşturduğumuz Kullanılan API adresi:https://67f24369ec56ec1a36d295de.mockapi.io/api/YksDenemeTakip/logos
 
 
 ---
 
-## 🔐 Login Bilgileri Nasıl Saklanıyor?
+##  Login Bilgileri Nasıl Saklanıyor?
 
 Kullanıcı adı ve şifre gibi bilgiler `shared_preferences` paketi kullanılarak lokal cihazda güvenli bir şekilde saklanmaktadır.
 
@@ -56,7 +56,7 @@ shared_preferences: ^2.2.2
 
 ---
 
-## 👥 Grup Üyelerinin Katkıları
+##  Grup Üyelerinin Katkıları
 
 Görev dağılımını, proje sayfalarını aramızda paylaşarak gerçekleştirdik.
 
@@ -69,7 +69,7 @@ Görev dağılımını, proje sayfalarını aramızda paylaşarak gerçekleştir
 > Kod geliştirme süreci Git üzerinden yürütüldü ve düzenli commit mesajları ile takip edildi.
 ---
 
-## 📂 Kullanılan Paketler
+##  Kullanılan Paketler
 
 - `shared_preferences`: Lokal veri kaydı
 - `http`: API bağlantıları için 
@@ -79,7 +79,7 @@ Görev dağılımını, proje sayfalarını aramızda paylaşarak gerçekleştir
 - `google_fonts`: Font özelleştirmeleri
 
 ---
-## 🌟 Projenin Öne Çıkan Özellikleri
+##  Projenin Öne Çıkan Özellikleri
 
 - Kullanıcıya özel skor takibi (doğru/yanlış sayısı)
 - Deneme sonuçlarını grafikle izleme
@@ -88,7 +88,7 @@ Görev dağılımını, proje sayfalarını aramızda paylaşarak gerçekleştir
 
 ---
 
-## 💡 Yaratıcı ve Özgün Yaklaşım
+##  Yaratıcı ve Özgün Yaklaşım
 
 - Uygulama, sadece sonuç girişi değil, kullanıcıya görsel gelişim takibi sunarak fark yaratmaktadır.
 - Özellikle soft renk tasarımı ile stresi azaltıcı bir arayüz hedeflenmiştir.
@@ -98,7 +98,7 @@ Görev dağılımını, proje sayfalarını aramızda paylaşarak gerçekleştir
 
 
 
-## 🧠 Diğer Notlar
+##  Diğer Notlar
 
 - Proje Flutter 3.7.0 SDK ile geliştirilmiştir.
 - UI/UX testleri yapılmış, kullanıcı deneyimi odaklı sade bir yapı benimsenmiştir.
@@ -106,7 +106,7 @@ Görev dağılımını, proje sayfalarını aramızda paylaşarak gerçekleştir
 
 ---
 
-## 🚀 Başlamak İçin
+## Başlamak İçin
 
 ```bash
 flutter pub get
@@ -115,4 +115,4 @@ flutter run
 
 ---
 
-> Proje geliştiricileri olarak umarız ki bu uygulama, YKS’ye hazırlanan öğrenciler için faydalı bir araç olur. 🧠📈
+> Proje geliştiricileri olarak umarız ki bu uygulama, YKS’ye hazırlanan öğrenciler için faydalı bir araç olur. 
