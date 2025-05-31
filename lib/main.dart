@@ -5,6 +5,8 @@ import 'pages/gecmis_sinavlar_page.dart';
 import 'pages/homepage.dart';
 import 'pages/login_page.dart';
 import 'pages/konu_takip_page.dart';
+import 'pages/BasePage.dart';
+import 'pages/profil.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,6 +46,8 @@ class MyApp extends StatelessWidget {
         '/Anasayfa':(context)=>AnaSayfa(),
         '/girisYap':(context)=>LoginPage(),
         '/KonuTakip':(context)=>Konutakip(),
+        '/profil': (context) => const ProfilPage(),
+
       },
     );
   }

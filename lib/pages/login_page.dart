@@ -12,11 +12,21 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController surnameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-// kullaici adı ve şifre shared prefences ile tutuluyor
-  Future<void> saveUserName(String name) async {
+
+  // Kullanıcı bilgilerini SharedPreferences'a kaydeder
+  Future<void> saveUserInfo(String name, String surname, String email, String password) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('username', name);
+    String randomId = DateTime.now().millisecondsSinceEpoch.toString();
+
+
+    await prefs.setString('userId', randomId);
+    await prefs.setString('userName', name);
+    await prefs.setString('userSurname', surname);
+    await prefs.setString('userEmail', email);
+    await prefs.setString('userPassword', password);
   }
 
   @override
@@ -89,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                         margin: const EdgeInsets.only(top: 50),
                         child: const Center(
                           child: Text(
-                            "YKS Deneme Takip ",
+                            "YKS Deneme Takip",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 40,
@@ -141,6 +151,28 @@ class _LoginPageState extends State<LoginPage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextField(
+                              controller: surnameController,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Soyadınız",
+                                hintStyle: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              controller: emailController,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Email",
+                                hintStyle: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
                               controller: passwordController,
                               obscureText: true,
                               decoration: const InputDecoration(
@@ -160,8 +192,15 @@ class _LoginPageState extends State<LoginPage> {
                     child: GestureDetector(
                       onTap: () async {
                         String name = nameController.text.trim();
-                        if (name.isNotEmpty) {
-                          await saveUserName(name);
+                        String surname = surnameController.text.trim();
+                        String email = emailController.text.trim();
+                        String password = passwordController.text.trim();
+
+                        if (name.isNotEmpty &&
+                            surname.isNotEmpty &&
+                            email.isNotEmpty &&
+                            password.isNotEmpty) {
+                          await saveUserInfo(name, surname, email, password);
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -171,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text("Lütfen adınızı girin."),
+                              content: Text("Lütfen tüm bilgileri doldurun."),
                             ),
                           );
                         }
@@ -189,7 +228,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         child: const Center(
                           child: Text(
-                            "Login",
+                            "Giriş Yap",
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -200,7 +239,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 70),
-
                 ],
               ),
             )
