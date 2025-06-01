@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pie_chart/pie_chart.dart';
-import  'package:yks_deneme_takip/widgets/drawer.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:yks_deneme_takip/widgets/drawer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 const Color lilacLight = Color(0xFFF3E5F5);
 
@@ -18,29 +19,45 @@ class _GecmisSinavlarState extends State<GecmisSinavlar> {
   @override
   void initState() {
     super.initState();
-    _getExamInfoFromDevice();
+    _getExamInfoFromSupabase();
   }
 
-  void _getExamInfoFromDevice() async {
-    final prefs = await SharedPreferences.getInstance();
-    List<String> examList = prefs.getStringList('examList') ?? [];
+  Future<void> _getExamInfoFromSupabase() async {
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
 
-    List<Map<String, dynamic>> tempList = examList.map((exam) {
-      List<String> parts = exam.split('|');
-      return {
-        "examName": parts[0],
-        "examNet": double.tryParse(parts[1]) ?? 0.0,
-        "totalCorrect": int.tryParse(parts[2]) ?? 0,
-        "totalWrong": int.tryParse(parts[3]) ?? 0,
-      };
-    }).toList();
+      if (userId == null) {
+        debugPrint("Kullanıcı oturumu yok.");
+        return;
+      }
 
-    setState(() {
-      _examList = tempList;
-    });
+      final response = await Supabase.instance.client
+          .from('netler')
+          .select()
+          .eq('user_id', userId);
+
+      final data = List<Map<String, dynamic>>.from(response);
+
+      List<Map<String, dynamic>> tempList = data.map((item) {
+        return {
+          "examName": item["sinav_adi"] ?? "",
+          "examNet": (item["toplam_net"] ?? 0).toDouble(),
+          "totalCorrect": item["toplam_dogru"] ?? 0,
+          "totalWrong": item["toplam_yanlis"] ?? 0,
+        };
+      }).toList();
+
+      setState(() {
+        _examList = tempList;
+      });
+    } catch (e) {
+      debugPrint("Supabase veri çekme hatası: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Veriler alınırken bir hata oluştu: $e")),
+      );
+    }
   }
 
-  // Anawidget
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +72,9 @@ class _GecmisSinavlarState extends State<GecmisSinavlar> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: ListView.builder(
+          child: _examList.isEmpty
+              ? const Center(child: Text("Henüz sınav eklenmemiş."))
+              : ListView.builder(
             itemCount: _examList.length,
             itemBuilder: (context, index) {
               return _buildExamCard(
@@ -77,8 +96,6 @@ class _GecmisSinavlarState extends State<GecmisSinavlar> {
     );
   }
 
-
-  //Sınav sonuçlarını gösteren kart pie chart da burda bulunuyor.
   Widget _buildExamCard({
     required String examName,
     required double examNet,
@@ -175,7 +192,6 @@ class _GecmisSinavlarState extends State<GecmisSinavlar> {
     );
   }
 
-//Doğru, yanlış ve Net için Bilgi Kutucukları
   Widget _buildInfoBox({
     required String text,
     required String value,

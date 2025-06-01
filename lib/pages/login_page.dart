@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:yks_deneme_takip/services/giris_servisi.dart';
+import 'ProfilDuzenle.dart';
 import 'homepage.dart';
+import 'register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,13 +14,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-// kullaici adı ve şifre shared prefences ile tutuluyor
-  Future<void> saveUserName(String name) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('username', name);
-  }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GirisServisi _girisServisi = GirisServisi();
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                         margin: const EdgeInsets.only(top: 50),
                         child: const Center(
                           child: Text(
-                            "YKS Deneme Takip ",
+                            "YKS Deneme Takip",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 40,
@@ -127,28 +128,16 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       child: Column(
                         children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextField(
-                              controller: nameController,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Adınız",
-                                hintStyle: TextStyle(color: Colors.grey),
-                              ),
-                            ),
+                          customTextField(
+                            controller: emailController,
+                            hintText: "Email",
+                            icon: Icons.email,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextField(
-                              controller: passwordController,
-                              obscureText: true,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Şifre",
-                                hintStyle: TextStyle(color: Colors.grey),
-                              ),
-                            ),
+                          customTextField(
+                            controller: passwordController,
+                            hintText: "Şifre",
+                            isPassword: true,
+                            icon: Icons.lock,
                           ),
                         ],
                       ),
@@ -159,19 +148,40 @@ class _LoginPageState extends State<LoginPage> {
                     duration: const Duration(milliseconds: 1900),
                     child: GestureDetector(
                       onTap: () async {
-                        String name = nameController.text.trim();
-                        if (name.isNotEmpty) {
-                          await saveUserName(name);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const AnaSayfa(),
-                            ),
-                          );
-                        } else {
+                        String email = emailController.text.trim();
+                        String password = passwordController.text.trim();
+
+                        if (email.isEmpty || password.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text("Lütfen adınızı girin."),
+                              content: Text("Lütfen email ve şifre girin."),
+                              backgroundColor: Colors.redAccent,
+                            ),
+                          );
+                          return;
+                        }
+
+                        try {
+                          await _girisServisi.epostaIleGiris(
+                            email: email,
+                            sifre: password,
+                          );
+
+                          if (_auth.currentUser != null) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const AnaSayfa()
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                e.toString().replaceFirst('Exception: ', ''),
+                              ),
+                              backgroundColor: Colors.redAccent,
                             ),
                           );
                         }
@@ -189,7 +199,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         child: const Center(
                           child: Text(
-                            "Login",
+                            "Giriş Yap",
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -199,12 +209,172 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 70),
+
+                  const SizedBox(height: 10),
+
+
+                  FadeInUp(
+                    duration: const Duration(milliseconds: 2000),
+                    child: GestureDetector(
+                      onTap: () async {
+                        try {
+                          final user = await _girisServisi.googleIleGiris();
+                          if (user != null) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const AnaSayfa(),
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Google ile giriş başarısız: ${e.toString()}",
+                              ),
+                              backgroundColor: Colors.redAccent,
+                            ),
+                          );
+                        }
+                      },
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color.fromRGBO(143, 148, 251, 1),
+                              Color.fromRGBO(143, 148, 251, .6),
+                            ],
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/google_logo.png',
+                              height: 24,
+                            ),
+                            const SizedBox(width: 10),
+                            const Text(
+                              "Google ile Giriş Yap",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  FadeInUp(
+                    duration: const Duration(milliseconds: 2000),
+                    child: GestureDetector(
+                      onTap: () async {
+                        try {
+                          await _girisServisi.signInWithGitHub();
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const AnaSayfa()),
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("GitHub ile giriş başarısız: $e"),
+                              backgroundColor: Colors.redAccent,
+                            ),
+                          );
+                        }
+                      },
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color.fromRGBO(143, 148, 251, 1),
+                              Color.fromRGBO(143, 148, 251, .6),
+                            ],
+                          ),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "GitHub ile Giriş Yap",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+
+                  const SizedBox(height: 10),
+
+                  FadeInUp(
+                    duration: const Duration(milliseconds: 2000),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterPage(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color.fromRGBO(143, 148, 251, 1),
+                              Color.fromRGBO(143, 148, 251, .6),
+                            ],
+                          ),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Kayıt Ol",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
 
                 ],
               ),
-            )
+            ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget customTextField({
+    required TextEditingController controller,
+    required String hintText,
+    bool isPassword = false,
+    IconData? icon,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        controller: controller,
+        obscureText: isPassword,
+        decoration: InputDecoration(
+          prefixIcon: icon != null ? Icon(icon, color: Colors.grey) : null,
+          border: InputBorder.none,
+          hintText: hintText,
+          hintStyle: const TextStyle(color: Colors.grey),
         ),
       ),
     );

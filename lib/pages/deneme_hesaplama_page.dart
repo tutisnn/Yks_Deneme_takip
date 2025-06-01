@@ -1,9 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import  'package:yks_deneme_takip/widgets/drawer.dart';
+import 'package:yks_deneme_takip/widgets/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 const Color lilac = Color(0xFF9575CD);
 
@@ -15,93 +17,57 @@ class Denemehesaplama extends StatefulWidget {
 class DenemehesaplamaState extends State<Denemehesaplama> {
   final TextEditingController examNameController = TextEditingController();
 
-
-  //Kullanıcıların Her ders için girdiği doğru yanlış için controllerlar
   final Map<String, Map<String, dynamic>> controllers = {
-    'Türkçe': {
-      'correct': TextEditingController(),
-      'wrong': TextEditingController(),
-      'icon': Icons.menu_book,
-    },
-    'Matematik': {
-      'correct': TextEditingController(),
-      'wrong': TextEditingController(),
-      'icon': Icons.calculate,
-    },
-    'Tarih': {
-      'correct': TextEditingController(),
-      'wrong': TextEditingController(),
-      'icon': Icons.history_edu,
-    },
-    'Coğrafya': {
-      'correct': TextEditingController(),
-      'wrong': TextEditingController(),
-      'icon': Icons.public,
-    },
-    'Felsefe': {
-      'correct': TextEditingController(),
-      'wrong': TextEditingController(),
-      'icon': Icons.psychology,
-    },
-    'Din': {
-      'correct': TextEditingController(),
-      'wrong': TextEditingController(),
-      'icon': Icons.mosque,
-    },
-    'Fizik': {
-      'correct': TextEditingController(),
-      'wrong': TextEditingController(),
-      'icon': Icons.science,
-    },
-    'Kimya': {
-      'correct': TextEditingController(),
-      'wrong': TextEditingController(),
-      'icon': Icons.biotech,
-    },
-    'Biyoloji': {
-      'correct': TextEditingController(),
-      'wrong': TextEditingController(),
-      'icon': Icons.eco,
-    },
+    'Türkçe': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.menu_book},
+    'Matematik': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.calculate},
+    'Tarih': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.history_edu},
+    'Coğrafya': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.public},
+    'Felsefe': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.psychology},
+    'Din': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.mosque},
+    'Fizik': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.science},
+    'Kimya': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.biotech},
+    'Biyoloji': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.eco},
   };
 
+  Future<void> saveExamToSupabase({
+    required BuildContext context,
+    required String examName,
+    required double toplamNet,
+    required int toplamDogru,
+    required int toplamYanlis,
+    required String userId,
+  }) async {
+    final rootContext = Navigator.of(context, rootNavigator: true).context;
 
+    try {
+      await Supabase.instance.client.from('netler').insert({
+        'user_id': userId,
+        'sinav_adi': examName,
+        'toplam_net': toplamNet,
+        'toplam_dogru': toplamDogru,
+        'toplam_yanlis': toplamYanlis,
+      });
 
-
-  //Kullanıcının girdiği sınav adını, net sayısını, doğru ve yanlış toplamlarını SharedPreferences kullanarak cihazda kalıcı olarak saklamak için fonksiypnalt
-  void _saveExamToDevice(double toplamNet, int toplamDogru, int toplamYanlis) async {
-    final prefs = await SharedPreferences.getInstance();
-    List<String> examList = prefs.getStringList('examList') ?? [];
-    String newExam = '${examNameController.text}|$toplamNet|$toplamDogru|$toplamYanlis|';
-    examList.insert(0, newExam);
-    await prefs.setStringList('examList', examList);
-  }
-
-  void _checkSavedExam() async {
-    final prefs = await SharedPreferences.getInstance();
-    List<String>? savedExamList = prefs.getStringList('examList');
-    if (savedExamList != null && savedExamList.isNotEmpty) {
-      print("Kayıtlı sınavlar bulundu: $savedExamList");
-    } else {
-      print("Kayıtlı sınav bulunamadı.");
+      ScaffoldMessenger.of(rootContext).showSnackBar(
+        const SnackBar(content: Text("Sınav başarıyla kaydedildi.")),
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(rootContext).showSnackBar(
+        SnackBar(content: Text("Supabase kaydetme hatası: $error")),
+      );
     }
   }
 
-  @override
-  void initState() {
-    _checkSavedExam();
-    super.initState();
-  }
 
 
-  //Net Hesaplama,Gösterme Fonksiyonları
   double calculateNet(TextEditingController correct, TextEditingController wrong) {
     int correctAnswers = int.tryParse(correct.text) ?? 0;
     int wrongAnswers = int.tryParse(wrong.text) ?? 0;
     return correctAnswers - (wrongAnswers / 4);
   }
 
-  void calculateExamResults() {
+  Future<void> calculateExamResults() async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
     double toplamNet = 0;
     int toplamDogru = 0;
     int toplamYanlis = 0;
@@ -112,7 +78,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
       toplamYanlis += int.tryParse(controller['wrong']!.text) ?? 0;
     });
 
-    showDialog(
+    await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -133,9 +99,16 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
               child: Text("Kapat"),
             ),
             ElevatedButton(
-              onPressed: () {
-                _saveExamToDevice(toplamNet, toplamDogru, toplamYanlis);
+              onPressed: () async {
                 Navigator.pop(context);
+                await saveExamToSupabase(
+                  context: context,
+                  examName: examNameController.text,
+                  toplamNet: toplamNet,
+                  toplamDogru: toplamDogru,
+                  toplamYanlis: toplamYanlis,
+                  userId: userId!
+                );
               },
               child: Text("Denemeyi Kaydet"),
             ),
@@ -145,7 +118,6 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
     );
   }
 
-  //Ana Widget
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -189,8 +161,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
             SizedBox(height: 10),
             ...controllers.entries.map((entry) => buildSubjectRow(
               entry.key,
-
-             entry.value['icon'],
+              entry.value['icon'],
               entry.value['correct']!,
               entry.value['wrong']!,
             )),
@@ -205,7 +176,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
             backgroundColor: Colors.grey[200],
           ),
-          onPressed: calculateExamResults,
+          onPressed: () async => await calculateExamResults(),
           child: Text(
             "HESAPLA",
             style: GoogleFonts.poppins(
@@ -219,7 +190,6 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
     );
   }
 
-  // Her ders Satırı için genel widget
   Widget buildSubjectRow(String name, IconData icon, TextEditingController correctController, TextEditingController wrongController) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -253,7 +223,6 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
     );
   }
 
-  //Her doğru/yanlış kutusu için genel widget
   Widget buildNumberBox(TextEditingController controller) {
     return SizedBox(
       height: 48,

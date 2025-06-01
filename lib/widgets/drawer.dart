@@ -120,6 +120,14 @@ class _MenuDrawerState extends State<MenuDrawer> {
                   routeName: '/gecmisSinavlariGor',
                 ),
                 _buildDivider(),
+                _buildMenuItem(
+                  context,
+                  icon: Icons.history,
+                  color: Colors.black,
+                  title: 'Profil Sayfası',
+                  routeName: '/ProfilSayfasi',
+                ),
+
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
