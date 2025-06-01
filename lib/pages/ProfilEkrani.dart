@@ -28,7 +28,6 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
     super.initState();
     _loadUserData();
   }
-
   Future<void> _loadUserData() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
@@ -36,17 +35,15 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
     final doc = await FirebaseFirestore.instance.collection('kullanicilar').doc(user.uid).get();
     final data = doc.data();
 
-    if (data != null) {
-      setState(() {
-        name = data['ad'];
-        surname = data['soyad'];
-        email = data['email'];
-        birthPlace = data['dogum_yeri'];
-        city = data['yasadigi_il'];
-        birthDateRaw = data['dogum_tarihi'];
-        isLoading = false;
-      });
-    }
+    setState(() {
+      name = data?['ad'] ?? "";
+      surname = data?['soyad'] ?? "";
+      email = data?['email'] ?? "";
+      birthPlace = data?['dogum_yeri'] ?? "";
+      city = data?['yasadigi_il'] ?? "";
+      birthDateRaw = data?['dogum_tarihi'] ?? "";
+      isLoading = false;
+    });
   }
 
   @override
