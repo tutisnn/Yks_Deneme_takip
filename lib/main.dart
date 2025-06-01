@@ -5,11 +5,24 @@ import 'pages/gecmis_sinavlar_page.dart';
 import 'pages/homepage.dart';
 import 'pages/login_page.dart';
 import 'pages/konu_takip_page.dart';
-import 'pages/BasePage.dart';
-import 'pages/profil.dart';
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'pages/ProfilEkrani.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'pages/ProfilDuzenle.dart';
 
-void main() {
-  runApp(const MyApp());
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await Supabase.initialize(
+    url: 'https://fjzlacogmiibgqxmhbao.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqemxhY29nbWlpYmdxeG1oYmFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3MjE4MzUsImV4cCI6MjA2NDI5NzgzNX0._px-yE2tOJn8F7MblEHTqhemmO5iG8ygnr2Xw1Lw4rM',
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -46,7 +59,8 @@ class MyApp extends StatelessWidget {
         '/Anasayfa':(context)=>AnaSayfa(),
         '/girisYap':(context)=>LoginPage(),
         '/KonuTakip':(context)=>Konutakip(),
-        '/profil': (context) => const ProfilPage(),
+        '/ProfilSayfasi':(context)=>ProfilEkrani(),
+        '/ProfilDuzenle':(context)=>ProfilDuzenle(),
 
       },
     );

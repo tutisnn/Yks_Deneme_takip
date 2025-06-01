@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "132616584484",
+    "project_id": "yks-deneme-takip",
+    "storage_bucket": "yks-deneme-takip.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:132616584484:android:56403cd72881d153f307b1",
+        "android_client_info": {
+          "package_name": "com.example.yks_deneme_takip2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "132616584484-luitc6moajta9lvsvrbv9ck34mdudd7a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.yks_deneme_takip2",
+            "certificate_hash": "33b537fcc9cb5d74b8398b1f4edb73a09ea57875"
+          }
+        },
+        {
+          "client_id": "132616584484-sku4mjduo9da4ljev0r63bqskcb7fp5s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeJhNvlHemlbXOkHfOoJGmtfysqmNT1b0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "132616584484-sku4mjduo9da4ljev0r63bqskcb7fp5s.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "132616584484-eijopmc77a653o8g9g231ube3hijdg4h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.yksDenemeTakip2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

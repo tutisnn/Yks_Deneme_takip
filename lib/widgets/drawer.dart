@@ -122,10 +122,10 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 _buildDivider(),
                 _buildMenuItem(
                   context,
-                  icon: Icons.person,
+                  icon: Icons.history,
                   color: Colors.black,
-                  title: "Profil",
-                  routeName: '/profil', // Route name'ini buna göre ayarla
+                  title: 'Profil Sayfası',
+                  routeName: '/ProfilSayfasi',
                 ),
 
 
