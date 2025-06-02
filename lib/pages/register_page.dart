@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:yks_deneme_takip/services/giris_servisi.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:yks_deneme_takip/models/User.dart'; // UserModel import
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -14,6 +17,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController passwordController = TextEditingController();
 
   final GirisServisi _girisServisi = GirisServisi();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -153,12 +157,21 @@ class _RegisterPageState extends State<RegisterPage> {
                             sifre: passwordController.text.trim(),
                           );
 
+                          User? user = _auth.currentUser;
+                          if (user != null) {
+                            UserModel newUser = UserModel(
+                              uid: user.uid,
+                              email: user.email ?? '',
+                            );
+
+                            await FirebaseFirestore.instance.collection('kullanicilar').doc(newUser.uid).set(newUser.toJson());
+                          }
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text("Kayıt başarılı!")),
                           );
 
                           Navigator.pop(context);
-
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text("Kayıt sırasında hata oluştu: $e")),
@@ -197,8 +210,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget _buildTextField(String hint, TextEditingController controller,
-      {bool isPassword = false, IconData? icon}) {
+  Widget _buildTextField(String hint, TextEditingController controller, {bool isPassword = false, IconData? icon}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
