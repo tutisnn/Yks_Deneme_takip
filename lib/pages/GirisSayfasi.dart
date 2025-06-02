@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:yks_deneme_takip/services/giris_servisi.dart';
-import 'package:yks_deneme_takip/models/User.dart'; // UserModel'i import et!
-import 'homepage.dart';
-import 'register_page.dart';
+import 'package:yks_deneme_takip/models/User.dart';
+import 'Anasayfa.dart';
+import 'KayitSayfasi.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class GirisSayfasi extends StatefulWidget {
+  const GirisSayfasi({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<GirisSayfasi> createState() => _GirisSayfasiState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _GirisSayfasiState extends State<GirisSayfasi> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const RegisterPage(),
+                                builder: (context) => const KayitSayfasi(),
                               ),
                             );
                           },

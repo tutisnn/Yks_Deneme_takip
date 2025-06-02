@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'widgets/drawer.dart';
-import 'pages/deneme_hesaplama_page.dart';
-import 'pages/gecmis_sinavlar_page.dart';
-import 'pages/homepage.dart';
-import 'pages/login_page.dart';
-import 'pages/konu_takip_page.dart';
+import 'pages/DenemeHesaplama.dart';
+import 'pages/GecmisSinavlar.dart';
+import 'pages/Anasayfa.dart';
+import 'pages/GirisSayfasi.dart';
+import 'pages/KonuTakip.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'pages/ProfilEkrani.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'pages/ProfilDuzenle.dart';
-import 'themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,11 +52,11 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => LoginPage(),
+        '/': (context) => GirisSayfasi(),
         '/denemehesapla': (context) => Denemehesaplama(),
         '/gecmisSinavlariGor': (context) => GecmisSinavlar(),
         '/Anasayfa':(context)=>AnaSayfa(),
-        '/girisYap':(context)=>LoginPage(),
+        '/girisYap':(context)=>GirisSayfasi(),
         '/KonuTakip':(context)=>Konutakip(),
         '/ProfilSayfasi':(context)=>ProfilEkrani(),
         '/ProfilDuzenle':(context)=>ProfilDuzenle(),
