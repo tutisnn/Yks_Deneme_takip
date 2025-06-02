@@ -3,7 +3,8 @@ import 'package:animate_do/animate_do.dart';
 import 'package:yks_deneme_takip/services/giris_servisi.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:yks_deneme_takip/models/User.dart'; // UserModel import
+import 'package:yks_deneme_takip/models/User.dart';
+import 'package:yks_deneme_takip/pages/homepage.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -178,27 +179,37 @@ class _RegisterPageState extends State<RegisterPage> {
                           );
                         }
                       },
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color.fromRGBO(143, 148, 251, 1),
-                              Color.fromRGBO(143, 148, 251, .6),
-                            ],
-                          ),
+                      child: _buildButton("Kayıt Ol"),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  _buildGoogleButton(),
+                  const SizedBox(height: 10),
+                  _buildGitHubButton(),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Zaten bir üyeliğiniz var mı? ",
+                          style: TextStyle(fontSize: 16),
                         ),
-                        child: const Center(
-                          child: Text(
-                            "Kayıt Ol",
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            "Giriş Yap",
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Color.fromRGBO(143, 148, 251, 1),
                               fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              decoration: TextDecoration.underline,
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 ],
@@ -222,6 +233,96 @@ class _RegisterPageState extends State<RegisterPage> {
           hintText: hint,
           hintStyle: const TextStyle(color: Colors.grey),
         ),
+      ),
+    );
+  }
+
+  Widget _buildGoogleButton() {
+    return FadeInUp(
+      duration: const Duration(milliseconds: 2000),
+      child: GestureDetector(
+        onTap: () async {
+          try {
+            final user = await _girisServisi.googleIleGiris();
+            if (user != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Google ile kayıt başarılı!")),
+              );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const AnaSayfa()),
+              );
+            }
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Google ile kayıt başarısız: $e")),
+            );
+          }
+        },
+        child: _buildButton("Google ile Devam Et", isGoogle: true),
+      ),
+    );
+  }
+
+  Widget _buildGitHubButton() {
+    return FadeInUp(
+      duration: const Duration(milliseconds: 2000),
+      child: GestureDetector(
+        onTap: () async {
+          try {
+            final user = await _girisServisi.signInWithGitHub();
+            if (user != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("GitHub ile giriş başarılı!")),
+              );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const AnaSayfa()),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("GitHub ile giriş başarısız!")),
+              );
+            }
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("GitHub ile giriş sırasında hata oluştu: $e")),
+            );
+          }
+        },
+        child: _buildButton("GitHub ile Devam Et", isGitHub: true),
+      ),
+    );
+  }
+
+  Widget _buildButton(String text, {bool isGoogle = false, bool isGitHub = false}) {
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        gradient: const LinearGradient(
+          colors: [
+            Color.fromRGBO(143, 148, 251, 1),
+            Color.fromRGBO(143, 148, 251, .6),
+          ],
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (isGoogle)
+            Image.asset('assets/images/google_logo.png', height: 24),
+          if (isGitHub)
+            Image.asset('assets/images/github.png', height: 24),
+          if (isGoogle || isGitHub) const SizedBox(width: 10),
+          Text(
+            text,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -2,13 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:developer';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:github_oauth/github_oauth.dart';
-
-import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
-import 'package:flutter/material.dart';
-
 
 
 class GirisServisi {
@@ -59,20 +52,43 @@ class GirisServisi {
     final credential = GoogleAuthProvider.credential(
         accessToken: gAuth.accessToken, idToken: gAuth.idToken);
 
+    final UserCredential userCredential = await _auth.signInWithCredential(credential);
 
-    final UserCredential userCredential = await _auth.signInWithCredential(
-        credential);
-    log(userCredential.user!.email.toString());
-    return userCredential.user;
+    final User? user = userCredential.user;
+
+    if (user != null) {
+      final doc = await FirebaseFirestore.instance.collection('kullanicilar').doc(user.uid).get();
+
+      if (!doc.exists) {
+        await FirebaseFirestore.instance.collection('kullanicilar').doc(user.uid).set({
+          'uid': user.uid,
+          'email': user.email ?? '',
+        });
+      }
+    }
+
+    log(user?.email.toString() ?? 'Email yok');
+    return user;
   }
-
   Future<User?> signInWithGitHub() async {
     try {
       final GithubAuthProvider githubProvider = GithubAuthProvider();
       final UserCredential userCredential = await _auth.signInWithPopup(githubProvider);
 
-      print("Giriş başarılı: ${userCredential.user?.uid}");
-      return userCredential.user;
+      final User? user = userCredential.user;
+      if (user != null) {
+        final doc = await FirebaseFirestore.instance.collection('kullanicilar').doc(user.uid).get();
+
+        if (!doc.exists) {
+          await FirebaseFirestore.instance.collection('kullanicilar').doc(user.uid).set({
+            'uid': user.uid,
+            'email': user.email ?? '',
+          });
+        }
+      }
+
+      print("Giriş başarılı: ${user?.uid}");
+      return user;
     } catch (e, stackTrace) {
       print('GitHub sign-in failed: $e');
       print('StackTrace: $stackTrace');
@@ -80,6 +96,22 @@ class GirisServisi {
     }
   }
 
+
+  Future<void> signOut() async {
+    // If signed in with Google, sign out from Google account
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    try {
+      if (await googleSignIn.isSignedIn()) {
+        await googleSignIn.signOut();
+      }
+    } catch (e) {
+      // Handle errors if any occur during Google sign out
+      log("Google sign out error: $e");
+    }
+
+    // Sign out from Firebase authentication
+    await _auth.signOut();
+  }
 
 
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:yks_deneme_takip/services/giris_servisi.dart'; // GirisServisi import
 
 class MenuDrawer extends StatelessWidget {
-  const MenuDrawer({super.key});
+  MenuDrawer({super.key});
+
+  final GirisServisi _girisServisi = GirisServisi();
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +62,16 @@ class MenuDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/ProfilSayfasi');
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.exit_to_app, color: Colors.black),
+            title: const Text('Çıkış Yap'),
+            onTap: () async {
+              Navigator.pop(context);
+              await _girisServisi.signOut();
+              Navigator.pushReplacementNamed(context, '/girisYap'); // Çıkış sonrası login sayfasına yönlendir
             },
           ),
         ],
