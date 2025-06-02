@@ -1,100 +1,102 @@
-#  YKS Deneme Takip Uygulaması
+# 📚 YKS Deneme Takip Uygulaması
 
-Bu Flutter projesi, YKS’ye hazırlanan öğrencilerin deneme sınavlarını takip etmelerini sağlamak amacıyla geliştirilmiştir. Kullanıcılar deneme sonuçlarını sisteme girerek başarılarını takip edebilir, grafiklerle gelişimlerini gözlemleyebilir ve motivasyonlarını koruyabilirler.  
+Bu Flutter projesi, YKS’ye hazırlanan öğrencilerin deneme sınavlarını takip etmelerini sağlamak amacıyla geliştirilmiştir. Kullanıcılar deneme sonuçlarını sisteme girerek başarılarını takip edebilir, grafiklerle gelişimlerini gözlemleyebilir ve motivasyonlarını koruyabilirler.
 
 ---
 
-##  Proje Şeması
+## 📦 Proje Dosya Yapısı
 
-```
-lib/ 
+lib/
 ├── main.dart
 ├── pages/
-│   ├── login_page.dart
-│   ├── home_page.dart
-│   ├── deneme_hesaplama_page.dart
-│   ├── gecmis_sinavlar_page.dart
-│   ├── konu_takip_page.dart
+│ ├── login_page.dart
+│ ├── register_page.dart
+│ ├── home_page.dart
+│ ├── deneme_hesaplama_page.dart
+│ ├── gecmis_sinavlar_page.dart
+│ ├── konu_takip_page.dart
+│ ├── ProfilEkrani.dart
+│ ├── ProfilDuzenle.dart
 ├── widgets/
-│   ├── drawer.dart
-│   └── logo_saglayici.dart
-assets/ 
-├── fonts/
-│   ├── BungeeSpice-Regular
+│ ├── drawer.dart
+│ ├── custom_app_bar.dart
+│ └── base_page.dart
+├── services/
+│ ├── giris_servisi.dart
+├── models/
+│ ├── User.dart
+assets/
 ├── images/
-│   ├── background.png
-    ├── clock.png
-    ├── light-1.png
-    └── light-2.png
-```
-##  Proje Sayfaları ve Görevleri
-- **home_page**: Uygulama menüsü ve sayaç içerir.
-- **login_page**: Kullanıcının giriş yapmasını sağlar. 
-- **deneme_hesaplama_page**: Kullanıcı deneme sonucu netini hesaplar, görüntüler ve isterse kaydeder.
-- **gecmis_sinavlar_page**: Önceden kaydedilen denemelerin listelenmesi ve grafiksel sunumu
-- **drawer**: Sayfalar arası geçişi sağlar ve kullanıcı bilgilerine erişim sunar.
-- **logo_saglayici**:Drawer menüsünde gösterilen logoyu sağlar
-- **main**:routing işlemleri için
+│ ├── background.png
+│ ├── clock.png
+│ ├── light-1.png
+│ ├── light-2.png
+│ ├── google_logo.png
+├── fonts/
+│ ├── BungeeSpice-Regular.ttf
 
 ---
 
-##  Drawer Menüdeki Logo ve API Bilgisi
+## 📃 Sayfaların Görevleri
 
-Drawer menüsünde gösterilen logo, `LogoSaglayici` adlı özel bir sınıf tarafından sağlanmaktadır. Bu sınıf, logoları **MockAPI** üzerinden kendi oluşturuduğumuz apiden dinamik olarak çeker. Kendi apimizi oluşturmamızın sebebi kendi logo fotograflarımızı kullanmak istememizdi.Kendi oluşturduğumuz Kullanılan API adresi:https://67f24369ec56ec1a36d295de.mockapi.io/api/YksDenemeTakip/logos
-
-
----
-
-##  Login Bilgileri Nasıl Saklanıyor?
-
-Kullanıcı adı ve şifre gibi bilgiler `shared_preferences` paketi kullanılarak lokal cihazda güvenli bir şekilde saklanmaktadır.
-
-Kullanılan paket:
-```yaml
-shared_preferences: ^2.2.2
-```
-
----
-
-##  Grup Üyelerinin Katkıları
-
-Görev dağılımını, proje sayfalarını aramızda paylaşarak gerçekleştirdik.
-
-| Grup Üyesi           | Görevleri                                                                 |
-|----------------------|---------------------------------------------------------------------------|
-| Tuhana Sinan         | `drawer`, `logo_saglayici`, `deneme_hesaplama_page`, `gecmis_denemeler_page` |
-| Fatma Eslem Özsalih | `login_page`, `home_page`, `konu_takip_page`, `deneme_hesaplama_page`     |
-
-> Ortak çalıştığımız sayfalarda, **fonksiyonel kısımlar** Tuhana tarafından, **tasarım (UI)** kısımları ise Eslem tarafından geliştirildi.  
-> Kod geliştirme süreci Git üzerinden yürütüldü ve düzenli commit mesajları ile takip edildi.
----
-
-##  Kullanılan Paketler
-
-- `shared_preferences`: Lokal veri kaydı
-- `http`: API bağlantıları için 
-- `pie_chart`: Grafiklerle analiz
-- `provider`: State management
-- `animate_do`: Animasyon efektleri
-- `google_fonts`: Font özelleştirmeleri
-
----
-##  Projenin Öne Çıkan Özellikleri
-
-- Kullanıcıya özel skor takibi (doğru/yanlış sayısı)
-- Deneme sonuçlarını grafikle izleme
-- Giriş çıkış sisteminde shared_preferences ile kullanıcıya özel veriler
-- Soft pastel renklerde sade ve çocuklara uygun arayüz tasarımı
+| Sayfa Adı                    | Görevleri                                                                                   |
+|-----------------------------|---------------------------------------------------------------------------------------------|
+| `login_page.dart`            | Kullanıcı giriş işlemleri (email, şifre, Google, GitHub)                                      |
+| `register_page.dart`         | Kullanıcı kayıt işlemleri                                                                    |
+| `home_page.dart`             | Ana sayfa ve sayaç                                                                          |
+| `deneme_hesaplama_page.dart` | Deneme netlerini hesaplama ve kaydetme                                                       |
+| `gecmis_sinavlar_page.dart`  | Önceki denemeleri görüntüleme ve analiz grafiği                                              |
+| `konu_takip_page.dart`       | TYT-AYT konu takip sistemi                                                                  |
+| `ProfilEkrani.dart`          | Kullanıcı bilgilerini görüntüleme (ad, soyad, doğum yeri, şehir, doğum tarihi)               |
+| `ProfilDuzenle.dart`         | Profil bilgilerini düzenleme                                                                 |
+| `drawer.dart`                | Menü ve sayfalar arası geçiş                                                                 |
+| `custom_app_bar.dart`        | Özel AppBar yapısı                                                                          |
 
 ---
 
-##  Yaratıcı ve Özgün Yaklaşım
+## 👩‍💻 Grup Üyelerinin Katkıları
 
-- Uygulama, sadece sonuç girişi değil, kullanıcıya görsel gelişim takibi sunarak fark yaratmaktadır.
-- Özellikle soft renk tasarımı ile stresi azaltıcı bir arayüz hedeflenmiştir.
-- Kullanıcıya özel skorlar kaydedilerek çok kullanıcılı destek sağlanmıştır.
+| Grup Üyesi           | Katkıları                                                                                                                                                            |
+|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Fatma Eslem Özsalih** | `login_page.dart`, `home_page.dart`, `ProfilEkrani.dart`, `ProfilDuzenle.dart` ve tasarım geliştirmeleri                                                             |
+| **Tuhana Sinan**      | `drawer.dart`, `deneme_hesaplama_page.dart`, `gecmis_sinavlar_page.dart`, API entegrasyonu,konu_takip_page.dart`,veritabanı bağlantıları ve Firebase entegrasyonları |
 
 ---
 
+## 🔐 Kullanıcı Bilgilerinin Saklanması
 
+- Kullanıcı giriş bilgileri (email, şifre, UID) `FirebaseAuth` ve `SharedPreferences` ile saklanmaktadır.
+- Kullanıcı detayları (`ad`, `soyad`, `doğum yeri`, `şehir`, `doğum tarihi`) `Cloud Firestore` üzerinden tutulur.
+- Kullanıcı puanları ve skorları `Supabase` üzerinde saklanmaktadır.
 
+---
+
+## 🧩 Kullanılan Paketler
+
+- `firebase_auth`
+- `cloud_firestore`
+- `supabase_flutter`
+- `shared_preferences`
+- `provider`
+- `animate_do`
+- `google_fonts`
+- `http`
+
+---
+
+## 🎨 Özgünlük ve Tasarım
+
+- Soft pastel renkler ile kullanıcı dostu bir arayüz
+- Kullanıcıların rahat anlayabileceği basit ve sade bir tasarım
+- Firebase ve Supabase entegrasyonları ile çok kullanıcılı sistem desteği
+- Google ve GitHub ile kolay giriş
+- Kullanıcı verilerini görüntüleme ve düzenleme imkanı
+- Karanlık mod desteği (Tema değiştirme özelliği)
+
+---
+
+## 🏁 Proje Bağlantısı
+
+📍 **GitHub Linki**: [YKS Deneme Takip Uygulaması](https://github.com/tutisnn/Yks_Deneme_takip.git)
+
+---

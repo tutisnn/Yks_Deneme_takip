@@ -33,14 +33,6 @@ class MenuDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.person, color: Colors.black),
-            title: const Text('Giriş Yap'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/girisYap');
-            },
-          ),
-          ListTile(
             leading: const Icon(Icons.calculate, color: Colors.black),
             title: const Text('Deneme Sınavı Hesapla'),
             onTap: () {
