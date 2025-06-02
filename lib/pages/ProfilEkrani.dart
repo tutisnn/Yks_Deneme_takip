@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:animate_do/animate_do.dart';
 import 'ProfilDuzenle.dart';
+import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
 
 class ProfilEkrani extends StatefulWidget {
   const ProfilEkrani({super.key});
@@ -49,7 +50,8 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Profilim")),
+      appBar: CustomAppBar(title: "Profilim"),
+
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(

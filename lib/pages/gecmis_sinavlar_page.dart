@@ -3,7 +3,7 @@ import 'package:pie_chart/pie_chart.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yks_deneme_takip/widgets/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
 const Color lilacLight = Color(0xFFF3E5F5);
 
 class GecmisSinavlar extends StatefulWidget {
@@ -63,12 +63,8 @@ class _GecmisSinavlarState extends State<GecmisSinavlar> {
     return Scaffold(
       backgroundColor: lilacLight,
       drawer: MenuDrawer(),
-      appBar: AppBar(
-        title: const Text("Çözülen Sınavlar"),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
-        elevation: 0,
-      ),
+      appBar: CustomAppBar(title: "Çözülen Sınavlar"),
+
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

@@ -275,15 +275,25 @@ class _LoginPageState extends State<LoginPage> {
                     child: GestureDetector(
                       onTap: () async {
                         try {
-                          await _girisServisi.signInWithGitHub();
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => const AnaSayfa()),
-                          );
+                          final user = await _girisServisi.signInWithGitHub();
+
+                          if (user != null) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => const AnaSayfa()),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("GitHub ile giriş başarısız."),
+                                backgroundColor: Colors.redAccent,
+                              ),
+                            );
+                          }
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("GitHub ile giriş başarısız: $e"),
+                              content: Text("GitHub ile giriş sırasında hata oluştu: $e"),
                               backgroundColor: Colors.redAccent,
                             ),
                           );

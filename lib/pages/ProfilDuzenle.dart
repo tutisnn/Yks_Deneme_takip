@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:animate_do/animate_do.dart';
 import 'homepage.dart';
+import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
 
 class ProfilDuzenle extends StatefulWidget {
   const ProfilDuzenle({super.key});
@@ -150,7 +151,8 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Profil Düzenle")),
+      appBar: CustomAppBar(title: "Profil Düzenle"),
+
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(

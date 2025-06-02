@@ -4,12 +4,16 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:github_oauth/github_oauth.dart';
 
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
+import 'package:flutter/material.dart';
+
 
 
 class GirisServisi {
-  final kullaniciCollection = FirebaseFirestore.instance.collection("kullanicilar");
+  final kullaniciCollection = FirebaseFirestore.instance.collection(
+      "kullanicilar");
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<void> epostaIleKayit({
@@ -25,7 +29,6 @@ class GirisServisi {
       throw e.message ?? "Kayıt başarısız";
     }
   }
-
 
 
   Future<void> epostaIleGiris({
@@ -47,69 +50,36 @@ class GirisServisi {
       }
     }
   }
-  Future<User?> googleIleGiris() async {
 
+  Future<User?> googleIleGiris() async {
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
     final GoogleSignInAuthentication gAuth = await gUser!.authentication;
 
-    final credential = GoogleAuthProvider.credential(accessToken: gAuth.accessToken, idToken: gAuth.idToken);
+    final credential = GoogleAuthProvider.credential(
+        accessToken: gAuth.accessToken, idToken: gAuth.idToken);
 
 
-    final UserCredential userCredential = await _auth.signInWithCredential(credential);
+    final UserCredential userCredential = await _auth.signInWithCredential(
+        credential);
     log(userCredential.user!.email.toString());
     return userCredential.user;
-
   }
-  final githubProvider = GithubAuthProvider();
 
-  Future<void> signInWithGitHub() async {
-    final clientId = 'Ov23lihlSQEBkPiEoOKH';
-    final redirectUri = 'https://yks-deneme-takip.firebaseapp.com/__/auth/handler';
+  Future<User?> signInWithGitHub() async {
+    try {
+      final GithubAuthProvider githubProvider = GithubAuthProvider();
+      final UserCredential userCredential = await _auth.signInWithPopup(githubProvider);
 
-    final url =
-        'https://github.com/login/oauth/authorize?client_id=$clientId&redirect_uri=$redirectUri&scope=read:user%20user:email';
-
-    final result = await FlutterWebAuth2.authenticate(
-      url: url,
-      callbackUrlScheme: "https",
-    );
-
-    final code = Uri.parse(result).queryParameters['code'];
-
-    final response = await http.post(
-      Uri.parse("https://github.com/login/oauth/access_token"),
-      headers: {"Accept": "application/json"},
-      body: {
-        "client_id": clientId,
-        "client_secret": "9475dc4b4471da6c6598eec1796cdafd924a67d8",
-        "code": code!,
-        "redirect_uri": redirectUri,
-      },
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception("GitHub access token request failed with status: ${response.statusCode}");
-    }
-
-    final accessToken = json.decode(response.body)["access_token"];
-    if (accessToken == null) {
-      throw Exception("Failed to obtain GitHub access token.");
-    }
-
-    final githubAuthCredential = GithubAuthProvider.credential(accessToken);
-    final userCredential = await _auth.signInWithCredential(githubAuthCredential);
-
-    if (userCredential.user == null) {
-      throw Exception("GitHub sign-in failed in Firebase.");
+      print("Giriş başarılı: ${userCredential.user?.uid}");
+      return userCredential.user;
+    } catch (e, stackTrace) {
+      print('❌ GitHub sign-in failed: $e');
+      print('📌 StackTrace: $stackTrace');
+      return null;
     }
   }
 
-
-
-  Future<void> signOut() async {
-    await _auth.signOut();
-  }
 
 
 }
