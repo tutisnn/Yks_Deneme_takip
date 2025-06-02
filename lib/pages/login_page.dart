@@ -27,20 +27,50 @@ class _LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            // Arka plan ve görseller
             _buildHeader(),
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   _buildLoginForm(),
                   const SizedBox(height: 30),
                   _buildLoginButton(),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 15),
                   _buildGoogleButton(),
+                  const SizedBox(height: 15),
                   _buildGitHubButton(),
-                  const SizedBox(height: 10),
-                  _buildRegisterButton(),
+                  const SizedBox(height: 30),
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Hesabın yok mu? ",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RegisterPage(),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            "Kayıt ol",
+                            style: TextStyle(
+                              color: Color.fromRGBO(143, 148, 251, 1),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -187,10 +217,7 @@ class _LoginPageState extends State<LoginPage> {
           }
 
           try {
-            await _girisServisi.epostaIleGiris(
-              email: email,
-              sifre: password,
-            );
+            await _girisServisi.epostaIleGiris(email: email, sifre: password);
 
             User? firebaseUser = _auth.currentUser;
             if (firebaseUser != null) {
@@ -199,7 +226,6 @@ class _LoginPageState extends State<LoginPage> {
                 email: firebaseUser.email ?? '',
               );
 
-              // User bilgilerini konsola yazdır (Debug için)
               print("Giriş yapan kullanıcı: ${user.email}, UID: ${user.uid}");
 
               Navigator.pushReplacement(
@@ -277,29 +303,12 @@ class _LoginPageState extends State<LoginPage> {
             );
           }
         },
-        child: _buildButton("GitHub ile Giriş Yap"),
+        child: _buildButton("GitHub ile Giriş Yap", isGitHub: true),
       ),
     );
   }
 
-  Widget _buildRegisterButton() {
-    return FadeInUp(
-      duration: const Duration(milliseconds: 2000),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const RegisterPage(),
-            ),
-          );
-        },
-        child: _buildButton("Kayıt Ol"),
-      ),
-    );
-  }
-
-  Widget _buildButton(String text, {bool isGoogle = false}) {
+  Widget _buildButton(String text, {bool isGoogle = false, bool isGitHub = false}) {
     return Container(
       height: 50,
       margin: const EdgeInsets.symmetric(vertical: 5),
@@ -316,11 +325,10 @@ class _LoginPageState extends State<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (isGoogle)
-            Image.asset(
-              'assets/images/google_logo.png',
-              height: 24,
-            ),
-          if (isGoogle) const SizedBox(width: 10),
+            Image.asset('assets/images/google_logo.png', height: 24),
+          if (isGitHub)
+            Image.asset('assets/images/github.png', height: 24),
+          if (isGoogle || isGitHub) const SizedBox(width: 10),
           Text(
             text,
             style: const TextStyle(
