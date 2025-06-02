@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yks_deneme_takip/widgets/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
+import '../services/supabase_service.dart'; // SupabaseService importu
 
 const Color lilac = Color(0xFF9575CD);
 
@@ -28,37 +28,6 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
     'Kimya': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.biotech},
     'Biyoloji': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.eco},
   };
-
-  Future<void> saveExamToSupabase({
-    required BuildContext context,
-    required String examName,
-    required double toplamNet,
-    required int toplamDogru,
-    required int toplamYanlis,
-    required String userId,
-  }) async {
-    final rootContext = Navigator.of(context, rootNavigator: true).context;
-
-    try {
-      await Supabase.instance.client.from('netler').insert({
-        'user_id': userId,
-        'sinav_adi': examName,
-        'toplam_net': toplamNet,
-        'toplam_dogru': toplamDogru,
-        'toplam_yanlis': toplamYanlis,
-      });
-
-      ScaffoldMessenger.of(rootContext).showSnackBar(
-        const SnackBar(content: Text("Sınav başarıyla kaydedildi.")),
-      );
-    } catch (error) {
-      ScaffoldMessenger.of(rootContext).showSnackBar(
-        SnackBar(content: Text("Supabase kaydetme hatası: $error")),
-      );
-    }
-  }
-
-
 
   double calculateNet(TextEditingController correct, TextEditingController wrong) {
     int correctAnswers = int.tryParse(correct.text) ?? 0;
@@ -101,14 +70,23 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
             ElevatedButton(
               onPressed: () async {
                 Navigator.pop(context);
-                await saveExamToSupabase(
-                  context: context,
-                  examName: examNameController.text,
-                  toplamNet: toplamNet,
-                  toplamDogru: toplamDogru,
-                  toplamYanlis: toplamYanlis,
-                  userId: userId!
-                );
+                try {
+                  await SupabaseService.saveExam(
+                    examName: examNameController.text,
+                    toplamNet: toplamNet,
+                    toplamDogru: toplamDogru,
+                    toplamYanlis: toplamYanlis,
+                    userId: userId!,
+                  );
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Sınav başarıyla kaydedildi.")),
+                  );
+                } catch (error) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Supabase kaydetme hatası: $error")),
+                  );
+                }
               },
               child: Text("Denemeyi Kaydet"),
             ),
@@ -124,8 +102,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
       backgroundColor: lilac.withOpacity(0.05),
       drawer: MenuDrawer(),
       appBar: CustomAppBar(title: "Deneme Sınavı Hesaplama"),
-
-    body: Padding(
+      body: Padding(
         padding: EdgeInsets.all(16.0),
         child: ListView(
           children: [
@@ -238,3 +215,4 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
     );
   }
 }
+

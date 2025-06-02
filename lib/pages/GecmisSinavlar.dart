@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:yks_deneme_takip/widgets/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
+
 const Color lilacLight = Color(0xFFF3E5F5);
 
 class GecmisSinavlar extends StatefulWidget {
@@ -15,6 +16,7 @@ class GecmisSinavlar extends StatefulWidget {
 
 class _GecmisSinavlarState extends State<GecmisSinavlar> {
   List<Map<String, dynamic>> _examList = [];
+  String _selectedFilter = 'Varsayılan';
 
   @override
   void initState() {
@@ -58,28 +60,73 @@ class _GecmisSinavlarState extends State<GecmisSinavlar> {
     }
   }
 
+  void _applyFilter(String filter) {
+    setState(() {
+      _selectedFilter = filter;
+
+      if (filter == 'Net (Azalan)') {
+        _examList.sort((a, b) => b['examNet'].compareTo(a['examNet']));
+      } else if (filter == 'Net (Artan)') {
+        _examList.sort((a, b) => a['examNet'].compareTo(b['examNet']));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: lilacLight,
       drawer: MenuDrawer(),
       appBar: CustomAppBar(title: "Çözülen Sınavlar"),
-
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: _examList.isEmpty
-              ? const Center(child: Text("Henüz sınav eklenmemiş."))
-              : ListView.builder(
-            itemCount: _examList.length,
-            itemBuilder: (context, index) {
-              return _buildExamCard(
-                examName: _examList[index]["examName"],
-                examNet: _examList[index]["examNet"],
-                totalCorrect: _examList[index]["totalCorrect"],
-                totalWrong: _examList[index]["totalWrong"],
-              );
-            },
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  const Text(
+                    "Sıralama: ",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(width: 10),
+                  DropdownButton<String>(
+                    value: _selectedFilter,
+                    items: [
+                      'Varsayılan',
+                      'Net (Azalan)',
+                      'Net (Artan)',
+                    ].map((filter) {
+                      return DropdownMenuItem(
+                        value: filter,
+                        child: Text(filter),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      if (value != null) {
+                        _applyFilter(value);
+                      }
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Expanded(
+                child: _examList.isEmpty
+                    ? const Center(child: Text("Henüz sınav eklenmemiş."))
+                    : ListView.builder(
+                  itemCount: _examList.length,
+                  itemBuilder: (context, index) {
+                    return _buildExamCard(
+                      examName: _examList[index]["examName"],
+                      examNet: _examList[index]["examNet"],
+                      totalCorrect: _examList[index]["totalCorrect"],
+                      totalWrong: _examList[index]["totalWrong"],
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),
