@@ -108,6 +108,14 @@ class MenuDrawer extends StatelessWidget {
                     color: isDarkMode ? Colors.white : Colors.black,
                   ),
                 ),
+                _buildDivider(),
+                _buildMenuItem(
+                  context,
+                  icon: Icons.history,
+                  color: Colors.black,
+                  title: 'dnem',
+                  routeName: '/bos',
+                ),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),

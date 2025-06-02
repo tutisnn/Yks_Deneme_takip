@@ -5,7 +5,7 @@ import 'package:yks_deneme_takip/widgets/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
 
 const Color lilac = Color(0xFF9575CD);
 
@@ -123,11 +123,9 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
     return Scaffold(
       backgroundColor: lilac.withOpacity(0.05),
       drawer: MenuDrawer(),
-      appBar: AppBar(
-        title: Text("Deneme Sınavı Hesaplama", style: GoogleFonts.poppins()),
-        backgroundColor: Color.fromRGBO(242, 242, 242, 1),
-      ),
-      body: Padding(
+      appBar: CustomAppBar(title: "Deneme Sınavı Hesaplama"),
+
+    body: Padding(
         padding: EdgeInsets.all(16.0),
         child: ListView(
           children: [

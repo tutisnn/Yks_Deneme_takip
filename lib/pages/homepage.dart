@@ -3,6 +3,7 @@ import 'dart:async';
 import 'homepage.dart';
 import  'package:yks_deneme_takip/widgets/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
 
 const Color primaryLilac = Color(0xFFD1C4E9);
 const Color accentLilac = Color(0xFF9575CD);
@@ -59,10 +60,10 @@ class _AnaSayfaState extends State<AnaSayfa> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: MenuDrawer(),
-      appBar: AppBar(
-        title: Text('Anasayfa'),
-        backgroundColor: Color.fromRGBO(242, 242, 242, 1),
-      ),
+       appBar: CustomAppBar(
+      title: 'Anasayfa',
+
+    ),
       backgroundColor: Color.fromRGBO(242, 242, 242, 1),
       body: SafeArea(
         child: Padding(

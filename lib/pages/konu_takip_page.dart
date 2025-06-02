@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yks_deneme_takip/widgets/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
 const Color lilacBackground = Color(0xFFF3E5F5);
 const Color lilacAccent = Color(0xFFB39DDB);
 const Color lilacDeep = Color(0xFF9575CD);
@@ -73,12 +73,8 @@ class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
       length: 3,
       child: Scaffold(
         backgroundColor: Color.fromRGBO(242, 242, 242, 1),
-        appBar: AppBar(
-          title: Text(
-            "Konu Takibi",
-            style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: Color.fromRGBO(242, 242, 242, 1),
+        appBar: CustomAppBar(
+          title: "Konu Takibi",
           bottom: TabBar(
             controller: _tabController,
             labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),
@@ -90,6 +86,7 @@ class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
             ],
           ),
         ),
+
         drawer: MenuDrawer(),
         body: TabBarView(
           controller: _tabController,
