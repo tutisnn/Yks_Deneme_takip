@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:yks_deneme_takip/logo_saglayici.dart';
+import 'package:yks_deneme_takip/theme_provider.dart'; // ThemeProvider import et
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({super.key});
@@ -9,20 +10,29 @@ class MenuDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final User? currentUser = FirebaseAuth.instance.currentUser;
+    final isDarkMode = Provider.of<ThemeProvider>(context).isDarkMode;
 
     return ChangeNotifierProvider(
       create: (context) => LogoSaglayici(),
       child: Consumer<LogoSaglayici>(
         builder: (context, logoSaglayici, _) {
           return Drawer(
-            backgroundColor: const Color.fromRGBO(242, 242, 242, 1),
+            backgroundColor: isDarkMode ? Colors.grey[900] : const Color.fromRGBO(242, 242, 242, 1),
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
                 UserAccountsDrawerHeader(
-                  decoration: const BoxDecoration(color: Colors.deepPurple),
-                  accountName: Text(currentUser?.displayName ?? 'kullanıcı adı'),
-                  accountEmail: Text(currentUser?.email ?? 'kullanici@example.com'),
+                  decoration: BoxDecoration(
+                    color: isDarkMode ? Colors.grey[800] : Colors.deepPurple,
+                  ),
+                  accountName: Text(
+                    currentUser?.displayName ?? 'kullanıcı adı',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  accountEmail: Text(
+                    currentUser?.email ?? 'kullanici@example.com',
+                    style: TextStyle(color: Colors.white70),
+                  ),
                   currentAccountPicture: logoSaglayici.yukleniyor
                       ? const CircularProgressIndicator(color: Colors.white)
                       : (logoSaglayici.imageURL != null
@@ -38,7 +48,7 @@ class MenuDrawer extends StatelessWidget {
                 _buildMenuItem(
                   context,
                   icon: Icons.home,
-                  color: Colors.black,
+                  color: isDarkMode ? Colors.white : Colors.black,
                   title: "Home",
                   routeName: '/Anasayfa',
                 ),
@@ -46,7 +56,7 @@ class MenuDrawer extends StatelessWidget {
                 _buildMenuItem(
                   context,
                   icon: Icons.person,
-                  color: Colors.black,
+                  color: isDarkMode ? Colors.white : Colors.black,
                   title: "Giriş Yap",
                   routeName: '/girisYap',
                 ),
@@ -54,7 +64,7 @@ class MenuDrawer extends StatelessWidget {
                 _buildMenuItem(
                   context,
                   icon: Icons.calculate,
-                  color: Colors.black,
+                  color: isDarkMode ? Colors.white : Colors.black,
                   title: "Deneme Sınavı Hesapla",
                   routeName: '/denemehesapla',
                 ),
@@ -62,7 +72,7 @@ class MenuDrawer extends StatelessWidget {
                 _buildMenuItem(
                   context,
                   icon: Icons.track_changes,
-                  color: Colors.black,
+                  color: isDarkMode ? Colors.white : Colors.black,
                   title: "Konu Takip",
                   routeName: '/KonuTakip',
                 ),
@@ -70,7 +80,7 @@ class MenuDrawer extends StatelessWidget {
                 _buildMenuItem(
                   context,
                   icon: Icons.history,
-                  color: Colors.black,
+                  color: isDarkMode ? Colors.white : Colors.black,
                   title: "Geçmiş Sınavlar",
                   routeName: '/gecmisSinavlariGor',
                 ),
@@ -78,18 +88,33 @@ class MenuDrawer extends StatelessWidget {
                 _buildMenuItem(
                   context,
                   icon: Icons.account_circle,
-                  color: Colors.black,
+                  color: isDarkMode ? Colors.white : Colors.black,
                   title: "Profil Sayfası",
                   routeName: '/ProfilSayfasi',
                 ),
                 _buildDivider(),
 
+                SwitchListTile(
+                  title: Text(
+                    'Karanlık Mod',
+                    style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
+                  ),
+                  value: isDarkMode,
+                  onChanged: (value) {
+                    Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+                  },
+                  secondary: Icon(
+                    isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
+                ),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple.shade100,
-                      foregroundColor: Colors.black,
+                      backgroundColor: isDarkMode ? Colors.deepPurple.shade200 : Colors.deepPurple.shade100,
+                      foregroundColor: isDarkMode ? Colors.black : Colors.white,
                     ),
                     onPressed: () {
                       logoSaglayici.fetchRandomImage();
@@ -117,9 +142,9 @@ class MenuDrawer extends StatelessWidget {
       leading: Icon(icon, color: color),
       title: Text(
         title,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: color),
       ),
-      trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+      trailing: Icon(Icons.arrow_forward_ios, size: 16, color: color.withOpacity(0.7)),
       onTap: () {
         Navigator.pop(context);
         Navigator.pushNamed(context, routeName);
@@ -133,7 +158,6 @@ class MenuDrawer extends StatelessWidget {
       height: 0,
       indent: 16,
       endIndent: 16,
-      color: Colors.grey.shade300,
     );
   }
 }
