@@ -1,84 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:yks_deneme_takip/logo_saglayici.dart';
 
-class MenuDrawer extends StatefulWidget {
+class MenuDrawer extends StatelessWidget {
   const MenuDrawer({super.key});
 
   @override
-  State<MenuDrawer> createState() => _MenuDrawerState();
-}
-
-class _MenuDrawerState extends State<MenuDrawer> {
-  String? userName;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUserName();
-  }
-
-  Future<void> _loadUserName() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      userName = prefs.getString('username');
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final User? currentUser = FirebaseAuth.instance.currentUser;
+
     return ChangeNotifierProvider(
       create: (context) => LogoSaglayici(),
-      child: Builder(
-        builder: (context) {
-          final logoSaglayici = Provider.of<LogoSaglayici>(context);
-
+      child: Consumer<LogoSaglayici>(
+        builder: (context, logoSaglayici, _) {
           return Drawer(
             backgroundColor: const Color.fromRGBO(242, 242, 242, 1),
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                DrawerHeader(
-                  padding: EdgeInsets.zero,
-                  margin: EdgeInsets.zero,
-                  decoration: const BoxDecoration(color: Colors.white),
-                  child: logoSaglayici.yukleniyor
-                      ? const Center(child: CircularProgressIndicator())
-                      : logoSaglayici.imageURL == null
-                      ? const Center(
-                    child: Text(
-                      "Aşağıdaki butona basınız, apiden foto gelecek",
-                      style: TextStyle(fontSize: 14),
-                      textAlign: TextAlign.center,
-                    ),
+                UserAccountsDrawerHeader(
+                  decoration: const BoxDecoration(color: Colors.deepPurple),
+                  accountName: Text(currentUser?.displayName ?? 'kullanıcı adı'),
+                  accountEmail: Text(currentUser?.email ?? 'kullanici@example.com'),
+                  currentAccountPicture: logoSaglayici.yukleniyor
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : (logoSaglayici.imageURL != null
+                      ? CircleAvatar(
+                    backgroundImage: NetworkImage(logoSaglayici.imageURL!),
                   )
-                      : ClipRRect(
-                    borderRadius: BorderRadius.circular(0),
-                    child: Image.network(
-                      logoSaglayici.imageURL!,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: double.infinity,
-                    ),
-                  ),
+                      : const CircleAvatar(
+                    child: Icon(Icons.person, size: 40, color: Colors.white),
+                    backgroundColor: Colors.deepPurple,
+                  )),
                 ),
-
-                // Loginden aldıgımız kullanici adi
-                if (userName != null && userName!.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 8,
-                    ),
-                    child: Text(
-                      "Merhaba, $userName ",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
 
                 _buildMenuItem(
                   context,
@@ -122,12 +77,12 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 _buildDivider(),
                 _buildMenuItem(
                   context,
-                  icon: Icons.history,
+                  icon: Icons.account_circle,
                   color: Colors.black,
-                  title: 'Profil Sayfası',
+                  title: "Profil Sayfası",
                   routeName: '/ProfilSayfasi',
                 ),
-
+                _buildDivider(),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -151,7 +106,6 @@ class _MenuDrawerState extends State<MenuDrawer> {
     );
   }
 
-  //Her menu itemi için build widget
   Widget _buildMenuItem(
       BuildContext context, {
         required IconData icon,
@@ -173,7 +127,6 @@ class _MenuDrawerState extends State<MenuDrawer> {
     );
   }
 
-  //divider icin widget
   Widget _buildDivider() {
     return Divider(
       thickness: 1,
