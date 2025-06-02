@@ -10,7 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'pages/ProfilEkrani.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'pages/ProfilDuzenle.dart';
-import 'themes.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
