@@ -74,8 +74,8 @@ class GirisServisi {
       print("Giriş başarılı: ${userCredential.user?.uid}");
       return userCredential.user;
     } catch (e, stackTrace) {
-      print('❌ GitHub sign-in failed: $e');
-      print('📌 StackTrace: $stackTrace');
+      print('GitHub sign-in failed: $e');
+      print('StackTrace: $stackTrace');
       return null;
     }
   }

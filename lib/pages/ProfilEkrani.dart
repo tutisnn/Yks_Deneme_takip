@@ -1,11 +1,11 @@
-// ProfilEkrani.dart
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:animate_do/animate_do.dart';
+import '../widgets/drawer.dart'; // DrawerMenu importu
+import 'BasePage.dart';
 import 'ProfilDuzenle.dart';
-import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
+import 'package:yks_deneme_takip/models/User.dart'; // UserModel import!
 
 class ProfilEkrani extends StatefulWidget {
   const ProfilEkrani({super.key});
@@ -15,13 +15,7 @@ class ProfilEkrani extends StatefulWidget {
 }
 
 class _ProfilEkraniState extends State<ProfilEkrani> {
-  String? name;
-  String? surname;
-  String? email;
-  String? birthPlace;
-  String? city;
-  String? birthDateRaw;
-
+  UserModel? currentUser;
   bool isLoading = true;
 
   @override
@@ -29,31 +23,32 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
     super.initState();
     _loadUserData();
   }
+
   Future<void> _loadUserData() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
     final doc = await FirebaseFirestore.instance.collection('kullanicilar').doc(user.uid).get();
-    final data = doc.data();
-
-    setState(() {
-      name = data?['ad'] ?? "";
-      surname = data?['soyad'] ?? "";
-      email = data?['email'] ?? "";
-      birthPlace = data?['dogum_yeri'] ?? "";
-      city = data?['yasadigi_il'] ?? "";
-      birthDateRaw = data?['dogum_tarihi'] ?? "";
-      isLoading = false;
-    });
+    if (doc.exists) {
+      setState(() {
+        currentUser = UserModel.fromMap(doc.data()!);
+        isLoading = false;
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(title: "Profilim"),
-
-      body: isLoading
+    return BasePage(
+      title: "Profilim",
+      content: isLoading
           ? const Center(child: CircularProgressIndicator())
+          : currentUser == null
+          ? const Center(child: Text("Kullanıcı verisi bulunamadı."))
           : SingleChildScrollView(
         padding: const EdgeInsets.all(30),
         child: FadeInUp(
@@ -77,12 +72,12 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildInfoTile("Ad", name),
-                    _buildInfoTile("Soyad", surname),
-                    _buildInfoTile("E-posta", email),
-                    _buildInfoTile("Doğum Tarihi", birthDateRaw),
-                    _buildInfoTile("Doğum Yeri", birthPlace),
-                    _buildInfoTile("Yaşadığı İl", city),
+                    _buildInfoTile("Ad", currentUser?.name),
+                    _buildInfoTile("Soyad", currentUser?.surname),
+                    _buildInfoTile("E-posta", currentUser?.email),
+                    _buildInfoTile("Doğum Tarihi", _formatDate(currentUser?.birthDate)),
+                    _buildInfoTile("Doğum Yeri", currentUser?.birthPlace),
+                    _buildInfoTile("Yaşadığı İl", currentUser?.city),
                   ],
                 ),
               ),
@@ -127,5 +122,10 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
         ],
       ),
     );
+  }
+
+  String _formatDate(DateTime? date) {
+    if (date == null) return "-";
+    return "${date.day}.${date.month}.${date.year}";
   }
 }

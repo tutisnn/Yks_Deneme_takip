@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:animate_do/animate_do.dart';
 import 'homepage.dart';
 import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
+import 'package:yks_deneme_takip/models/User.dart';
 
 class ProfilDuzenle extends StatefulWidget {
   const ProfilDuzenle({super.key});
@@ -53,17 +54,13 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
   Future<void> _loadUserData(String uid) async {
     final doc = await FirebaseFirestore.instance.collection('kullanicilar').doc(uid).get();
     if (doc.exists) {
-      final data = doc.data();
-      if (data != null) {
-        nameController.text = data['ad'] ?? '';
-        surnameController.text = data['soyad'] ?? '';
-        selectedBirthPlace = data['dogum_yeri'];
-        selectedCity = data['yasadigi_il'];
-        final String? dateStr = data['dogum_tarihi'];
-        if (dateStr != null) {
-          selectedDate = DateTime.tryParse(dateStr);
-        }
-      }
+      final userData = UserModel.fromMap(doc.data()!);
+
+      nameController.text = userData.name ?? '';
+      surnameController.text = userData.surname ?? '';
+      selectedBirthPlace = userData.birthPlace;
+      selectedCity = userData.city;
+      selectedDate = userData.birthDate;
     }
     setState(() {
       isLoading = false;
@@ -82,37 +79,29 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
     }
   }
 
-  // Firebase ve Supabase'e kaydet
   Future<void> kullaniciBilgileriniKaydet() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
-    final ad = nameController.text.trim();
-    final soyad = surnameController.text.trim();
-    final email = emailController.text.trim();
-    final uid = user.uid;
-    final dogumTarihi = selectedDate;
-    final dogumYeri = selectedBirthPlace;
-    final yasadigiIl = selectedCity;
+    UserModel updatedUser = UserModel(
+      uid: user.uid,
+      email: user.email ?? '',
+      name: nameController.text.trim(),
+      surname: surnameController.text.trim(),
+      birthPlace: selectedBirthPlace,
+      city: selectedCity,
+      birthDate: selectedDate,
+    );
 
-    if ([ad, soyad, email, uid, dogumYeri, yasadigiIl].contains(null) || dogumTarihi == null) {
+    if ([updatedUser.name, updatedUser.surname, updatedUser.birthPlace, updatedUser.city].contains(null) || updatedUser.birthDate == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Lütfen tüm alanları doldurun")),
       );
       return;
     }
 
-    // Firebase kaydet
     try {
-      await FirebaseFirestore.instance.collection('kullanicilar').doc(uid).set({
-        'ad': ad,
-        'soyad': soyad,
-        'email': email,
-        'uid': uid,
-        'dogum_tarihi': dogumTarihi!.toIso8601String(),
-        'dogum_yeri': dogumYeri,
-        'yasadigi_il': yasadigiIl,
-      });
+      await FirebaseFirestore.instance.collection('kullanicilar').doc(updatedUser.uid).set(updatedUser.toJson());
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Firebase kaydetme hatası: $e")),
@@ -120,17 +109,8 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
       return;
     }
 
-    // Supabase kaydet
     try {
-      await Supabase.instance.client.from('kullanicilar').upsert({
-        'uid': uid,
-        'ad': ad,
-        'soyad': soyad,
-        'email': email,
-        'dogum_tarihi': dogumTarihi!.toIso8601String(),
-        'dogum_yeri': dogumYeri,
-        'yasadigi_il': yasadigiIl,
-      });
+      await Supabase.instance.client.from('kullanicilar').upsert(updatedUser.toJson());
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Supabase kaydetme hatası: $e")),
@@ -152,7 +132,6 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: "Profil Düzenle"),
-
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
