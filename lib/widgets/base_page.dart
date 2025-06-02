@@ -18,7 +18,7 @@ class BasePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(title)),
-      drawer: const MenuDrawer(),
+      drawer: MenuDrawer(),
       body: content,
     );
   }

@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:animate_do/animate_do.dart';
 import '../widgets/drawer.dart'; // DrawerMenu importu
-import 'BasePage.dart';
+import 'package:yks_deneme_takip/widgets/base_page.dart';
 import 'ProfilDuzenle.dart';
 import 'package:yks_deneme_takip/models/User.dart'; // UserModel import!
 

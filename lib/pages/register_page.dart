@@ -4,6 +4,7 @@ import 'package:yks_deneme_takip/services/giris_servisi.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:yks_deneme_takip/models/User.dart'; // UserModel import
+import 'package:yks_deneme_takip/pages/homepage.dart'; // Anasayfa importunu unutma!
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -201,6 +202,16 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
+
+                  const SizedBox(height: 10),
+
+                  // Google ile giriş butonu
+                  _buildGoogleButton(),
+
+                  const SizedBox(height: 10),
+
+                  // GitHub ile giriş butonu
+                  _buildGitHubButton(),
                 ],
               ),
             )
@@ -222,6 +233,108 @@ class _RegisterPageState extends State<RegisterPage> {
           hintText: hint,
           hintStyle: const TextStyle(color: Colors.grey),
         ),
+      ),
+    );
+  }
+
+  Widget _buildGoogleButton() {
+    return FadeInUp(
+      duration: const Duration(milliseconds: 2000),
+      child: GestureDetector(
+        onTap: () async {
+          try {
+            final user = await _girisServisi.googleIleGiris();
+            if (user != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Google ile kayıt başarılı!")),
+              );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const AnaSayfa()),
+              );
+            }
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Google ile kayıt başarısız: $e"),
+              ),
+            );
+          }
+        },
+        child: _buildButton("Google ile Devam Et", isGoogle: true),
+      ),
+    );
+  }
+
+  Widget _buildGitHubButton() {
+    return FadeInUp(
+      duration: const Duration(milliseconds: 2000),
+      child: GestureDetector(
+        onTap: () async {
+          try {
+            final user = await _girisServisi.signInWithGitHub();
+            if (user != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("GitHub ile giriş başarılı!")),
+              );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const AnaSayfa()),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("GitHub ile giriş başarısız!")),
+              );
+            }
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("GitHub ile giriş sırasında hata oluştu: $e"),
+              ),
+            );
+          }
+        },
+        child: _buildButton("GitHub ile Devam Et"),
+      ),
+    );
+  }
+
+  Widget _buildButton(String text, {bool isGoogle = false}) {
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        gradient: isGoogle
+            ? const LinearGradient(
+          colors: [
+            Color(0xFF4285F4),
+            Color(0xFF357AE8),
+          ],
+        )
+            : const LinearGradient(
+          colors: [
+            Color.fromRGBO(143, 148, 251, 1),
+            Color.fromRGBO(143, 148, 251, .6),
+          ],
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (isGoogle)
+            Image.asset(
+              'assets/images/google_logo.png',
+              height: 24,
+            ),
+          if (isGoogle) const SizedBox(width: 10),
+          Text(
+            text,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
   }
