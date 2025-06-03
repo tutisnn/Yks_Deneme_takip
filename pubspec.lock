@@ -209,14 +209,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
-  day_night_switcher:
-    dependency: "direct main"
-    description:
-      name: day_night_switcher
-      sha256: "37354e55fdc0b49d1bea863121cc5a99ab952669f4f349cdd7fe78de2e62a72a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.0+1"
   desktop_webview_window:
     dependency: transitive
     description:
@@ -849,7 +841,7 @@ packages:
     source: hosted
     version: "1.5.2"
   provider:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: provider
       sha256: "4abbd070a04e9ddc287673bf5a030c7ca8b685ff70218720abab8b092f53dd84"
