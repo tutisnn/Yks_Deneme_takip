@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:yks_deneme_takip/widgets/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
+import 'package:yks_deneme_takip/widgets/base_page.dart'; // 🌙 BasePage Import!
+
 const Color lilacLight = Color(0xFFF3E5F5);
 
 class GecmisSinavlar extends StatefulWidget {
@@ -60,30 +60,25 @@ class _GecmisSinavlarState extends State<GecmisSinavlar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: lilacLight,
-      drawer: MenuDrawer(),
-      appBar: CustomAppBar(title: "Çözülen Sınavlar"),
-
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: _examList.isEmpty
-              ? const Center(child: Text("Henüz sınav eklenmemiş."))
-              : ListView.builder(
-            itemCount: _examList.length,
-            itemBuilder: (context, index) {
-              return _buildExamCard(
-                examName: _examList[index]["examName"],
-                examNet: _examList[index]["examNet"],
-                totalCorrect: _examList[index]["totalCorrect"],
-                totalWrong: _examList[index]["totalWrong"],
-              );
-            },
-          ),
+    return BasePage(
+      title: "Çözülen Sınavlar",
+      content: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: _examList.isEmpty
+            ? const Center(child: Text("Henüz sınav eklenmemiş."))
+            : ListView.builder(
+          itemCount: _examList.length,
+          itemBuilder: (context, index) {
+            return _buildExamCard(
+              examName: _examList[index]["examName"],
+              examNet: _examList[index]["examNet"],
+              totalCorrect: _examList[index]["totalCorrect"],
+              totalWrong: _examList[index]["totalWrong"],
+            );
+          },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      bottom: FloatingActionButton(
         foregroundColor: Colors.white,
         backgroundColor: Colors.blue.shade300,
         onPressed: () => Navigator.pushNamed(context, '/denemehesapla'),

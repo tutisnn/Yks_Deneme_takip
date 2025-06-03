@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'homepage.dart';
-import  'package:yks_deneme_takip/widgets/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
+import 'package:yks_deneme_takip/widgets/base_page.dart'; // BasePage import
 
 const Color primaryLilac = Color(0xFFD1C4E9);
 const Color accentLilac = Color(0xFF9575CD);
@@ -16,25 +14,15 @@ class AnaSayfa extends StatefulWidget {
 }
 
 class _AnaSayfaState extends State<AnaSayfa> {
-
-  // Yks Sınavı için kalan süreyi hesaplamak için oluşturulan değişenler ve fonksiyonlar
   late DateTime examDate;
   late Duration remainingTime;
   late Timer _timer;
 
-  // Sayfa ilk açıldığında yapılacak işlemler
   @override
   void initState() {
     super.initState();
-
-    // Sınav tarihini belirleme
-
-
     examDate = DateTime(2025, 6, 15);
-    //Kalan sürşyi hesaplama
     updateRemainingTime();
-
-    //her saniye bu kalan süreyi güncellleme
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         updateRemainingTime();
@@ -42,37 +30,29 @@ class _AnaSayfaState extends State<AnaSayfa> {
     });
   }
 
-  // sayfa kapanınca bu timer işlemini iptal etme. boşa kaynak tüketmesin diye yapılir
   @override
   void dispose() {
     _timer.cancel();
     super.dispose();
   }
-// Kalan süre hesaplama Fonksiyonu
+
   void updateRemainingTime() {
     final now = DateTime.now();
     remainingTime = examDate.difference(now);
   }
 
-
-  //ana widget
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: MenuDrawer(),
-       appBar: CustomAppBar(
-      title: 'Anasayfa',
-
-    ),
-      backgroundColor: Color.fromRGBO(242, 242, 242, 1),
-      body: SafeArea(
+    return BasePage(
+      title: "Anasayfa",
+      content: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildHeader(), // <-- Başlık kısmı çıkarıldı
+                buildHeader(),
                 SizedBox(height: 24),
                 Container(
                   height: 280,
@@ -121,7 +101,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                   ),
                 ),
                 SizedBox(height: 16),
-                buildCountdown(), // <-- Geri sayım kısmı çıkarıldı
+                buildCountdown(),
               ],
             ),
           ),
@@ -130,7 +110,6 @@ class _AnaSayfaState extends State<AnaSayfa> {
     );
   }
 
-// Başlık widget'i
   Widget buildHeader() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,7 +134,6 @@ class _AnaSayfaState extends State<AnaSayfa> {
     );
   }
 
-// Geri sayım widget'i
   Widget buildCountdown() {
     String daysRemaining = remainingTime.inDays.toString();
     String hoursRemaining = (remainingTime.inHours % 24).toString().padLeft(2, '0');
@@ -207,7 +185,6 @@ class _AnaSayfaState extends State<AnaSayfa> {
     );
   }
 
-//Her menu itemi için widget
   Widget buildMenuItem(String title, String subtitle, IconData icon, String routeName) {
     return InkWell(
       onTap: () {
@@ -216,7 +193,6 @@ class _AnaSayfaState extends State<AnaSayfa> {
       },
       child: Container(
         width: double.infinity,
-
         decoration: BoxDecoration(
           color: primaryLilac,
           borderRadius: BorderRadius.circular(32),
@@ -231,7 +207,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
         padding: EdgeInsets.all(12),
         child: Center(
           child: Column(
-            mainAxisSize: MainAxisSize.min, // içeriğe göre yükseklik
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, size: 32, color: Colors.deepPurple),
@@ -262,6 +238,4 @@ class _AnaSayfaState extends State<AnaSayfa> {
       ),
     );
   }
-
 }
-

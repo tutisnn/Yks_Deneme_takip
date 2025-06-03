@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:yks_deneme_takip/services/giris_servisi.dart'; // GirisServisi import
+import 'package:provider/provider.dart' as flutter_provider;
+import 'package:yks_deneme_takip/services/giris_servisi.dart';
+import 'package:yks_deneme_takip/providers/theme_provider.dart';
 
 class MenuDrawer extends StatelessWidget {
   MenuDrawer({super.key});
@@ -10,6 +12,7 @@ class MenuDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final User? currentUser = FirebaseAuth.instance.currentUser;
+    final themeProvider = flutter_provider.Provider.of<ThemeProvider>(context);
 
     return Drawer(
       child: ListView(
@@ -66,12 +69,19 @@ class MenuDrawer extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
+            leading: const Icon(Icons.brightness_6, color: Colors.black),
+            title: Text(themeProvider.isDarkMode ? 'Açık Tema' : 'Koyu Tema'),
+            onTap: () {
+              themeProvider.toggleTheme();
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.exit_to_app, color: Colors.black),
             title: const Text('Çıkış Yap'),
             onTap: () async {
               Navigator.pop(context);
               await _girisServisi.signOut();
-              Navigator.pushReplacementNamed(context, '/girisYap'); // Çıkış sonrası login sayfasına yönlendir
+              Navigator.pushReplacementNamed(context, '/girisYap');
             },
           ),
         ],

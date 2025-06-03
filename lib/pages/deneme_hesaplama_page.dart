@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:yks_deneme_takip/widgets/drawer.dart';
+import 'package:yks_deneme_takip/widgets/base_page.dart'; // BasePage ekledik
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
 
 const Color lilac = Color(0xFF9575CD);
 
@@ -58,8 +57,6 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
     }
   }
 
-
-
   double calculateNet(TextEditingController correct, TextEditingController wrong) {
     int correctAnswers = int.tryParse(correct.text) ?? 0;
     int wrongAnswers = int.tryParse(wrong.text) ?? 0;
@@ -102,12 +99,12 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
               onPressed: () async {
                 Navigator.pop(context);
                 await saveExamToSupabase(
-                  context: context,
-                  examName: examNameController.text,
-                  toplamNet: toplamNet,
-                  toplamDogru: toplamDogru,
-                  toplamYanlis: toplamYanlis,
-                  userId: userId!
+                    context: context,
+                    examName: examNameController.text,
+                    toplamNet: toplamNet,
+                    toplamDogru: toplamDogru,
+                    toplamYanlis: toplamYanlis,
+                    userId: userId!
                 );
               },
               child: Text("Denemeyi Kaydet"),
@@ -120,12 +117,9 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: lilac.withOpacity(0.05),
-      drawer: MenuDrawer(),
-      appBar: CustomAppBar(title: "Deneme Sınavı Hesaplama"),
-
-    body: Padding(
+    return BasePage(
+      title: "Deneme Sınavı Hesaplama",
+      content: Padding(
         padding: EdgeInsets.all(16.0),
         child: ListView(
           children: [
@@ -163,10 +157,11 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
               entry.value['correct']!,
               entry.value['wrong']!,
             )),
+            SizedBox(height: 80),
           ],
         ),
       ),
-      bottomNavigationBar: SizedBox(
+      bottom: SizedBox(
         width: double.infinity,
         height: 60,
         child: ElevatedButton(

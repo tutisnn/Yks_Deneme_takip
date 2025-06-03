@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yks_deneme_takip/widgets/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
-const Color lilacBackground = Color(0xFFF3E5F5);
-const Color lilacAccent = Color(0xFFB39DDB);
-const Color lilacDeep = Color(0xFF9575CD);
+import 'package:yks_deneme_takip/widgets/base_page.dart'; // BasePage import
 
 class Konutakip extends StatefulWidget {
   const Konutakip({super.key});
@@ -16,7 +12,6 @@ class Konutakip extends StatefulWidget {
 class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
   late TabController _tabController;
 
-  //Her alana ait dersler ve bu derslerin konusu konular
   Map<String, List<String>> tytTopics = {
     "Matematik": ["Temel Kavramlar", "Sayılar", "Rasyonel Sayılar"],
     "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Paragraf"],
@@ -45,8 +40,6 @@ class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
     "Matematik": ["Türev", "İntegral"],
   };
 
-  //// Biten dersleri işaretleyip takip etmek için oluşturulan yapı
-
   Map<String, Set<String>> completedTopics = {};
 
   @override
@@ -66,44 +59,47 @@ class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
     });
   }
 
-  //Ana widget
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        backgroundColor: Color.fromRGBO(242, 242, 242, 1),
-        appBar: CustomAppBar(
-          title: "Konu Takibi",
-          bottom: TabBar(
-            controller: _tabController,
-            labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-            indicatorColor: Colors.white,
-            tabs: const [
-              Tab(text: "TYT"),
-              Tab(text: "AYT"),
-              Tab(text: "EA"),
-            ],
-          ),
-        ),
+    final theme = Theme.of(context);
 
-        drawer: MenuDrawer(),
-        body: TabBarView(
-          controller: _tabController,
-          children: [
-            buildChecklist(tytTopics),
-            buildChecklist(aytTopics),
-            buildChecklist(eaTopics),
-          ],
-        ),
+    return BasePage(
+      title: "Konu Takibi",
+      content: Column(
+        children: [
+          Material(
+            color: theme.appBarTheme.backgroundColor, // Tema renginden alır!
+            child: TabBar(
+              controller: _tabController,
+              labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+              indicatorColor: theme.colorScheme.secondary,
+              tabs: const [
+                Tab(text: "TYT"),
+                Tab(text: "AYT"),
+                Tab(text: "EA"),
+              ],
+            ),
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                buildChecklist(context, tytTopics),
+                buildChecklist(context, aytTopics),
+                buildChecklist(context, eaTopics),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  //Dersleri ve konuları içeren checklist widgeti
-  Widget buildChecklist(Map<String, List<String>> topics) {
+  Widget buildChecklist(BuildContext context, Map<String, List<String>> topics) {
+    final theme = Theme.of(context);
+
     return Container(
-      color: lilacBackground,
+      color: theme.scaffoldBackgroundColor, // Tema rengi
       child: ListView(
         padding: EdgeInsets.all(12),
         children: topics.entries.map((entry) {
@@ -111,11 +107,11 @@ class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
           return Container(
             margin: EdgeInsets.only(bottom: 16),
             decoration: BoxDecoration(
-              color: lilacAccent.withOpacity(0.3),
+              color: theme.cardColor, // Tema uyumlu kart rengi
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Color.fromRGBO(242, 242, 242, 1),
+                  color: theme.shadowColor.withOpacity(0.2),
                   blurRadius: 6,
                   offset: Offset(0, 4),
                 ),
@@ -129,7 +125,7 @@ class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
-                  color: Colors.black,
+                  color: theme.textTheme.bodyLarge?.color,
                 ),
               ),
               children: entry.value.map((topic) {
@@ -138,17 +134,17 @@ class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: theme.canvasColor,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: lilacAccent.withOpacity(0.5)),
+                      border: Border.all(color: theme.dividerColor),
                     ),
                     child: CheckboxListTile(
-                      activeColor: lilacDeep,
+                      activeColor: theme.colorScheme.secondary,
                       title: Text(
                         topic,
                         style: GoogleFonts.quicksand(
                           decoration: isChecked ? TextDecoration.lineThrough : null,
-                          color: isChecked ? Colors.grey : Colors.black,
+                          color: isChecked ? Colors.grey : theme.textTheme.bodyLarge?.color,
                         ),
                       ),
                       value: isChecked,

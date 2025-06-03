@@ -7,4 +7,6 @@ class ThemeProvider extends ChangeNotifier {
     isDarkMode = !isDarkMode;
     notifyListeners();
   }
+
+  ThemeMode get currentTheme => isDarkMode ? ThemeMode.dark : ThemeMode.light;
 }
