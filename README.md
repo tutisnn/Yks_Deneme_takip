@@ -1,102 +1,229 @@
-# 📚 YKS Deneme Takip Uygulaması
+#  YKS Deneme Takip Uygulaması
 
-Bu Flutter projesi, YKS’ye hazırlanan öğrencilerin deneme sınavlarını takip etmelerini sağlamak amacıyla geliştirilmiştir. Kullanıcılar deneme sonuçlarını sisteme girerek başarılarını takip edebilir, grafiklerle gelişimlerini gözlemleyebilir ve motivasyonlarını koruyabilirler.
+Bu Flutter projesi, YKS’ye hazırlanan öğrencilerin deneme sınavlarını takip etmelerini sağlamak amacıyla geliştirilmiştir. Kullanıcılar deneme sonuçlarını sisteme girerek başarılarını takip edebilir, grafiklerle gelişimlerini gözlemleyebilir ve motivasyonlarını koruyabilirler.  
 
 ---
 
-## 📦 Proje Dosya Yapısı
+##  Proje Şeması
 
+```
 lib/
 ├── main.dart
+├── firebase_options.dart
 ├── pages/
-│ ├── login_page.dart
-│ ├── register_page.dart
-│ ├── home_page.dart
-│ ├── deneme_hesaplama_page.dart
-│ ├── gecmis_sinavlar_page.dart
-│ ├── konu_takip_page.dart
-│ ├── ProfilEkrani.dart
-│ ├── ProfilDuzenle.dart
-├── widgets/
-│ ├── drawer.dart
-│ ├── custom_app_bar.dart
-│ └── base_page.dart
+│ ├── Anasayfa.dart
+│ ├── DenemeHesaplama.dart
+│ ├── GecmisSinavlar.dart
+│ ├── GirisSayfasi.dart
+│ ├── KayitSayfasi.dart
+│ ├── KonuTakip.dart
+│ ├── ProfilDüzenle.dart
+│ └── ProfilEkrani.dart
 ├── services/
+│ ├── firebase_service.dart
+│ ├── shared_prefs_service.dart
 │ ├── giris_servisi.dart
+│ └── supabase_service.dart
 ├── models/
-│ ├── User.dart
+│ └── User.dart
+├── widgets/
+│ ├── base_page.dart
+│ ├── custom_app_bar.dart
+│ └── drawer.dart
+
 assets/
+├── fonts/
+│ └── BungeeSpice-Regular.ttf
 ├── images/
 │ ├── background.png
 │ ├── clock.png
-│ ├── light-1.png
-│ ├── light-2.png
+│ ├── github.png
 │ ├── google_logo.png
-├── fonts/
-│ ├── BungeeSpice-Regular.ttf
+│ ├── light-1.png
+│ └── light-2.png
+```
 
 ---
 
-## 📃 Sayfaların Görevleri
+## 📄 Proje Sayfaları ve Görevleri
 
-| Sayfa Adı                    | Görevleri                                                                                   |
-|-----------------------------|---------------------------------------------------------------------------------------------|
-| `login_page.dart`            | Kullanıcı giriş işlemleri (email, şifre, Google, GitHub)                                      |
-| `register_page.dart`         | Kullanıcı kayıt işlemleri                                                                    |
-| `home_page.dart`             | Ana sayfa ve sayaç                                                                          |
-| `deneme_hesaplama_page.dart` | Deneme netlerini hesaplama ve kaydetme                                                       |
-| `gecmis_sinavlar_page.dart`  | Önceki denemeleri görüntüleme ve analiz grafiği                                              |
-| `konu_takip_page.dart`       | TYT-AYT konu takip sistemi                                                                  |
-| `ProfilEkrani.dart`          | Kullanıcı bilgilerini görüntüleme (ad, soyad, doğum yeri, şehir, doğum tarihi)               |
-| `ProfilDuzenle.dart`         | Profil bilgilerini düzenleme                                                                 |
-| `drawer.dart`                | Menü ve sayfalar arası geçiş                                                                 |
-| `custom_app_bar.dart`        | Özel AppBar yapısı                                                                          |
+### 🏠 Anasayfa.dart
 
----
+* Uygulamanın ana menüsü ve sayaç yapısını içerir.
+* Kullanıcının kolayca diğer sayfalara erişimini sağlar.
+* Menü butonları ve kullanıcı dostu bir tasarım sunar.
 
-## 👩‍💻 Grup Üyelerinin Katkıları
+### 🔐 GirisSayfasi.dart
 
-| Grup Üyesi           | Katkıları                                                                                                                                                            |
-|----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Fatma Eslem Özsalih** | `login_page.dart`, `home_page.dart`, `ProfilEkrani.dart`, `ProfilDuzenle.dart` ve tasarım geliştirmeleri                                                             |
-| **Tuhana Sinan**      | `drawer.dart`, `deneme_hesaplama_page.dart`, `gecmis_sinavlar_page.dart`, API entegrasyonu,konu_takip_page.dart`,veritabanı bağlantıları ve Firebase entegrasyonları |
+* Kullanıcı giriş işlemlerini yönetir.
+* E-posta/şifre, Google ve GitHub ile giriş seçenekleri sunar.
+* Firebase Authentication kullanılarak kimlik doğrulama işlemleri yapılır.
+* Giriş başarılı olduğunda Anasayfa'ya yönlendirir.
 
----
+### 📝 KayitSayfasi.dart
 
-## 🔐 Kullanıcı Bilgilerinin Saklanması
+* Kullanıcı kayıt işlemlerini gerçekleştirir.
+* E-posta/şifre, Google ve GitHub ile kayıt olma desteği sunar.
+* Kayıt başarılı olduğunda Firebase Authentication ve Firestore'a kullanıcı bilgisi eklenir, ardından Giriş Sayfası'na yönlendirilir.
 
-- Kullanıcı giriş bilgileri (email, şifre, UID) `FirebaseAuth` ve `SharedPreferences` ile saklanmaktadır.
-- Kullanıcı detayları (`ad`, `soyad`, `doğum yeri`, `şehir`, `doğum tarihi`) `Cloud Firestore` üzerinden tutulur.
-- Kullanıcı puanları ve skorları `Supabase` üzerinde saklanmaktadır.
+### ➕ DenemeHesaplama.dart
 
----
+* Kullanıcının girdiği doğru/yanlış sayılarına göre net hesaplama yapar.
+* Hesaplanan sonuçlar Firebase, Supabase ve SharedPreferences'a kaydedilir.
+* Kullanıcının sınav performansını detaylı şekilde analiz eder.
 
-## 🧩 Kullanılan Paketler
+### 📊 GecmisSinavlar.dart
 
-- `firebase_auth`
-- `cloud_firestore`
-- `supabase_flutter`
-- `shared_preferences`
-- `provider`
-- `animate_do`
-- `google_fonts`
-- `http`
+* Daha önceki sınav sonuçlarını listeler.
+* Listeleme, sıralama (artan/azalan) ve arama özellikleri sunar.
+* Grafiksel sunumlar (pie chart vb.) içerir.
+* Firebase ve Supabase'ten verileri çeker ve dinamik olarak görüntüler.
 
----
+### 📚 KonuTakip.dart
 
-## 🎨 Özgünlük ve Tasarım
+* YKS konularını (TYT/AYT) listeleyen ve işaretleme yapılabilen bir sayfadır.
+* Kullanıcılar, tamamladıkları konuları seçerek ilerlemelerini takip edebilir.
+* Konu takibi Firebase ve SharedPreferences'a kaydedilir.
 
-- Soft pastel renkler ile kullanıcı dostu bir arayüz
-- Kullanıcıların rahat anlayabileceği basit ve sade bir tasarım
-- Firebase ve Supabase entegrasyonları ile çok kullanıcılı sistem desteği
-- Google ve GitHub ile kolay giriş
-- Kullanıcı verilerini görüntüleme ve düzenleme imkanı
-- Karanlık mod desteği (Tema değiştirme özelliği)
+### 👤 ProfilEkrani.dart
+
+* Kullanıcının adı, soyadı, e-posta adresi, doğum yeri, doğum tarihi, yaşadığı şehir bilgilerini görüntüler.
+* Kullanıcının **Profil Düzenle** sayfasına erişmesini sağlar.
+* Firebase, Supabase ve SharedPreferences'tan verileri çeker ve gösterir.
+
+### 🖊️ ProfilDüzenle.dart
+
+* Kullanıcının profil bilgilerini (isim, soyisim, doğum yeri, doğum tarihi, şehir) eklemesini ve güncellemesini sağlar.
+* Güncellenen bilgiler Firebase, Supabase ve SharedPreferences'a kaydedilir.
+* Kullanıcı deneyimini kolaylaştırmak için form alanları ve butonlar içerir.
 
 ---
 
-## 🏁 Proje Bağlantısı
+## 📡 Services (Servis Dosyaları)
 
-📍 **GitHub Linki**: [YKS Deneme Takip Uygulaması](https://github.com/tutisnn/Yks_Deneme_takip.git)
+### firebase\_service.dart
+
+* Firestore ve Storage işlemlerini yönetir.
+* Kullanıcıyı kaydetme, güncelleme işlemlerini sağlar.
+* Kullanıcının **Ad**, **Soyad**, **E-posta**, **Doğum Tarihi**, **Doğum Yeri** ve **Yaşadığı İl**  kullanicilar tablosunda bilgileri saklanır.
+
+### supabase\_service.dart
+
+* Kullanıcının **Ad**, **Soyad**, **E-posta**, **Doğum Tarihi**, **Doğum Yeri** ve **Yaşadığı İl**  gibi profil bilgileri  kullanicilar tablosunda saklanır.
+* Ekstra olarak Kullanıcının deneme net sonucları netler tablosunda saklanır. Listelenir.
+
+### shared\_prefs\_service.dart
+
+* Kullanıcı bilgilerini SharedPreferences ile lokal olarak cihazda saklar.
+
+### giris\_servisi.dart
+
+* Google, GitHub ve e-posta ile giriş ve kayıt işlemlerini yönetir.
+* Firebase Authentication ile entegre çalışır ve kullanıcı kimlik doğrulamasını sağlar.
+
+---
+
+## 🔧 Widgets (Bileşen Dosyaları)
+
+### drawer.dart
+
+* Sayfalar arası geçişi sağlar.
+* Her sayfada kullanılmak üzere ayrı bir widget olarak tasarlanmıştır.
+* Firebase Authentication ile giriş yapan kullanıcının bilgilerini dinamik olarak çeker ve gösterir.
+* Çıkış yap butonu içerir.
+
+### base\_page.dart
+
+* Uygulamanın temel iskelet yapısını sağlar.
+* Sayfalarda ortak bir yapı sunarak tasarım ve kod bütünlüğü sağlar.
+* ProfilEkrani ve diğer sayfalar BasePage üzerinden yüklenir.
+
+### custom\_app\_bar.dart
+
+* Özel tasarlanmış bir AppBar bileşenidir.
+* Her sayfada kullanılarak tutarlı bir üst menü (AppBar) sunar.
+* Başlıklar, renkler ve ikonlar özelleştirilebilir.
+
+---
+
+## 👥 Models (Veri Modelleri)
+
+### User.dart
+
+- Kullanıcı bilgilerini temsil eden veri modelidir.
+- İsim, soyisim, e-posta, doğum yeri, doğum tarihi ve şehir gibi alanları içerir.
+- Firebase, Supabase ve SharedPreferences ile veri alışverişinde kullanılır.
+
+---
+
+## 🚀 main.dart
+
+* Uygulamanın başlangıç noktasıdır.
+* Routing işlemleri (sayfalar arası geçişler) burada tanımlanır.
+* Firebase ve Supabase başlangıç ayarları burada yapılır.
+
+---
+
+## 🧱 Modülerlik Yaklaşımı
+
+Bu projede, **modüler bir yapı** benimsenmiştir.  
+Her özellik ve işlev için ayrı bir dosya ve klasör oluşturularak, **temiz**, **anlaşılır** ve **bakımı kolay** bir yapı hedeflenmiştir.
+
+🔹 **Sayfalar (Pages)** klasörü, kullanıcı arayüzüne ait ekranları içerir.  
+🔹 **Services** klasörü, Firebase, Supabase ve diğer servislerin bağlantı ve işlemlerini yönetir.  
+🔹 **Widgets** klasörü, tekrar kullanılabilir bileşenleri (Drawer, AppBar, vb.) barındırır.  
+🔹 **Models** klasörü, uygulamadaki veri modellerini içerir (örneğin, User modeli).  
+🔹 **Assets** klasörü, görseller ve fontlar gibi statik dosyaları içerir.
+
+---
+
+## 📝 Kayıt İşlemleri Kullanım Senaryosu
+
+- Kullanıcı ilk olarak kayıt olur.
+- Kayıt işlemi, **e-posta/şifre**, **Google** veya **GitHub** ile yapılabilir.
+- Eğer kullanıcı **e-posta ile kayıt** olmuşsa, kayıt sonrası **Giriş Sayfası'na** yönlendirilir.
+- **Google** ve **GitHub** ile kayıt olan kullanıcılar, diğer uygulamalardaki gibi **direkt giriş yapar**.
+- Kayıt olan kullanıcı, **Firebase Authentication**'a düşer. Ayrıca **Firebase Firestore**'da kullanıcının **e-posta adresi** saklanır.
+- Kullanıcı daha sonra **Profilim** sayfasından **Adı**, **Soyadı**, **Yaşadığı Şehir**, **Doğum Yeri** ve **Doğum Tarihi** bilgilerini ekleyebilir ve sonrasında güncelleyebilir.
+- Bu bilgiler aynı anda:
+  - **Firebase** (Firestore)
+  - **Supabase**
+  - **SharedPreferences**'a kayıt edilir.
+
+---
+
+## 🔑 Firebase Authenticationdaki Kayıtlı Kullanıcı Bilgileri
+
+Firebase Authentication'da kayıtlı kullanıcı aşağıdaki gibidir.  
+Siz de bu bilgilerle giriş sağlayabilirsiniz.
+
+### 👤 Kayıtlı Kullanıcı
+
+- **E-posta:** caglar@gmail.com
+- **Şifre:** caglar123
+
+---
+
+## 👥 Grup Üyelerinin Projeye Katkısı / Sorumlu Olduğu Sayfalar
+
+### 🧩 Tuhana Sinan
+
+- **DenemeHesaplamaPage (DenemeHesaplama.dart)** geliştirilmesi ve veritabanı bağlantıları
+- **GecmisSinavlarPage (GecmisSinavlar.dart)** için listeleme, sıralama ve grafiksel sunum
+- **SupabaseService (supabase_service.dart)** geliştirilmesi. Supabase bağlantısının kurulması, Supabase servislerinin yazılması.
+- **FirebaseService (firebase_service.dart)** geliştirilmesi. Firebase bağlantıların kurulması. Firestore ve Depolama işlemleri için Firebase servislerinin yazılması.
+- **SharedPrefsService (shared_prefs_service.dart)** hocanın
+- **GirisServisi (giris_servisi.dart)** geliştirilmesi (Google, GitHub, e-posta giriş işlemleri)
+- **User (user.dart)** User modelinin geliştirilmesi.
+- **custom_app_bar** Custom app bar widgetinin geliştirilmesi.
+- **Profil Düzenle** ve **Profil Ekrani** servislerle uyumlu olacak şekilde geliştirilmesi.
+
+### 🎨 Fatma Eslem Özsalih
+
+- **Drawer (drawer.dart)** geliştirilmesi
+- **GirisSayfasi (GirisSayfasi.dart)** ve **KayitSayfasi** tasarım geliştirilmesi.
+- **HomePage (Anasayfa.dart)** tasarım geliştirilmesi.
+- **KonuTakipPage (KonuTakip.dart)** tasarımı ve geliştirilmesi
+- **base_page** widgetinin geliştirilmesi
 
 ---
