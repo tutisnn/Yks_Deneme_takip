@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/User.dart';
-import 'package:yks_deneme_takip/services/ firebase_service.dart';
+import 'package:yks_deneme_takip/services/firebase_service.dart';
 import '../services/supabase_service.dart';
 import 'package:yks_deneme_takip/services/ shared_prefs_service.dart';
 import 'Anasayfa.dart';
@@ -131,19 +131,27 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
         padding: const EdgeInsets.all(30),
         child: Column(
           children: [
-            _buildReadOnlyTextField("E-posta", emailController, icon: Icons.email),
-            _buildTextField("Adınız", nameController, icon: Icons.person),
-            _buildTextField("Soyadınız", surnameController, icon: Icons.person_outline),
-            _buildDatePicker(context),
-            _buildDropdown("Doğum Yeri", selectedBirthPlace, (value) {
+            _buildStyledField(_buildReadOnlyTextField("E-posta", emailController, icon: Icons.email)),
+            _buildStyledField(_buildTextField("Adınız", nameController, icon: Icons.person)),
+            _buildStyledField(_buildTextField("Soyadınız", surnameController, icon: Icons.person_outline)),
+            _buildStyledField(_buildDatePicker(context)),
+            _buildStyledField(_buildDropdown("Doğum Yeri", selectedBirthPlace, (value) {
               setState(() => selectedBirthPlace = value);
-            }),
-            _buildDropdown("Yaşadığınız İl", selectedCity, (value) {
+            })),
+            _buildStyledField(_buildDropdown("Yaşadığınız İl", selectedCity, (value) {
               setState(() => selectedCity = value);
-            }),
+            })),
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: kullaniciBilgileriniKaydet,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(143, 148, 251, 1),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
               child: const Text("Kaydet"),
             ),
           ],
@@ -152,84 +160,91 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
     );
   }
 
+  Widget _buildStyledField(Widget child) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: const Color.fromRGBO(143, 148, 251, 1)),
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromRGBO(143, 148, 251, .2),
+            blurRadius: 10.0,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: child,
+    );
+  }
+
   Widget _buildTextField(String hint, TextEditingController controller, {IconData? icon}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          prefixIcon: icon != null ? Icon(icon, color: Colors.grey) : null,
-          border: InputBorder.none,
-          hintText: hint,
-          hintStyle: const TextStyle(color: Colors.grey),
-        ),
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        prefixIcon: icon != null ? Icon(icon, color: Colors.grey) : null,
+        border: InputBorder.none,
+        hintText: hint,
+        hintStyle: const TextStyle(color: Colors.grey),
       ),
     );
   }
 
   Widget _buildReadOnlyTextField(String hint, TextEditingController controller, {IconData? icon}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextField(
-        controller: controller,
-        enabled: false,
-        decoration: InputDecoration(
-          prefixIcon: icon != null ? Icon(icon, color: Colors.grey) : null,
-          border: InputBorder.none,
-          hintText: hint,
-          hintStyle: const TextStyle(color: Colors.grey),
-        ),
+    return TextField(
+      controller: controller,
+      enabled: false,
+      decoration: InputDecoration(
+        prefixIcon: icon != null ? Icon(icon, color: Colors.grey) : null,
+        border: InputBorder.none,
+        hintText: hint,
+        hintStyle: const TextStyle(color: Colors.grey),
       ),
     );
   }
 
   Widget _buildDatePicker(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GestureDetector(
-        onTap: () async {
-          final picked = await showDatePicker(
-            context: context,
-            initialDate: selectedDate ?? DateTime(2000, 1),
-            firstDate: DateTime(1900),
-            lastDate: DateTime.now(),
-          );
-          if (picked != null) {
-            setState(() => selectedDate = picked);
-          }
-        },
-        child: InputDecorator(
-          decoration: const InputDecoration(
-            border: InputBorder.none,
-            hintText: "Doğum Tarihi",
-            hintStyle: TextStyle(color: Colors.grey),
-          ),
-          child: Text(
+    return GestureDetector(
+      onTap: () async {
+        final picked = await showDatePicker(
+          context: context,
+          initialDate: selectedDate ?? DateTime(2000, 1),
+          firstDate: DateTime(1900),
+          lastDate: DateTime.now(),
+        );
+        if (picked != null) {
+          setState(() => selectedDate = picked);
+        }
+      },
+      child: Row(
+        children: [
+          const Icon(Icons.date_range, color: Colors.grey),
+          const SizedBox(width: 10),
+          Text(
             selectedDate == null
                 ? "Doğum Tarihi Seç"
                 : "${selectedDate!.day}.${selectedDate!.month}.${selectedDate!.year}",
             style: TextStyle(color: selectedDate == null ? Colors.grey : Colors.black),
           ),
-        ),
+        ],
       ),
     );
   }
 
   Widget _buildDropdown(String label, String? selectedValue, ValueChanged<String?> onChanged) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: DropdownButtonFormField<String>(
-        decoration: const InputDecoration(border: InputBorder.none),
-        hint: Text(label),
-        value: selectedValue,
-        items: cities.map((city) {
-          return DropdownMenuItem<String>(
-            value: city,
-            child: Text(city),
-          );
-        }).toList(),
-        onChanged: onChanged,
-      ),
+    return DropdownButtonFormField<String>(
+      decoration: const InputDecoration(border: InputBorder.none),
+      hint: Text(label),
+      value: selectedValue,
+      items: cities.map((city) {
+        return DropdownMenuItem<String>(
+          value: city,
+          child: Text(city),
+        );
+      }).toList(),
+      onChanged: onChanged,
     );
   }
 }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart' as flutter_provider;
-import 'package:yks_deneme_takip/services/giris_servisi.dart';
-import 'package:yks_deneme_takip/providers/theme_provider.dart';
+import 'package:yks_deneme_takip/services/giris_servisi.dart'; // GirisServisi import
 
 class MenuDrawer extends StatelessWidget {
   MenuDrawer({super.key});
@@ -12,7 +10,6 @@ class MenuDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final User? currentUser = FirebaseAuth.instance.currentUser;
-    final themeProvider = flutter_provider.Provider.of<ThemeProvider>(context);
 
     return Drawer(
       child: ListView(
@@ -20,13 +17,14 @@ class MenuDrawer extends StatelessWidget {
         children: [
           UserAccountsDrawerHeader(
             decoration: const BoxDecoration(color: Colors.deepPurple),
-            accountName: Text(currentUser?.displayName ?? 'Kullanıcı Adı'),
+            accountName: Text('Hoş geldin '),
             accountEmail: Text(currentUser?.email ?? 'kullanici@example.com'),
             currentAccountPicture: const CircleAvatar(
               child: Icon(Icons.person, size: 40, color: Colors.white),
               backgroundColor: Colors.deepPurple,
             ),
           ),
+
           ListTile(
             leading: const Icon(Icons.home, color: Colors.black),
             title: const Text('Ana Sayfa'),
@@ -69,19 +67,12 @@ class MenuDrawer extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.brightness_6, color: Colors.black),
-            title: Text(themeProvider.isDarkMode ? 'Açık Tema' : 'Koyu Tema'),
-            onTap: () {
-              themeProvider.toggleTheme();
-            },
-          ),
-          ListTile(
             leading: const Icon(Icons.exit_to_app, color: Colors.black),
             title: const Text('Çıkış Yap'),
             onTap: () async {
               Navigator.pop(context);
               await _girisServisi.signOut();
-              Navigator.pushReplacementNamed(context, '/girisYap');
+              Navigator.pushReplacementNamed(context, '/girisYap'); // Çıkış sonrası login sayfasına yönlendir
             },
           ),
         ],

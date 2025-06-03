@@ -30,7 +30,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
     // Sınav tarihini belirleme
 
 
-    examDate = DateTime(2025, 6, 15);
+    examDate = DateTime(2025, 9, 15);
     //Kalan sürşyi hesaplama
     updateRemainingTime();
 
@@ -60,10 +60,10 @@ class _AnaSayfaState extends State<AnaSayfa> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: MenuDrawer(),
-       appBar: CustomAppBar(
-      title: 'Anasayfa',
+      appBar: CustomAppBar(
+        title: 'Anasayfa',
 
-    ),
+      ),
       backgroundColor: Color.fromRGBO(242, 242, 242, 1),
       body: SafeArea(
         child: Padding(
@@ -264,4 +264,3 @@ class _AnaSayfaState extends State<AnaSayfa> {
   }
 
 }
-

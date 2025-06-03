@@ -4,13 +4,11 @@ import 'package:yks_deneme_takip/widgets/drawer.dart';
 class BasePage extends StatelessWidget {
   final String title;
   final Widget content;
-  final Widget? bottom; // 🔥 Ekledik!
 
   const BasePage({
     super.key,
     required this.title,
     required this.content,
-    this.bottom, // 🔥 Ekledik!
   });
 
   @override
@@ -19,7 +17,7 @@ class BasePage extends StatelessWidget {
       appBar: AppBar(title: Text(title)),
       drawer: MenuDrawer(),
       body: content,
-      bottomNavigationBar: bottom, // 🔥 Ekledik!
     );
   }
 }
+
