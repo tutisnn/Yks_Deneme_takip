@@ -4,16 +4,16 @@ import 'package:yks_deneme_takip/services/giris_servisi.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:yks_deneme_takip/models/User.dart';
-import 'package:yks_deneme_takip/pages/homepage.dart';
+import 'package:yks_deneme_takip/pages/Anasayfa.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class KayitSayfasi extends StatefulWidget {
+  const KayitSayfasi({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<KayitSayfasi> createState() => _KayitSayfasiState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _KayitSayfasiState extends State<KayitSayfasi> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
