@@ -1,14 +1,15 @@
+// GirisServisi: Firebase Authentication ve giriş-çıkış işlemlerini yönetir
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:developer';
 
-
 class GirisServisi {
-  final kullaniciCollection = FirebaseFirestore.instance.collection(
-      "kullanicilar");
+  // Firestore'daki 'kullanicilar' koleksiyonunu temsil eder
+  final kullaniciCollection = FirebaseFirestore.instance.collection("kullanicilar");
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  // E-posta ve şifre ile yeni kullanıcı kaydı oluşturur
   Future<void> epostaIleKayit({
     required String email,
     required String sifre,
@@ -23,7 +24,7 @@ class GirisServisi {
     }
   }
 
-
+  // E-posta ve şifre ile giriş yapılmasını sağlar
   Future<void> epostaIleGiris({
     required String email,
     required String sifre,
@@ -44,18 +45,20 @@ class GirisServisi {
     }
   }
 
+  // Google ile giriş yapılmasını sağlar
   Future<User?> googleIleGiris() async {
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
-
     final GoogleSignInAuthentication gAuth = await gUser!.authentication;
 
     final credential = GoogleAuthProvider.credential(
-        accessToken: gAuth.accessToken, idToken: gAuth.idToken);
+      accessToken: gAuth.accessToken,
+      idToken: gAuth.idToken,
+    );
 
     final UserCredential userCredential = await _auth.signInWithCredential(credential);
-
     final User? user = userCredential.user;
 
+    // Kullanıcı daha önce eklenmemişse, Firestore'a kaydedilir
     if (user != null) {
       final doc = await FirebaseFirestore.instance.collection('kullanicilar').doc(user.uid).get();
 
@@ -70,12 +73,16 @@ class GirisServisi {
     log(user?.email.toString() ?? 'Email yok');
     return user;
   }
+
+  // GitHub ile giriş yapılmasını sağlar
   Future<User?> signInWithGitHub() async {
     try {
       final GithubAuthProvider githubProvider = GithubAuthProvider();
       final UserCredential userCredential = await _auth.signInWithPopup(githubProvider);
 
       final User? user = userCredential.user;
+
+      // Kullanıcı daha önce eklenmemişse, Firestore'a kaydedilir
       if (user != null) {
         final doc = await FirebaseFirestore.instance.collection('kullanicilar').doc(user.uid).get();
 
@@ -96,22 +103,17 @@ class GirisServisi {
     }
   }
 
-
+  // Kullanıcıyı sistemden çıkış yaptırır (Google ve Firebase)
   Future<void> signOut() async {
-    // If signed in with Google, sign out from Google account
     final GoogleSignIn googleSignIn = GoogleSignIn();
     try {
       if (await googleSignIn.isSignedIn()) {
         await googleSignIn.signOut();
       }
     } catch (e) {
-      // Handle errors if any occur during Google sign out
       log("Google sign out error: $e");
     }
 
-    // Sign out from Firebase authentication
     await _auth.signOut();
   }
-
-
 }
