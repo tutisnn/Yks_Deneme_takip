@@ -7,16 +7,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
 import '../services/supabase_service.dart'; // SupabaseService importu
 
-const Color lilac = Color(0xFF9575CD);
+const Color lilac = Color(0xFF9575CD); // Tema rengi
 
+// Denemehesaplama sayfası için StatefulWidget
 class Denemehesaplama extends StatefulWidget {
   @override
   DenemehesaplamaState createState() => DenemehesaplamaState();
 }
 
 class DenemehesaplamaState extends State<Denemehesaplama> {
-  final TextEditingController examNameController = TextEditingController();
+  final TextEditingController examNameController = TextEditingController(); // Sınav adı kontrolcüsü
 
+  // Dersler için doğru/yanlış inputları ve ikonlar
   final Map<String, Map<String, dynamic>> controllers = {
     'Türkçe': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.menu_book},
     'Matematik': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.calculate},
@@ -29,24 +31,28 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
     'Biyoloji': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.eco},
   };
 
+  // Net hesaplama fonksiyonu: doğru - (yanlış / 4)
   double calculateNet(TextEditingController correct, TextEditingController wrong) {
     int correctAnswers = int.tryParse(correct.text) ?? 0;
     int wrongAnswers = int.tryParse(wrong.text) ?? 0;
     return correctAnswers - (wrongAnswers / 4);
   }
 
+  // Sonuçları hesapla ve Supabase'e kaydet
   Future<void> calculateExamResults() async {
-    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final userId = FirebaseAuth.instance.currentUser?.uid; // Kullanıcı ID'si
     double toplamNet = 0;
     int toplamDogru = 0;
     int toplamYanlis = 0;
 
+    // Her ders için net hesapla
     controllers.forEach((_, controller) {
       toplamNet += calculateNet(controller['correct']!, controller['wrong']!);
       toplamDogru += int.tryParse(controller['correct']!.text) ?? 0;
       toplamYanlis += int.tryParse(controller['wrong']!.text) ?? 0;
     });
 
+    // Sonuçları dialog penceresinde göster
     await showDialog(
       context: context,
       builder: (context) {
@@ -63,10 +69,12 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
                 "Toplam Yanlış: $toplamYanlis\n",
           ),
           actions: [
+            // Kapat butonu
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text("Kapat"),
             ),
+            // Supabase'e kaydet butonu
             ElevatedButton(
               onPressed: () async {
                 Navigator.pop(context);
@@ -96,16 +104,18 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
     );
   }
 
+  // Sayfa UI'si
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: lilac.withOpacity(0.05),
-      drawer: MenuDrawer(),
-      appBar: CustomAppBar(title: "Deneme Sınavı Hesaplama"),
+      backgroundColor: lilac.withOpacity(0.05), // Açık lilac arka plan
+      drawer: MenuDrawer(), // Menü çekmecesi
+      appBar: CustomAppBar(title: "Deneme Sınavı Hesaplama"), // Özel AppBar
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: ListView(
           children: [
+            // Sınav adı girişi
             TextField(
               controller: examNameController,
               decoration: InputDecoration(
@@ -115,6 +125,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
               ),
             ),
             SizedBox(height: 24),
+            // Başlıklar: Doğru ve Yanlış
             Row(
               children: [
                 Expanded(flex: 3, child: SizedBox()),
@@ -134,6 +145,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
               ],
             ),
             SizedBox(height: 10),
+            // Ders kartları
             ...controllers.entries.map((entry) => buildSubjectRow(
               entry.key,
               entry.value['icon'],
@@ -143,6 +155,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
           ],
         ),
       ),
+      // Hesapla butonu
       bottomNavigationBar: SizedBox(
         width: double.infinity,
         height: 60,
@@ -165,6 +178,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
     );
   }
 
+  // Ders satırı widget'ı
   Widget buildSubjectRow(String name, IconData icon, TextEditingController correctController, TextEditingController wrongController) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -189,15 +203,16 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
                 ],
               ),
             ),
-            Expanded(flex: 2, child: buildNumberBox(correctController)),
+            Expanded(flex: 2, child: buildNumberBox(correctController)), // Doğru sayısı kutusu
             SizedBox(width: 8),
-            Expanded(flex: 2, child: buildNumberBox(wrongController)),
+            Expanded(flex: 2, child: buildNumberBox(wrongController)), // Yanlış sayısı kutusu
           ],
         ),
       ),
     );
   }
 
+  // Sayı kutusu widget'ı (sadece rakam girişine izin verir)
   Widget buildNumberBox(TextEditingController controller) {
     return SizedBox(
       height: 48,
@@ -215,4 +230,3 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
     );
   }
 }
-

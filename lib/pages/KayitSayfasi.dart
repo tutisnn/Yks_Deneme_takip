@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:animate_do/animate_do.dart';
-import 'package:yks_deneme_takip/services/giris_servisi.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:yks_deneme_takip/models/User.dart';
-import 'package:yks_deneme_takip/pages/Anasayfa.dart';
+import 'package:animate_do/animate_do.dart'; // Animasyonlar için kütüphane
+import 'package:yks_deneme_takip/services/giris_servisi.dart'; // Giriş işlemleri servisi
+import 'package:firebase_auth/firebase_auth.dart'; // Firebase Authentication
+import 'package:cloud_firestore/cloud_firestore.dart'; // Firebase Firestore
+import 'package:yks_deneme_takip/models/User.dart'; // Kullanıcı modeli
+import 'package:yks_deneme_takip/pages/Anasayfa.dart'; // Ana sayfa import
 
+// Kayıt Sayfası Stateful Widget
 class KayitSayfasi extends StatefulWidget {
   const KayitSayfasi({super.key});
 
@@ -14,19 +15,20 @@ class KayitSayfasi extends StatefulWidget {
 }
 
 class _KayitSayfasiState extends State<KayitSayfasi> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController(); // Email input kontrolcüsü
+  final TextEditingController passwordController = TextEditingController(); // Şifre input kontrolcüsü
 
-  final GirisServisi _girisServisi = GirisServisi();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GirisServisi _girisServisi = GirisServisi(); // Özel giriş servisi
+  final FirebaseAuth _auth = FirebaseAuth.instance; // Firebase Auth örneği
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white, // Arka plan rengi
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            // Üst kısım: Arka plan ve animasyonlu görseller
             Container(
               height: 300,
               decoration: const BoxDecoration(
@@ -37,6 +39,7 @@ class _KayitSayfasiState extends State<KayitSayfasi> {
               ),
               child: Stack(
                 children: <Widget>[
+                  // Işık animasyonları
                   Positioned(
                     left: 30,
                     width: 80,
@@ -83,6 +86,7 @@ class _KayitSayfasiState extends State<KayitSayfasi> {
                       ),
                     ),
                   ),
+                  // Başlık yazısı
                   Positioned(
                     child: FadeInUp(
                       duration: const Duration(milliseconds: 1600),
@@ -104,6 +108,7 @@ class _KayitSayfasiState extends State<KayitSayfasi> {
                 ],
               ),
             ),
+            // Email ve şifre giriş alanları
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: Column(
@@ -135,6 +140,7 @@ class _KayitSayfasiState extends State<KayitSayfasi> {
                     ),
                   ),
                   const SizedBox(height: 30),
+                  // Kayıt ol butonu
                   FadeInUp(
                     duration: const Duration(milliseconds: 1900),
                     child: GestureDetector(
@@ -153,11 +159,13 @@ class _KayitSayfasiState extends State<KayitSayfasi> {
                         }
 
                         try {
+                          // Firebase'e kayıt ol
                           await _girisServisi.epostaIleKayit(
                             email: emailController.text.trim(),
                             sifre: passwordController.text.trim(),
                           );
 
+                          // Kullanıcıyı Firestore'a ekle
                           User? user = _auth.currentUser;
                           if (user != null) {
                             UserModel newUser = UserModel(
@@ -172,7 +180,7 @@ class _KayitSayfasiState extends State<KayitSayfasi> {
                             const SnackBar(content: Text("Kayıt başarılı!")),
                           );
 
-                          Navigator.pop(context);
+                          Navigator.pop(context); // Giriş sayfasına dön
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text("Kayıt sırasında hata oluştu: $e")),
@@ -183,10 +191,13 @@ class _KayitSayfasiState extends State<KayitSayfasi> {
                     ),
                   ),
                   const SizedBox(height: 10),
+                  // Google ile kayıt
                   _buildGoogleButton(),
                   const SizedBox(height: 10),
+                  // GitHub ile kayıt
                   _buildGitHubButton(),
                   const SizedBox(height: 20),
+                  // Giriş sayfasına yönlendirme
                   Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -197,7 +208,7 @@ class _KayitSayfasiState extends State<KayitSayfasi> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pop(context);
+                            Navigator.pop(context); // Giriş sayfasına dön
                           },
                           child: const Text(
                             "Giriş Yap",
@@ -221,6 +232,7 @@ class _KayitSayfasiState extends State<KayitSayfasi> {
     );
   }
 
+  // Email ve şifre alanları için özel TextField
   Widget _buildTextField(String hint, TextEditingController controller, {bool isPassword = false, IconData? icon}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -237,6 +249,7 @@ class _KayitSayfasiState extends State<KayitSayfasi> {
     );
   }
 
+  // Google ile kayıt butonu
   Widget _buildGoogleButton() {
     return FadeInUp(
       duration: const Duration(milliseconds: 2000),
@@ -264,6 +277,7 @@ class _KayitSayfasiState extends State<KayitSayfasi> {
     );
   }
 
+  // GitHub ile kayıt butonu
   Widget _buildGitHubButton() {
     return FadeInUp(
       duration: const Duration(milliseconds: 2000),
@@ -295,6 +309,7 @@ class _KayitSayfasiState extends State<KayitSayfasi> {
     );
   }
 
+  // Ortak buton yapısı
   Widget _buildButton(String text, {bool isGoogle = false, bool isGitHub = false}) {
     return Container(
       height: 50,

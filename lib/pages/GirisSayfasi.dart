@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:animate_do/animate_do.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:yks_deneme_takip/services/giris_servisi.dart';
-import 'package:yks_deneme_takip/models/User.dart';
-import 'Anasayfa.dart';
-import 'KayitSayfasi.dart';
+import 'package:animate_do/animate_do.dart'; // Animasyonlar için kütüphane
+import 'package:firebase_auth/firebase_auth.dart'; // Firebase Authentication
+import 'package:yks_deneme_takip/services/giris_servisi.dart'; // Özel giriş servisi
+import 'package:yks_deneme_takip/models/User.dart'; // User model
+import 'Anasayfa.dart'; // AnaSayfa import
+import 'KayitSayfasi.dart'; // Kayıt sayfası import
 
+// Giriş Sayfası Stateful Widget
 class GirisSayfasi extends StatefulWidget {
   const GirisSayfasi({super.key});
 
@@ -14,33 +15,34 @@ class GirisSayfasi extends StatefulWidget {
 }
 
 class _GirisSayfasiState extends State<GirisSayfasi> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController(); // Email input kontrolcüsü
+  final TextEditingController passwordController = TextEditingController(); // Şifre input kontrolcüsü
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GirisServisi _girisServisi = GirisServisi();
+  final FirebaseAuth _auth = FirebaseAuth.instance; // Firebase Auth örneği
+  final GirisServisi _girisServisi = GirisServisi(); // Özel giriş servisi örneği
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
+      backgroundColor: Colors.white, // Arka plan rengi
+      body: SingleChildScrollView( // Sayfanın scroll olması için
         child: Column(
           children: <Widget>[
-            _buildHeader(),
+            _buildHeader(), // Başlık ve görsel bölümü
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  _buildLoginForm(),
+                  _buildLoginForm(), // Email ve şifre alanları
                   const SizedBox(height: 30),
-                  _buildLoginButton(),
+                  _buildLoginButton(), // Giriş butonu
                   const SizedBox(height: 15),
-                  _buildGoogleButton(),
+                  _buildGoogleButton(), // Google ile giriş
                   const SizedBox(height: 15),
-                  _buildGitHubButton(),
+                  _buildGitHubButton(), // GitHub ile giriş
                   const SizedBox(height: 30),
+                  // Kayıt ol kısmı
                   Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -80,6 +82,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
     );
   }
 
+  // Üst kısım (arka plan ve animasyonlar)
   Widget _buildHeader() {
     return Container(
       height: 400,
@@ -91,6 +94,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
       ),
       child: Stack(
         children: <Widget>[
+          // Işık ve saat animasyonları
           Positioned(
             left: 30,
             width: 80,
@@ -137,6 +141,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
               ),
             ),
           ),
+          // Başlık yazısı
           Positioned(
             child: FadeInUp(
               duration: const Duration(milliseconds: 1600),
@@ -160,6 +165,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
     );
   }
 
+  // Email ve şifre giriş alanları
   Widget _buildLoginForm() {
     return FadeInUp(
       duration: const Duration(milliseconds: 1800),
@@ -198,6 +204,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
     );
   }
 
+  // Giriş yap butonu
   Widget _buildLoginButton() {
     return FadeInUp(
       duration: const Duration(milliseconds: 1900),
@@ -217,8 +224,8 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
           }
 
           try {
+            // Firebase e-posta şifre ile giriş
             await _girisServisi.epostaIleGiris(email: email, sifre: password);
-
             User? firebaseUser = _auth.currentUser;
             if (firebaseUser != null) {
               UserModel user = UserModel(
@@ -228,6 +235,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
 
               print("Giriş yapan kullanıcı: ${user.email}, UID: ${user.uid}");
 
+              // Ana sayfaya yönlendirme
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const AnaSayfa()),
@@ -247,6 +255,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
     );
   }
 
+  // Google ile giriş butonu
   Widget _buildGoogleButton() {
     return FadeInUp(
       duration: const Duration(milliseconds: 2000),
@@ -274,6 +283,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
     );
   }
 
+  // GitHub ile giriş butonu
   Widget _buildGitHubButton() {
     return FadeInUp(
       duration: const Duration(milliseconds: 2000),
@@ -308,6 +318,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
     );
   }
 
+  // Ortak buton widget'ı (Giriş/Google/GitHub)
   Widget _buildButton(String text, {bool isGoogle = false, bool isGitHub = false}) {
     return Container(
       height: 50,
@@ -341,6 +352,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
     );
   }
 
+  // Özel textfield widget'ı
   Widget customTextField({
     required TextEditingController controller,
     required String hintText,

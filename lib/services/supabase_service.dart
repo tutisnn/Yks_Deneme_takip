@@ -22,6 +22,14 @@ class SupabaseService {
   'toplam_yanlis': toplamYanlis,
   });
   }
+// Geçmiş sınavları çekme
+  static Future<List<Map<String, dynamic>>> getExamList(String userId) async {
+    final response = await Supabase.instance.client
+        .from('netler')
+        .select()
+        .eq('user_id', userId);
 
+    return List<Map<String, dynamic>>.from(response);
+  }
 
 }
