@@ -15,7 +15,7 @@ ThemeData lightTheme = ThemeData(
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: Colors.grey[900],
-  scaffoldBackgroundColor: Color(0xFF2C2C2C), //  koyu gri
+  scaffoldBackgroundColor: Color(0xFF5A5A5A), //  koyu gri
   canvasColor: Color(0xFF2C2C2C),
   textTheme: const TextTheme(
     bodyLarge: TextStyle(fontSize: 20, color: Colors.white),
