@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:yks_deneme_takip/services/giris_servisi.dart'; // GirisServisi import
 import 'package:provider/provider.dart';
+import 'package:yks_deneme_takip/services/giris_servisi.dart';
 import '../models/ThemeNotifier.dart';
+
 class MenuDrawer extends StatelessWidget {
   MenuDrawer({super.key});
 
@@ -18,7 +19,7 @@ class MenuDrawer extends StatelessWidget {
         children: [
           UserAccountsDrawerHeader(
             decoration: const BoxDecoration(color: Colors.deepPurple),
-            accountName: Text('Hoş geldin '),
+            accountName: Text('Hoş geldin'),
             accountEmail: Text(currentUser?.email ?? 'kullanici@example.com'),
             currentAccountPicture: const CircleAvatar(
               child: Icon(Icons.person, size: 40, color: Colors.white),
@@ -66,36 +67,38 @@ class MenuDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/ProfilSayfasi');
             },
           ),
+
+          // Dark Mode butonu
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: [
+                Switch(
+                  value: Theme.of(context).brightness == Brightness.dark,
+                  onChanged: (value) {
+                    Provider.of<ThemeProvider>(context, listen: false).changeTheme();
+                  },
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Dark Mode',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ],
+            ),
+          ),
+
           const Divider(),
+
           ListTile(
             leading: const Icon(Icons.exit_to_app, color: Colors.black),
             title: const Text('Çıkış Yap'),
             onTap: () async {
               Navigator.pop(context);
               await _girisServisi.signOut();
-              Navigator.pushReplacementNamed(context, '/girisYap'); // Çıkış sonrası login sayfasına yönlendir
+              Navigator.pushReplacementNamed(context, '/girisYap');// Çıkış sonrası login sayfasına yönlendir
             },
-
-          ),Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-    child: Row(
-    children: [
-    Switch(
-    value: Theme.of(context).brightness == Brightness.dark,
-    onChanged: (value) {
-    Provider.of<ThemeProvider>(context, listen: false).changeTheme();
-    },
-    ),
-    const SizedBox(width: 8),
-    Text(
-    'Dark Mode',
-    style: Theme.of(context).textTheme.bodyLarge,
-    ),
-    ],
-    ),
-    ),
-
-
+          ),
         ],
       ),
     );
