@@ -1,7 +1,8 @@
+// Baş kısım aynı...
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'Anasayfa.dart';
-import  'package:yks_deneme_takip/widgets/drawer.dart';
+import 'package:yks_deneme_takip/widgets/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
 
@@ -14,36 +15,30 @@ class AnaSayfa extends StatefulWidget {
   @override
   State<AnaSayfa> createState() => _AnaSayfaState();
 }
-
+// Yks Sınavı için kalan süreyi hesaplamak için oluşturulan değişenler ve fonksiyonlar
 class _AnaSayfaState extends State<AnaSayfa> {
-
-  // Yks Sınavı için kalan süreyi hesaplamak için oluşturulan değişenler ve fonksiyonlar
   late DateTime examDate;
   late Duration remainingTime;
   late Timer _timer;
 
-  // Sayfa ilk açıldığında yapılacak işlemler
+// Sayfa ilk açıldığında yapılacak işlemler
   @override
   void initState() {
     super.initState();
-
     // Sınav tarihini belirleme
-
-
     examDate = DateTime(2025, 9, 15);
-    //Kalan sürşyi hesaplama
     updateRemainingTime();
-
     //her saniye bu kalan süreyi güncellleme
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
+        //Kalan sürşyi hesaplama
         updateRemainingTime();
       });
     });
   }
 
-  // sayfa kapanınca bu timer işlemini iptal etme. boşa kaynak tüketmesin diye yapılir
   @override
+  // sayfa kapanınca bu timer işlemini iptal etme. boşa kaynak tüketmesin diye yapılir
   void dispose() {
     _timer.cancel();
     super.dispose();
@@ -53,8 +48,6 @@ class _AnaSayfaState extends State<AnaSayfa> {
     final now = DateTime.now();
     remainingTime = examDate.difference(now);
   }
-
-
   //ana widget
   @override
   Widget build(BuildContext context) {
@@ -62,9 +55,8 @@ class _AnaSayfaState extends State<AnaSayfa> {
       drawer: MenuDrawer(),
       appBar: CustomAppBar(
         title: 'Anasayfa',
-
       ),
-      backgroundColor: Color.fromRGBO(242, 242, 242, 1),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor, //blacktheme ekledim
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -72,7 +64,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildHeader(), // <-- Başlık kısmı çıkarıldı
+                buildHeader(),// <-- Başlık kısmı çıkarıldı
                 SizedBox(height: 24),
                 Container(
                   height: 280,
@@ -81,12 +73,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                       Flexible(
                         child: Column(
                           children: [
-                            buildMenuItem(
-                              "AnaSayfa",
-                              "\n \u200B",
-                              Icons.home,
-                              '/Anasayfa',
-                            ),
+                            buildMenuItem("AnaSayfa", "\n \u200B", Icons.home, '/Anasayfa'),
                             SizedBox(height: 8),
                             buildMenuItem(
                               "Deneme Sınavı Hesapla",
@@ -121,7 +108,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                   ),
                 ),
                 SizedBox(height: 16),
-                buildCountdown(), // <-- Geri sayım kısmı çıkarıldı
+                buildCountdown(), //Geri sayım kısmı çıkarıldı
               ],
             ),
           ),
@@ -129,7 +116,6 @@ class _AnaSayfaState extends State<AnaSayfa> {
       ),
     );
   }
-
 // Başlık widget'i
   Widget buildHeader() {
     return Column(
@@ -148,13 +134,12 @@ class _AnaSayfaState extends State<AnaSayfa> {
           style: GoogleFonts.quicksand(
             fontSize: 32,
             fontWeight: FontWeight.bold,
-            color: Colors.deepPurple,
+            color: Theme.of(context).colorScheme.primary, // blacktheme ekledim
           ),
         ),
       ],
     );
   }
-
 // Geri sayım widget'i
   Widget buildCountdown() {
     String daysRemaining = remainingTime.inDays.toString();
@@ -181,14 +166,14 @@ class _AnaSayfaState extends State<AnaSayfa> {
         children: [
           Row(
             children: [
-              Icon(Icons.access_alarm, color: Colors.black, size: 30),
+              Icon(Icons.access_alarm, color: Theme.of(context).iconTheme.color, size: 30), // blacktheme ekledim
               SizedBox(width: 8),
               Text(
                 "Sınav için Kalan Süre",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Theme.of(context).textTheme.bodyLarge!.color, // blacktheme ekledim
                 ),
               ),
             ],
@@ -199,15 +184,15 @@ class _AnaSayfaState extends State<AnaSayfa> {
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: Theme.of(context).textTheme.bodyLarge!.color, // blacktheme ekledim
             ),
           ),
         ],
       ),
     );
   }
-
 //Her menu itemi için widget
+
   Widget buildMenuItem(String title, String subtitle, IconData icon, String routeName) {
     return InkWell(
       onTap: () {
@@ -216,7 +201,6 @@ class _AnaSayfaState extends State<AnaSayfa> {
       },
       child: Container(
         width: double.infinity,
-
         decoration: BoxDecoration(
           color: primaryLilac,
           borderRadius: BorderRadius.circular(32),
@@ -231,17 +215,17 @@ class _AnaSayfaState extends State<AnaSayfa> {
         padding: EdgeInsets.all(12),
         child: Center(
           child: Column(
-            mainAxisSize: MainAxisSize.min, // içeriğe göre yükseklik
+            mainAxisSize: MainAxisSize.min,// içeriğe göre yükseklik
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 32, color: Colors.deepPurple),
+              Icon(icon, size: 32, color: Theme.of(context).iconTheme.color), // blacktheme ekledim
               SizedBox(height: 10),
               Text(
                 title,
                 style: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  color: Theme.of(context).textTheme.bodyLarge!.color, // blacktheme ekledim
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -250,7 +234,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                   subtitle,
                   style: GoogleFonts.poppins(
                     fontSize: 12,
-                    color: Colors.black54,
+                    color: Theme.of(context).textTheme.bodySmall!.color?.withOpacity(0.7), // blacktheme ekledim
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 2,
@@ -262,5 +246,4 @@ class _AnaSayfaState extends State<AnaSayfa> {
       ),
     );
   }
-
 }

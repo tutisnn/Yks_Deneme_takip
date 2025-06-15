@@ -1,3 +1,4 @@
+// ... tüm importlar aynı
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -5,10 +6,9 @@ import 'package:yks_deneme_takip/widgets/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:yks_deneme_takip/widgets/custom_app_bar.dart';
-import '../services/supabase_service.dart'; // SupabaseService importu
+import '../services/supabase_service.dart';// SupabaseService importu
 
 const Color lilac = Color(0xFF9575CD); // Tema rengi
-
 // Denemehesaplama sayfası için StatefulWidget
 class Denemehesaplama extends StatefulWidget {
   @override
@@ -16,8 +16,7 @@ class Denemehesaplama extends StatefulWidget {
 }
 
 class DenemehesaplamaState extends State<Denemehesaplama> {
-  final TextEditingController examNameController = TextEditingController(); // Sınav adı kontrolcüsü
-
+  final TextEditingController examNameController = TextEditingController();// Sınav adı kontrolcüsü
   // Dersler için doğru/yanlış inputları ve ikonlar
   final Map<String, Map<String, dynamic>> controllers = {
     'Türkçe': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.menu_book},
@@ -30,28 +29,24 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
     'Kimya': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.biotech},
     'Biyoloji': {'correct': TextEditingController(), 'wrong': TextEditingController(), 'icon': Icons.eco},
   };
-
   // Net hesaplama fonksiyonu: doğru - (yanlış / 4)
   double calculateNet(TextEditingController correct, TextEditingController wrong) {
     int correctAnswers = int.tryParse(correct.text) ?? 0;
     int wrongAnswers = int.tryParse(wrong.text) ?? 0;
     return correctAnswers - (wrongAnswers / 4);
   }
-
   // Sonuçları hesapla ve Supabase'e kaydet
   Future<void> calculateExamResults() async {
-    final userId = FirebaseAuth.instance.currentUser?.uid; // Kullanıcı ID'si
+    final userId = FirebaseAuth.instance.currentUser?.uid;// Kullanıcı ID'si
     double toplamNet = 0;
     int toplamDogru = 0;
     int toplamYanlis = 0;
 
-    // Her ders için net hesapla
-    controllers.forEach((_, controller) {
+    controllers.forEach((_, controller) {// Her ders için net hesapla
       toplamNet += calculateNet(controller['correct']!, controller['wrong']!);
       toplamDogru += int.tryParse(controller['correct']!.text) ?? 0;
       toplamYanlis += int.tryParse(controller['wrong']!.text) ?? 0;
     });
-
     // Sonuçları dialog penceresinde göster
     await showDialog(
       context: context,
@@ -74,8 +69,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
               onPressed: () => Navigator.pop(context),
               child: Text("Kapat"),
             ),
-            // Supabase'e kaydet butonu
-            ElevatedButton(
+            ElevatedButton( // Supabase'e kaydet butonu
               onPressed: () async {
                 Navigator.pop(context);
                 try {
@@ -86,7 +80,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
                     toplamYanlis: toplamYanlis,
                     userId: userId!,
                   );
-
+                  // Supabase'e kaydet butonu
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("Sınav başarıyla kaydedildi.")),
                   );
@@ -103,31 +97,29 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
       },
     );
   }
-
   // Sayfa UI'si
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: lilac.withOpacity(0.05), // Açık lilac arka plan
-      drawer: MenuDrawer(), // Menü çekmecesi
-      appBar: CustomAppBar(title: "Deneme Sınavı Hesaplama"), // Özel AppBar
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor, // blacktheme ekledim
+      drawer: MenuDrawer(),
+      appBar: CustomAppBar(title: "Deneme Sınavı Hesaplama"),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            // Sınav adı girişi
             TextField(
               controller: examNameController,
               decoration: InputDecoration(
                 labelText: "Sınav Adını Giriniz",
-                labelStyle: GoogleFonts.quicksand(),
+                labelStyle: GoogleFonts.quicksand(color: Theme.of(context).textTheme.bodyLarge!.color),
                 border: OutlineInputBorder(),
               ),
             ),
             SizedBox(height: 24),
-            // Başlıklar: Doğru ve Yanlış
             Row(
-              children: [
+              // Başlıklar: Doğru ve Yanlış
+            children: [
                 Expanded(flex: 3, child: SizedBox()),
                 Expanded(
                   flex: 2,
@@ -144,8 +136,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
                 ),
               ],
             ),
-            SizedBox(height: 10),
-            // Ders kartları
+            SizedBox(height: 10),// Ders kartları
             ...controllers.entries.map((entry) => buildSubjectRow(
               entry.key,
               entry.value['icon'],
@@ -162,22 +153,22 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-            backgroundColor: Colors.grey[200],
+            backgroundColor: Theme.of(context).colorScheme.secondary.withOpacity(0.2), // blacktheme ekledim
           ),
+          // Hesapla butonu
           onPressed: () async => await calculateExamResults(),
           child: Text(
             "HESAPLA",
             style: GoogleFonts.poppins(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: Theme.of(context).textTheme.bodyLarge!.color, //blacktheme ekledim
             ),
           ),
         ),
       ),
     );
   }
-
   // Ders satırı widget'ı
   Widget buildSubjectRow(String name, IconData icon, TextEditingController correctController, TextEditingController wrongController) {
     return Padding(
@@ -185,7 +176,7 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor, // blacktheme ekledim
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
@@ -203,16 +194,16 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
                 ],
               ),
             ),
-            Expanded(flex: 2, child: buildNumberBox(correctController)), // Doğru sayısı kutusu
+            Expanded(flex: 2, child: buildNumberBox(correctController)),
             SizedBox(width: 8),
-            Expanded(flex: 2, child: buildNumberBox(wrongController)), // Yanlış sayısı kutusu
+            Expanded(flex: 2, child: buildNumberBox(wrongController)),
           ],
         ),
       ),
     );
   }
-
   // Sayı kutusu widget'ı (sadece rakam girişine izin verir)
+
   Widget buildNumberBox(TextEditingController controller) {
     return SizedBox(
       height: 48,

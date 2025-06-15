@@ -68,7 +68,7 @@ class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
       content: Column(
         children: [
           Material(
-            color: theme.appBarTheme.backgroundColor, // Tema renginden alır!
+            color: theme.appBarTheme.backgroundColor, //blacktheme
             child: TabBar(
               controller: _tabController,
               labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),
@@ -144,7 +144,10 @@ class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
                         topic,
                         style: GoogleFonts.quicksand(
                           decoration: isChecked ? TextDecoration.lineThrough : null,
-                          color: isChecked ? Colors.grey : theme.textTheme.bodyLarge?.color,
+                            color: isChecked
+                                ? theme.disabledColor.withOpacity(0.7)
+                                : theme.textTheme.bodyLarge?.color,
+
                         ),
                       ),
                       value: isChecked,

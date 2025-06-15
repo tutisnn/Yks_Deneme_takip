@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:yks_deneme_takip/services/giris_servisi.dart'; // GirisServisi import
-
+import 'package:provider/provider.dart';
+import '../models/ThemeNotifier.dart';
 class MenuDrawer extends StatelessWidget {
   MenuDrawer({super.key});
 
@@ -74,7 +75,27 @@ class MenuDrawer extends StatelessWidget {
               await _girisServisi.signOut();
               Navigator.pushReplacementNamed(context, '/girisYap'); // Çıkış sonrası login sayfasına yönlendir
             },
-          ),
+
+          ),Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+    child: Row(
+    children: [
+    Switch(
+    value: Theme.of(context).brightness == Brightness.dark,
+    onChanged: (value) {
+    Provider.of<ThemeProvider>(context, listen: false).changeTheme();
+    },
+    ),
+    const SizedBox(width: 8),
+    Text(
+    'Dark Mode',
+    style: Theme.of(context).textTheme.bodyLarge,
+    ),
+    ],
+    ),
+    ),
+
+
         ],
       ),
     );

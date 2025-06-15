@@ -187,7 +187,8 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
         prefixIcon: icon != null ? Icon(icon, color: Colors.grey) : null,
         border: InputBorder.none,
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.grey),
+          hintStyle: TextStyle(color: Theme.of(context).hintColor), // blacktheme ekledim
+
       ),
     );
   }
