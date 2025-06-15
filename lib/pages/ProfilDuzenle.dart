@@ -146,7 +146,7 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
               onPressed: kullaniciBilgileriniKaydet,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromRGBO(143, 148, 251, 1),
-                foregroundColor: Colors.white,
+                foregroundColor: Colors.black,
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -161,11 +161,12 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
   }
 
   Widget _buildStyledField(Widget child) {
+    final theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardColor, // 🖤 Tema uyumlu arkaplan
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: const Color.fromRGBO(143, 148, 251, 1)),
         boxShadow: const [
@@ -180,28 +181,31 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
     );
   }
 
+
   Widget _buildTextField(String hint, TextEditingController controller, {IconData? icon}) {
+    final theme = Theme.of(context);
     return TextField(
       controller: controller,
+      style: TextStyle(color: theme.textTheme.bodyLarge?.color),
       decoration: InputDecoration(
-        prefixIcon: icon != null ? Icon(icon, color: Colors.grey) : null,
+        prefixIcon: icon != null ? Icon(icon, color: theme.iconTheme.color) : null,
         border: InputBorder.none,
         hintText: hint,
-          hintStyle: TextStyle(color: Theme.of(context).hintColor), // blacktheme ekledim
-
+        hintStyle: TextStyle(color: theme.hintColor), 
       ),
     );
   }
+
 
   Widget _buildReadOnlyTextField(String hint, TextEditingController controller, {IconData? icon}) {
     return TextField(
       controller: controller,
       enabled: false,
       decoration: InputDecoration(
-        prefixIcon: icon != null ? Icon(icon, color: Colors.grey) : null,
+        prefixIcon: icon != null ? Icon(icon, color: Colors.black) : null,
         border: InputBorder.none,
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.grey),
+        hintStyle: const TextStyle(color: Colors.black),
       ),
     );
   }
@@ -221,31 +225,36 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
       },
       child: Row(
         children: [
-          const Icon(Icons.date_range, color: Colors.grey),
+          const Icon(Icons.date_range, color: Colors.black),
           const SizedBox(width: 10),
           Text(
             selectedDate == null
                 ? "Doğum Tarihi Seç"
                 : "${selectedDate!.day}.${selectedDate!.month}.${selectedDate!.year}",
-            style: TextStyle(color: selectedDate == null ? Colors.grey : Colors.black),
+            style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
           ),
+
         ],
       ),
     );
   }
 
   Widget _buildDropdown(String label, String? selectedValue, ValueChanged<String?> onChanged) {
+    final theme = Theme.of(context);
     return DropdownButtonFormField<String>(
+      dropdownColor: theme.cardColor, // koyu modda güzel görünmesi için
       decoration: const InputDecoration(border: InputBorder.none),
-      hint: Text(label),
+      hint: Text(label, style: TextStyle(color: theme.hintColor)), // görünür hale getir
       value: selectedValue,
+      style: TextStyle(color: theme.textTheme.bodyLarge?.color),
       items: cities.map((city) {
         return DropdownMenuItem<String>(
           value: city,
-          child: Text(city),
+          child: Text(city, style: TextStyle(color: theme.textTheme.bodyLarge?.color)),
         );
       }).toList(),
       onChanged: onChanged,
     );
   }
+
 }
