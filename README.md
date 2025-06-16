@@ -18,7 +18,8 @@ lib/
 │ ├── KayitSayfasi.dart
 │ ├── KonuTakip.dart
 │ ├── ProfilDüzenle.dart
-│ └── ProfilEkrani.dart
+│ ├── ProfilEkrani.dart
+│ └── BizeUlasin.dart   
 ├── services/
 │ ├── firebase_service.dart
 │ ├── shared_prefs_service.dart
@@ -99,6 +100,13 @@ assets/
 * Güncellenen bilgiler Firebase, Supabase ve SharedPreferences'a kaydedilir.
 * Kullanıcı deneyimini kolaylaştırmak için form alanları ve butonlar içerir.
 
+### 📬 BizeUlasin.dart
+
+- Kullanıcının geliştiriciyle iletişim kurmasını sağlar.
+- Form alanlarında e-posta, konu ve mesaj bilgileri yer alır.
+- Gönder butonu ile yazılan mesaj doğrulanır ve işlem yapılabilir hale gelir.
+- Kullanıcı dostu ve sade bir iletişim arayüzü sunar.
+
 ---
 
 ## 📡 Services (Servis Dosyaları)
@@ -122,6 +130,16 @@ assets/
 
 * Google, GitHub ve e-posta ile giriş ve kayıt işlemlerini yönetir.
 * Firebase Authentication ile entegre çalışır ve kullanıcı kimlik doğrulamasını sağlar.
+
+---
+## 🎨 themes
+
+### Themes.dart
+- Uygulamanın renk temalarını (Light ve Dark Mode) tanımlar.
+- lightTheme: Beyaz arka plan, siyah yazı ile klasik açık mod tasarımı sunar.
+- darkTheme: Koyu gri arka plan, beyaz yazı ile gece kullanımı için uygundur.
+- ThemeData yapısıyla brightness, scaffoldBackgroundColor, canvasColor ve textTheme gibi özellikler özelleştirilmiştir.
+- ThemeProvider sınıfı tarafından kullanılarak kullanıcı tercihine göre dinamik tema değişimi sağlanır.
 
 ---
 
@@ -156,6 +174,12 @@ assets/
 - İsim, soyisim, e-posta, doğum yeri, doğum tarihi ve şehir gibi alanları içerir.
 - Firebase, Supabase ve SharedPreferences ile veri alışverişinde kullanılır.
 
+### ThemeNotifier.dart
+- Uygulamanın tema yönetimini (Light/Dark Mode) sağlar.
+- Kullanıcının seçtiği tema tercihini SharedPreferences kullanarak cihazda saklar.
+- Uygulama açıldığında önceden seçilen tema otomatik olarak uygulanır.
+- ChangeNotifier yapısıyla notifyListeners() kullanılarak tema değişimi tüm arayüzde anında yansıtılır.
+- Themes.dart dosyasındaki lightTheme ve darkTheme verileriyle çalışır.
 ---
 
 ## 🚀 main.dart
@@ -173,9 +197,11 @@ Her özellik ve işlev için ayrı bir dosya ve klasör oluşturularak, **temiz*
 
 🔹 **Sayfalar (Pages)** klasörü, kullanıcı arayüzüne ait ekranları içerir.  
 🔹 **Services** klasörü, Firebase, Supabase ve diğer servislerin bağlantı ve işlemlerini yönetir.  
+🔹 **Themes** klasörü, uygulamanın genel tema ayarlarını barındırır. İçinde Themes.dart dosyası bulunur ve light/dark mod renklerini tanımlar.
 🔹 **Widgets** klasörü, tekrar kullanılabilir bileşenleri (Drawer, AppBar, vb.) barındırır.  
 🔹 **Models** klasörü, uygulamadaki veri modellerini içerir (örneğin, User modeli).  
 🔹 **Assets** klasörü, görseller ve fontlar gibi statik dosyaları içerir.
+  
 
 ---
 
@@ -230,6 +256,7 @@ Siz de bu bilgilerle giriş sağlayabilirsiniz.
 - **Dark Mode Theme(Theme.dart)** yazımı ve geliştirmesi
 - **ThemeNotifier.dart**tasarımı ve geliştirmesi, shared preferences ile modu kaydetme
 - **Profil Ekranı** tasarımı
+- **Bize Ulaşın (BizeUlasın.dart)** Bize ulaşın sayfanın geliştirmesi
 
 ## Sayfaların Ekran Görüntüsü
 <img src="https://github.com/user-attachments/assets/d66690ab-6dcb-4f31-9fd9-53c4c8377944" width="400" />

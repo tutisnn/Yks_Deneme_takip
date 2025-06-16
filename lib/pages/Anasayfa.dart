@@ -1,4 +1,3 @@
-// Baş kısım aynı...
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'Anasayfa.dart';
@@ -15,13 +14,14 @@ class AnaSayfa extends StatefulWidget {
   @override
   State<AnaSayfa> createState() => _AnaSayfaState();
 }
+
 // Yks Sınavı için kalan süreyi hesaplamak için oluşturulan değişenler ve fonksiyonlar
 class _AnaSayfaState extends State<AnaSayfa> {
   late DateTime examDate;
   late Duration remainingTime;
   late Timer _timer;
 
-// Sayfa ilk açıldığında yapılacak işlemler
+  // Sayfa ilk açıldığında yapılacak işlemler
   @override
   void initState() {
     super.initState();
@@ -43,14 +43,19 @@ class _AnaSayfaState extends State<AnaSayfa> {
     _timer.cancel();
     super.dispose();
   }
-// Kalan süre hesaplama Fonksiyonu
+
+  // Kalan süre hesaplama Fonksiyonu
   void updateRemainingTime() {
     final now = DateTime.now();
     remainingTime = examDate.difference(now);
   }
+
   //ana widget
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final Color kutuRengi = isDark ? Color(0xFF3C3C3C) : primaryLilac;
+
     return Scaffold(
       drawer: MenuDrawer(),
       appBar: CustomAppBar(
@@ -64,7 +69,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildHeader(),// <-- Başlık kısmı çıkarıldı
+                buildHeader(), // <-- Başlık kısmı çıkarıldı
                 SizedBox(height: 24),
                 Container(
                   height: 280,
@@ -73,13 +78,14 @@ class _AnaSayfaState extends State<AnaSayfa> {
                       Flexible(
                         child: Column(
                           children: [
-                            buildMenuItem("AnaSayfa", "\n \u200B", Icons.home, '/Anasayfa'),
+                            buildMenuItem("AnaSayfa", "\n \u200B", Icons.home, '/Anasayfa', kutuRengi),
                             SizedBox(height: 8),
                             buildMenuItem(
                               "Deneme Sınavı Hesapla",
                               "Toplan netini hangi dersten ne kadar net yapıldığını öğren \n ads",
                               Icons.calculate,
                               '/denemehesapla',
+                              kutuRengi,
                             ),
                           ],
                         ),
@@ -93,6 +99,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                               "Geçmiş Denemelerini inceleme şansı bul",
                               Icons.history,
                               '/gecmisSinavlariGor',
+                              kutuRengi,
                             ),
                             SizedBox(height: 8),
                             buildMenuItem(
@@ -100,6 +107,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                               "Hangi dersten hangi konuları bitirdiğine bak",
                               Icons.book,
                               '/KonuTakip',
+                              kutuRengi,
                             ),
                           ],
                         ),
@@ -108,7 +116,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                   ),
                 ),
                 SizedBox(height: 16),
-                buildCountdown(), //Geri sayım kısmı çıkarıldı
+                buildCountdown(kutuRengi), //Geri sayım kısmı çıkarıldı
               ],
             ),
           ),
@@ -116,7 +124,8 @@ class _AnaSayfaState extends State<AnaSayfa> {
       ),
     );
   }
-// Başlık widget'i
+
+  // Başlık widget'i
   Widget buildHeader() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,8 +149,9 @@ class _AnaSayfaState extends State<AnaSayfa> {
       ],
     );
   }
-// Geri sayım widget'i
-  Widget buildCountdown() {
+
+  // Geri sayım widget'i
+  Widget buildCountdown(Color kutuRengi) {
     String daysRemaining = remainingTime.inDays.toString();
     String hoursRemaining = (remainingTime.inHours % 24).toString().padLeft(2, '0');
     String minutesRemaining = (remainingTime.inMinutes % 60).toString().padLeft(2, '0');
@@ -151,7 +161,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
       padding: EdgeInsets.all(24),
       margin: EdgeInsets.symmetric(vertical: 16),
       decoration: BoxDecoration(
-        color: primaryLilac,
+        color: kutuRengi, // blacktheme ekledim
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
@@ -191,9 +201,9 @@ class _AnaSayfaState extends State<AnaSayfa> {
       ),
     );
   }
-//Her menu itemi için widget
 
-  Widget buildMenuItem(String title, String subtitle, IconData icon, String routeName) {
+  //Her menu itemi için widget
+  Widget buildMenuItem(String title, String subtitle, IconData icon, String routeName, Color kutuRengi) {
     return InkWell(
       onTap: () {
         Navigator.pop(context);
@@ -202,7 +212,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: primaryLilac,
+          color: kutuRengi, // blacktheme ekledim
           borderRadius: BorderRadius.circular(32),
           boxShadow: [
             BoxShadow(
@@ -215,7 +225,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
         padding: EdgeInsets.all(12),
         child: Center(
           child: Column(
-            mainAxisSize: MainAxisSize.min,// içeriğe göre yükseklik
+            mainAxisSize: MainAxisSize.min, // içeriğe göre yükseklik
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, size: 32, color: Theme.of(context).iconTheme.color), // blacktheme ekledim

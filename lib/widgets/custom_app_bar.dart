@@ -17,12 +17,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(
         title,
-        style: GoogleFonts.poppins(), // Yazı fontu: Poppins
+        style: GoogleFonts.poppins(
+          color: Theme.of(context).textTheme.bodyLarge!.color, // blacktheme ekledim: Yazı rengi temaya göre
+        ),
       ),
-      backgroundColor: const Color.fromRGBO(242, 242, 242, 1), // Açık gri arkaplan
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor, // blacktheme ekledim: Arka plan temaya göre
       centerTitle: true, // Başlığı ortala
       elevation: 0, // Gölge yok
       bottom: bottom, // Alt kısım eklenirse (örneğin TabBar)
+      iconTheme: IconThemeData(
+        color: Theme.of(context).iconTheme.color, // blacktheme ekledim: Menü ikonu temaya göre
+      ),
       actions: [
         // Sağ üst köşede küçük yuvarlak bir alan (profil veya ayar simgesi için)
         Padding(
@@ -31,7 +36,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: Colors.grey[300], // Açık gri renk
+              color: Theme.of(context).canvasColor, // blacktheme ekledim: Daire rengi temaya göre
               shape: BoxShape.circle, // Yuvarlak şekil
             ),
           ),

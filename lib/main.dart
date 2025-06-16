@@ -14,7 +14,7 @@ import 'pages/ProfilDuzenle.dart'; // Profil düzenleme sayfası
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'models/ThemeNotifier.dart';
-
+import 'pages/BizeUlasin.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter'ın widget binding'ini başlatır
@@ -62,6 +62,8 @@ class MyApp extends StatelessWidget {
             '/KonuTakip': (context) => Konutakip(),
             '/ProfilSayfasi': (context) => ProfilEkrani(),
             '/ProfilDuzenle': (context) => ProfilDuzenle(),
+            '/bizeUlasin': (context) => const BizeUlasin(),
+
           },
         );
       },

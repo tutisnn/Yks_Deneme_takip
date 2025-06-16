@@ -28,7 +28,7 @@ class MenuDrawer extends StatelessWidget {
           ),
 
           ListTile(
-            leading: const Icon(Icons.home, color: Colors.black),
+            leading: Icon(Icons.home, color: Theme.of(context).iconTheme.color),
             title: const Text('Ana Sayfa'),
             onTap: () {
               Navigator.pop(context);
@@ -36,7 +36,7 @@ class MenuDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.calculate, color: Colors.black),
+            leading: Icon(Icons.calculate, color: Theme.of(context).iconTheme.color),
             title: const Text('Deneme Sınavı Hesapla'),
             onTap: () {
               Navigator.pop(context);
@@ -44,7 +44,7 @@ class MenuDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.track_changes, color: Colors.black),
+            leading: Icon(Icons.track_changes, color: Theme.of(context).iconTheme.color),
             title: const Text('Konu Takip'),
             onTap: () {
               Navigator.pop(context);
@@ -52,7 +52,7 @@ class MenuDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.history, color: Colors.black),
+            leading: Icon(Icons.history, color: Theme.of(context).iconTheme.color),
             title: const Text('Geçmiş Sınavlar'),
             onTap: () {
               Navigator.pop(context);
@@ -60,11 +60,19 @@ class MenuDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.account_circle, color: Colors.black),
+            leading: Icon(Icons.account_circle, color: Theme.of(context).iconTheme.color),
             title: const Text('Profil Sayfası'),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/ProfilSayfasi');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.mail, color: Theme.of(context).iconTheme.color),
+            title: const Text('Bize Ulaşın'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/bizeUlasin');
             },
           ),
 
@@ -91,12 +99,12 @@ class MenuDrawer extends StatelessWidget {
           const Divider(),
 
           ListTile(
-            leading: const Icon(Icons.exit_to_app, color: Colors.black),
+            leading: Icon(Icons.exit_to_app, color: Theme.of(context).iconTheme.color),
             title: const Text('Çıkış Yap'),
             onTap: () async {
               Navigator.pop(context);
               await _girisServisi.signOut();
-              Navigator.pushReplacementNamed(context, '/girisYap');// Çıkış sonrası login sayfasına yönlendir
+              Navigator.pushReplacementNamed(context, '/girisYap');
             },
           ),
         ],
