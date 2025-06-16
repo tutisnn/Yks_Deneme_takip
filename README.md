@@ -24,13 +24,15 @@ lib/
 │ ├── shared_prefs_service.dart
 │ ├── giris_servisi.dart
 │ └── supabase_service.dart
+├── themes/
+│ └── Themes.dart
 ├── models/
-│ └── User.dart
+│   ├── User.dart
+│   └── ThemeNotifier.dart 
 ├── widgets/
 │ ├── base_page.dart
 │ ├── custom_app_bar.dart
 │ └── drawer.dart
-
 assets/
 ├── fonts/
 │ └── BungeeSpice-Regular.ttf
@@ -221,10 +223,13 @@ Siz de bu bilgilerle giriş sağlayabilirsiniz.
 ### 🎨 Fatma Eslem Özsalih
 
 - **Drawer (drawer.dart)** geliştirilmesi
-- **GirisSayfasi (GirisSayfasi.dart)** ve **KayitSayfasi** tasarım geliştirilmesi.
-- **HomePage (Anasayfa.dart)** tasarım geliştirilmesi.
+- **GirisSayfasi (GirisSayfasi.dart)** ve **KayitSayfasi** kod ve tasarım geliştirilmesi.
+- **HomePage (Anasayfa.dart)** yazımı ve tasarım geliştirilmesi.
 - **KonuTakipPage (KonuTakip.dart)** tasarımı ve geliştirilmesi
-- **base_page** widgetinin geliştirilmesi
+- **base_page** widgetinin yazımı ve geliştirilmesi
+- **Dark Mode Theme(Theme.dart)** yazımı ve geliştirmesi
+- **ThemeNotifier.dart**tasarımı ve geliştirmesi, shared preferences ile modu kaydetme
+- **Profil Ekranı** tasarımı
 
 ## Sayfaların Ekran Görüntüsü
 <img src="https://github.com/user-attachments/assets/d66690ab-6dcb-4f31-9fd9-53c4c8377944" width="400" />

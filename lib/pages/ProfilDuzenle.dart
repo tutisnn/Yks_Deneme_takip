@@ -191,7 +191,7 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
         prefixIcon: icon != null ? Icon(icon, color: theme.iconTheme.color) : null,
         border: InputBorder.none,
         hintText: hint,
-        hintStyle: TextStyle(color: theme.hintColor), 
+        hintStyle: TextStyle(color: theme.hintColor),
       ),
     );
   }
