@@ -60,8 +60,8 @@ assets/
 
   </div>
   <div>
-    <img src="https://github.com/user-attachments/assets/eae74102-e9fe-4a8b-8ec6-e1d90dedc0a4" width="150" />
-    <img src="https://github.com/user-attachments/assets/d10b0016-4fe8-4dae-a3cd-5d14b5e1c771" width="150" />
+    <img src="https://github.com/user-attachments/assets/eae74102-e9fe-4a8b-8ec6-e1d90dedc0a4" width="200" />
+    <img src="https://github.com/user-attachments/assets/d10b0016-4fe8-4dae-a3cd-5d14b5e1c771" width="200" />
   </div>
 </div>
 
@@ -75,7 +75,7 @@ assets/
 * Giriş başarılı olduğunda Anasayfa'ya yönlendirilir.
 
   </div>
-  <img src="https://github.com/user-attachments/assets/7c56d16d-27b6-44cd-86b4-0a0805a60a1d" width="150" />
+  <img src="https://github.com/user-attachments/assets/7c56d16d-27b6-44cd-86b4-0a0805a60a1d" width="200" />
 </div>
 
 ### 📝 KayitSayfasi.dart
