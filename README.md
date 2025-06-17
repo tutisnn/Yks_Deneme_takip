@@ -1,7 +1,8 @@
 #  YKS Deneme Takip Uygulaması
 
 Bu Flutter projesi, YKS’ye hazırlanan öğrencilerin deneme sınavlarını takip etmelerini sağlamak amacıyla geliştirilmiştir. Kullanıcılar deneme sonuçlarını sisteme girerek başarılarını takip edebilir, grafiklerle gelişimlerini gözlemleyebilir ve motivasyonlarını koruyabilirler.  
-DİKKAT:Eğer emulatörde  sürümden kaynakli sdk ve ya kotlin hatası alırsanız lütfen chromeda deneyin sorunsuz çalışacaktır.
+---
+DİKKAT:Eğer emulatörde  sürümden kaynakli sdk ve ya kotlin hatası alırsanız lütfen web (chromeda) deneyin sorunsuz çalışacaktır.
 ---
 
 ##  Proje Şeması
