@@ -265,27 +265,6 @@ Siz de bu bilgilerle giriş sağlayabilirsiniz.
 - **Profil Ekranı** tasarımı
 - **Bize Ulaşın (BizeUlasın.dart)** Bize ulaşın sayfanın geliştirmesi
 
-## Sayfaların Ekran Görüntüsü
-<img src="https://github.com/user-attachments/assets/d66690ab-6dcb-4f31-9fd9-53c4c8377944" width="400" />
-
-<img src="https://github.com/user-attachments/assets/783539a8-0466-446c-8eef-f44ddb2f3420" width="400" />
-
-<img src="https://github.com/user-attachments/assets/06d7ccbe-63a7-4d7f-beb8-6ceb22391371" width="400" />
-
-<img src="https://github.com/user-attachments/assets/7bc20b61-a45b-41e3-b852-a43957dd1d05" width="400" />
-
-<img src="https://github.com/user-attachments/assets/8af2f939-301d-454c-8a48-59f1e4507165" width="400" />
-
-<img src="https://github.com/user-attachments/assets/c92fa7f8-f68c-44b5-85e1-fbcf715274de" width="400" />
-
-<img src="https://github.com/user-attachments/assets/fe4e43de-23bb-4eec-8310-f48fdf81ff33" width="400" />
-
-<img src="https://github.com/user-attachments/assets/d1d614cc-11d1-40bf-9a1b-0480d648c205" width="400" />
-<img src="https://github.com/user-attachments/assets/e05ca289-2d8c-4588-b9ab-dbb31195ddbc" width="400" />
-
-
-
-<img src="https://github.com/user-attachments/assets/0309240f-bb82-433e-9a21-8d9ab7db47bb" width="400" />
 
 ---
 
