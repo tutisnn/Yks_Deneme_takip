@@ -58,57 +58,57 @@ assets/
 * Menü butonları ve kullanıcı dostu bir tasarım sunar.
 
 ### 🔐 GirisSayfasi.dart
-<img src="https://github.com/user-attachments/assets/9b2b3864-a45c-4735-b942-846ad0a3a10d" width="250" align="right" />
+<img src="https://github.com/user-attachments/assets/9b2b3864-a45c-4735-b942-846ad0a3a10d" width="200" align="right" />
 * Kullanıcı giriş işlemlerini yönetir.
 * E-posta/şifre, Google ve GitHub ile giriş seçenekleri sunar.
 * Firebase Authentication kullanılarak kimlik doğrulama işlemleri yapılır.
 * Giriş başarılı olduğunda Anasayfa'ya yönlendirir.
 
 ### 📝 KayitSayfasi.dart
-<img src="https://github.com/user-attachments/assets/f585b142-fd84-4039-9665-0c26b501568c" width="250" align="right" />
+<img src="https://github.com/user-attachments/assets/f585b142-fd84-4039-9665-0c26b501568c" width="200" align="right" />
 * Kullanıcı kayıt işlemlerini gerçekleştirir.
 * E-posta/şifre, Google ve GitHub ile kayıt olma desteği sunar.
 * Kayıt başarılı olduğunda Firebase Authentication ve Firestore'a kullanıcı bilgisi eklenir, ardından Giriş Sayfası'na yönlendirilir.
 
 ### ➕ DenemeHesaplama.dart
-<img src="https://github.com/user-attachments/assets/69181771-990c-4e24-b63a-c311f0d5196d" width="250" align="right" />
+<img src="https://github.com/user-attachments/assets/69181771-990c-4e24-b63a-c311f0d5196d" width="200" align="right" />
 <img src="https://github.com/user-attachments/assets/30c2740c-3727-415e-8fd2-a2acfb689d0a" width="250" align="right" />
 * Kullanıcının girdiği doğru/yanlış sayılarına göre net hesaplama yapar.
 * Hesaplanan sonuçlar Firebase, Supabase ve SharedPreferences'a kaydedilir.
 * Kullanıcının sınav performansını detaylı şekilde analiz eder.
 
 ### 📊 GecmisSinavlar.dart
-<img src="https://github.com/user-attachments/assets/a624cc3f-c435-400a-a289-378d9c356060" width="250" align="right" />
-<img src="https://github.com/user-attachments/assets/ada96fe3-4e60-4399-aad3-187dfe1abe92" width="250" align="right" />
+<img src="https://github.com/user-attachments/assets/a624cc3f-c435-400a-a289-378d9c356060" width="200" align="right" />
+<img src="https://github.com/user-attachments/assets/ada96fe3-4e60-4399-aad3-187dfe1abe92" width="200" align="right" />
 * Daha önceki sınav sonuçlarını listeler.
 * Listeleme, sıralama (artan/azalan) ve arama özellikleri sunar.
 * Grafiksel sunumlar (pie chart vb.) içerir.
 * Firebase ve Supabase'ten verileri çeker ve dinamik olarak görüntüler.
 
 ### 📚 KonuTakip.dart
-<img src="https://github.com/user-attachments/assets/cc5118db-ef1e-4de5-be26-be07e9d143c0" width="250" align="right" />
-<img src="https://github.com/user-attachments/assets/2b8fcb65-1642-4688-a25b-55a4954d5061" width="250" align="right" />
+<img src="https://github.com/user-attachments/assets/cc5118db-ef1e-4de5-be26-be07e9d143c0" width="200" align="right" />
+<img src="https://github.com/user-attachments/assets/2b8fcb65-1642-4688-a25b-55a4954d5061" width="200" align="right" />
 * YKS konularını (TYT/AYT) listeleyen ve işaretleme yapılabilen bir sayfadır.
 * Kullanıcılar, tamamladıkları konuları seçerek ilerlemelerini takip edebilir.
 * Konu takibi Firebase ve SharedPreferences'a kaydedilir.
 
 ### 👤 ProfilEkrani.dart
-<img src="https://github.com/user-attachments/assets/5c1cac4a-b170-445c-b195-61e3bca03013" width="250" align="right" />
-<img src="https://github.com/user-attachments/assets/d7825da1-0962-4c51-9e46-4750e3855d96" width="250" align="right" />
+<img src="https://github.com/user-attachments/assets/5c1cac4a-b170-445c-b195-61e3bca03013" width="200" align="right" />
+<img src="https://github.com/user-attachments/assets/d7825da1-0962-4c51-9e46-4750e3855d96" width="200" align="right" />
 * Kullanıcının adı, soyadı, e-posta adresi, doğum yeri, doğum tarihi, yaşadığı şehir bilgilerini görüntüler.
 * Kullanıcının **Profil Düzenle** sayfasına erişmesini sağlar.
 * Firebase, Supabase ve SharedPreferences'tan verileri çeker ve gösterir.
 
 ### 🖊️ ProfilDüzenle.dart
-<img src="https://github.com/user-attachments/assets/37859dfa-27c6-46a4-be3e-3da2136239ff" width="250" align="right" />
-<img src="https://github.com/user-attachments/assets/05cfacce-35c6-4601-9b3b-f528f3660ff5" width="250" align="right" />
+<img src="https://github.com/user-attachments/assets/37859dfa-27c6-46a4-be3e-3da2136239ff" width="200" align="right" />
+<img src="https://github.com/user-attachments/assets/05cfacce-35c6-4601-9b3b-f528f3660ff5" width="200" align="right" />
 * Kullanıcının profil bilgilerini (isim, soyisim, doğum yeri, doğum tarihi, şehir) eklemesini ve güncellemesini sağlar.
 * Güncellenen bilgiler Firebase, Supabase ve SharedPreferences'a kaydedilir.
 * Kullanıcı deneyimini kolaylaştırmak için form alanları ve butonlar içerir.
 
 ### 📬 BizeUlasin.dart
-<img src="https://github.com/user-attachments/assets/18ab0b5b-7f54-4d3a-8b37-32dc6b3efc24" width="250" align="right" />
-<img src="https://github.com/user-attachments/assets/f0f92be7-e4d5-44e3-9c40-0b242f079262" width="250" align="right" />
+<img src="https://github.com/user-attachments/assets/18ab0b5b-7f54-4d3a-8b37-32dc6b3efc24" width="200" align="right" />
+<img src="https://github.com/user-attachments/assets/f0f92be7-e4d5-44e3-9c40-0b242f079262" width="200" align="right" />
 - Kullanıcının geliştiriciyle iletişim kurmasını sağlar.
 - Form alanlarında e-posta, konu ve mesaj bilgileri yer alır.
 - Gönder butonu ile yazılan mesaj doğrulanır ve işlem yapılabilir hale gelir.
