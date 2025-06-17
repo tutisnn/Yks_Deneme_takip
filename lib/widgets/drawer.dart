@@ -18,7 +18,12 @@ class MenuDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            decoration: const BoxDecoration(color: Colors.deepPurple),
+            decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.grey[800] // Dark Mode için gri ton
+                  : const Color(0xFF9575CD), // Light Mode için lila rengin
+            ),
+
             accountName: Text('Hoş geldin'),
             accountEmail: Text(currentUser?.email ?? 'kullanici@example.com'),
             currentAccountPicture: const CircleAvatar(
@@ -86,7 +91,11 @@ class MenuDrawer extends StatelessWidget {
                   onChanged: (value) {
                     Provider.of<ThemeProvider>(context, listen: false).changeTheme();
                   },
+                  activeColor: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.grey // Dark Mode’da gri
+                      : const Color(0xFF9575CD), // Light Mode’da lila
                 ),
+
                 const SizedBox(width: 8),
                 Text(
                   'Dark Mode',

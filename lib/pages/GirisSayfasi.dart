@@ -172,7 +172,9 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
       child: Container(
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? const Color(0xFF2A2A2A) //  Dark Mode arkaplan
+              : Colors.white,           // Light Mode arkaplan
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: const Color.fromRGBO(143, 148, 251, 1),
@@ -185,6 +187,7 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
             )
           ],
         ),
+
         child: Column(
           children: <Widget>[
             customTextField(
@@ -364,13 +367,16 @@ class _GirisSayfasiState extends State<GirisSayfasi> {
       child: TextField(
         controller: controller,
         obscureText: isPassword,
+        style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black), // ✨ Yazı rengi
+        cursorColor: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black, // ✨ İmleç rengi
         decoration: InputDecoration(
           prefixIcon: icon != null ? Icon(icon, color: Colors.grey) : null,
           border: InputBorder.none,
           hintText: hintText,
-          hintStyle: const TextStyle(color: Colors.grey),
+          hintStyle: TextStyle(color: Colors.grey.shade500),
         ),
       ),
+
     );
   }
 }

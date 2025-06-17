@@ -188,7 +188,13 @@ class DenemehesaplamaState extends State<Denemehesaplama> {
               flex: 3,
               child: Row(
                 children: [
-                  Icon(icon, color: lilac),
+                  Icon(
+                    icon,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.grey
+                        : lilac,
+                  ),
+
                   SizedBox(width: 8),
                   Text(name, style: GoogleFonts.quicksand(fontWeight: FontWeight.w600)),
                 ],

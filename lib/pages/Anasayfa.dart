@@ -135,15 +135,20 @@ class _AnaSayfaState extends State<AnaSayfa> {
           style: GoogleFonts.poppins(
             fontSize: 32,
             fontWeight: FontWeight.bold,
-            color: accentLilac,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Color(0xFF8E3444) // Bordomsu kırmızı sadece dark mode için
+                : accentLilac, // Normalde lila
           ),
         ),
+
         Text(
           "YKS Netlerini Hesapla\nBaşarıyı Planla!",
           style: GoogleFonts.quicksand(
             fontSize: 32,
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.primary, // blacktheme ekledim
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Color(0xFFA66C78) // Bordomsu kırmızı sadece dark mode için
+                : accentLilac, // blacktheme ekledim
           ),
         ),
       ],
