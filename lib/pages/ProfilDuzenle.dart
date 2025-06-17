@@ -15,16 +15,20 @@ class ProfilDuzenle extends StatefulWidget {
 }
 
 class _ProfilDuzenleState extends State<ProfilDuzenle> {
+  // TextField kontrolörleri
   final TextEditingController nameController = TextEditingController();
   final TextEditingController surnameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
 
+  // Seçilen doğum tarihi, doğum yeri ve şehir
   DateTime? selectedDate;
   String? selectedBirthPlace;
   String? selectedCity;
 
+  // Yüklenme durumu
   bool isLoading = true;
 
+  // Türkiye'deki iller listesi
   final List<String> cities = [
     'Adana', 'Adıyaman', 'Afyonkarahisar', 'Ağrı', 'Amasya', 'Ankara',
     'Antalya', 'Artvin', 'Aydın', 'Balıkesir', 'Bilecik', 'Bingöl', 'Bitlis',
@@ -44,6 +48,7 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
   @override
   void initState() {
     super.initState();
+    // Kullanıcı giriş yaptıysa e-postayı yükle ve diğer bilgileri getir
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       emailController.text = user.email ?? "";
@@ -51,10 +56,12 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
     }
   }
 
+  // Kullanıcı verilerini Firebase'den yükle
   Future<void> _loadUserData(String uid) async {
     final userData = await FirebaseService.getUser(uid);
     if (userData != null) {
       setState(() {
+        // TextField'lara ve seçimlere verileri doldur
         nameController.text = userData.name ?? '';
         surnameController.text = userData.surname ?? '';
         selectedBirthPlace = userData.birthPlace;
@@ -63,16 +70,19 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
         isLoading = false;
       });
 
+      // Bilgi yüklendi mesajı göster
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Kullanıcı bilgileri yüklendi.")),
       );
     }
   }
 
+  // Kullanıcı bilgilerini kaydetme işlemi
   Future<void> kullaniciBilgileriniKaydet() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
+    // Güncellenmiş kullanıcı modeli oluştur
     UserModel updatedUser = UserModel(
       uid: user.uid,
       email: user.email ?? '',
@@ -83,6 +93,7 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
       birthDate: selectedDate,
     );
 
+    // Gerekli alanların dolu olduğundan emin ol
     if ([updatedUser.name, updatedUser.surname, updatedUser.birthPlace, updatedUser.city].contains(null) || updatedUser.birthDate == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Lütfen tüm alanları doldurun")),
@@ -91,21 +102,25 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
     }
 
     try {
+      // Firebase'e kaydet
       await FirebaseService.saveUser(updatedUser);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Firebase'e kaydedildi.")),
       );
 
+      // Supabase'e kaydet
       await SupabaseService.saveUser(updatedUser);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Supabase'e kaydedildi.")),
       );
 
+      // SharedPreferences'e kaydet
       await SharedPrefsService.saveUser(updatedUser);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("SharedPreferences'e kaydedildi.")),
       );
 
+      // Başarı mesajı ve ana sayfaya yönlendir
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Tüm kayıtlar başarıyla tamamlandı.")),
       );
@@ -115,6 +130,7 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
         MaterialPageRoute(builder: (context) => AnaSayfa()),
       );
     } catch (e) {
+      // Hata mesajı göster
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Hata: $e")),
       );
@@ -126,22 +142,31 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
     return Scaffold(
       appBar: CustomAppBar(title: "Profil Düzenle"),
       body: isLoading
+      // Yükleniyorsa spinner göster
           ? const Center(child: CircularProgressIndicator())
+      // Yüklendiyse formu göster
           : SingleChildScrollView(
         padding: const EdgeInsets.all(30),
         child: Column(
           children: [
+            // E-posta alanı (sadece okunabilir)
             _buildStyledField(_buildReadOnlyTextField("E-posta", emailController, icon: Icons.email)),
+            // Ad alanı
             _buildStyledField(_buildTextField("Adınız", nameController, icon: Icons.person)),
+            // Soyad alanı
             _buildStyledField(_buildTextField("Soyadınız", surnameController, icon: Icons.person_outline)),
+            // Doğum tarihi seçici
             _buildStyledField(_buildDatePicker(context)),
+            // Doğum yeri dropdown
             _buildStyledField(_buildDropdown("Doğum Yeri", selectedBirthPlace, (value) {
               setState(() => selectedBirthPlace = value);
             })),
+            // Yaşanılan il dropdown
             _buildStyledField(_buildDropdown("Yaşadığınız İl", selectedCity, (value) {
               setState(() => selectedCity = value);
             })),
             const SizedBox(height: 30),
+            // Kaydet butonu
             ElevatedButton(
               onPressed: kullaniciBilgileriniKaydet,
               style: ElevatedButton.styleFrom(
@@ -160,13 +185,14 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
     );
   }
 
+  // TextField veya diğer widget'ları stilize etmek için konteyner
   Widget _buildStyledField(Widget child) {
     final theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: theme.cardColor, // 🖤 Tema uyumlu arkaplan
+        color: theme.cardColor, // Tema uyumlu arkaplan
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: const Color.fromRGBO(143, 148, 251, 1)),
         boxShadow: const [
@@ -181,7 +207,7 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
     );
   }
 
-
+  // Normal düzenlenebilir TextField oluşturur
   Widget _buildTextField(String hint, TextEditingController controller, {IconData? icon}) {
     final theme = Theme.of(context);
     return TextField(
@@ -196,7 +222,7 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
     );
   }
 
-
+  // Sadece okunabilir TextField (örneğin e-posta için)
   Widget _buildReadOnlyTextField(String hint, TextEditingController controller, {IconData? icon}) {
     return TextField(
       controller: controller,
@@ -210,6 +236,7 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
     );
   }
 
+  // Tarih seçici widget
   Widget _buildDatePicker(BuildContext context) {
     return GestureDetector(
       onTap: () async {
@@ -233,18 +260,18 @@ class _ProfilDuzenleState extends State<ProfilDuzenle> {
                 : "${selectedDate!.day}.${selectedDate!.month}.${selectedDate!.year}",
             style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
           ),
-
         ],
       ),
     );
   }
 
+  // Dropdown widget oluşturur (şehir ve doğum yeri için)
   Widget _buildDropdown(String label, String? selectedValue, ValueChanged<String?> onChanged) {
     final theme = Theme.of(context);
     return DropdownButtonFormField<String>(
-      dropdownColor: theme.cardColor, // koyu modda güzel görünmesi için
+      dropdownColor: theme.cardColor, // Koyu modda güzel görünmesi için
       decoration: const InputDecoration(border: InputBorder.none),
-      hint: Text(label, style: TextStyle(color: theme.hintColor)), // görünür hale getir
+      hint: Text(label, style: TextStyle(color: theme.hintColor)), // Etiket
       value: selectedValue,
       style: TextStyle(color: theme.textTheme.bodyLarge?.color),
       items: cities.map((city) {

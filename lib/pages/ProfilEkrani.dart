@@ -1,8 +1,8 @@
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:animate_do/animate_do.dart';
-import '../widgets/drawer.dart';
 import 'package:yks_deneme_takip/widgets/base_page.dart';
 import 'ProfilDuzenle.dart';
 import 'package:yks_deneme_takip/models/User.dart';
@@ -15,26 +15,33 @@ class ProfilEkrani extends StatefulWidget {
 }
 
 class _ProfilEkraniState extends State<ProfilEkrani> {
+  // Kullanıcı modelini tutan değişken
   UserModel? currentUser;
+  // Verilerin yüklenme durumunu takip etmek için
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    // Sayfa açılır açılmaz kullanıcı verisini yükle
     _loadUserData();
   }
 
+  // Firestore'dan kullanıcı verisini asenkron olarak yükler
   Future<void> _loadUserData() async {
     final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
+    if (user == null) return; // Eğer kullanıcı yoksa çık
 
+    // Firestore'dan kullanıcı bilgilerini getir
     final doc = await FirebaseFirestore.instance.collection('kullanicilar').doc(user.uid).get();
     if (doc.exists) {
+      // Veriler varsa state'i güncelle
       setState(() {
         currentUser = UserModel.fromMap(doc.data()!);
         isLoading = false;
       });
     } else {
+      // Veri yoksa sadece yüklenme durumunu kapat
       setState(() {
         isLoading = false;
       });
@@ -48,9 +55,12 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
     return BasePage(
       title: "Profilim",
       content: isLoading
+      // Yüklenme devam ediyorsa yükleniyor göstergesi
           ? const Center(child: CircularProgressIndicator())
           : currentUser == null
+      // Kullanıcı verisi yoksa bilgilendirme mesajı göster
           ? const Center(child: Text("Kullanıcı verisi bulunamadı."))
+      // Veriler yüklendiyse profil bilgilerini göster
           : SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: FadeInUp(
@@ -61,6 +71,7 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
               Wrap(
                 runSpacing: 12,
                 children: [
+                  // Kullanıcı bilgilerini kart şeklinde göster
                   _buildInfoCard(context, "Ad", currentUser?.name),
                   _buildInfoCard(context, "Soyad", currentUser?.surname),
                   _buildInfoCard(context, "E-posta", currentUser?.email),
@@ -70,6 +81,7 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
                 ],
               ),
               const SizedBox(height: 24),
+              // Profil düzenleme sayfasına geçiş butonu
               ElevatedButton.icon(
                 onPressed: () {
                   Navigator.push(
@@ -96,6 +108,7 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
     );
   }
 
+  // Profil bilgilerini gösteren kart yapısı
   Widget _buildInfoCard(BuildContext context, String label, String? value) {
     final theme = Theme.of(context);
     return Card(
@@ -106,6 +119,7 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
           children: [
+            // Bilgi başlığı (örneğin Ad, Soyad)
             Text(
               "$label: ",
               style: theme.textTheme.bodyLarge?.copyWith(
@@ -113,6 +127,7 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
                 color: theme.textTheme.bodyLarge?.color,
               ),
             ),
+            // Bilgi değeri, yoksa "-"
             Expanded(
               child: Text(
                 value ?? "-",
@@ -127,6 +142,7 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
     );
   }
 
+  // Tarih formatlama fonksiyonu (gün.ay.yıl şeklinde)
   String _formatDate(DateTime? date) {
     if (date == null) return "-";
     return "${date.day}.${date.month}.${date.year}";

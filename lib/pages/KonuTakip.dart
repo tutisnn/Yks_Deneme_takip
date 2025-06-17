@@ -10,8 +10,9 @@ class Konutakip extends StatefulWidget {
 }
 
 class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
-  late TabController _tabController;
+  late TabController _tabController; // TabController, sekmeler arası geçiş için
 
+  // TYT konuları kategoriye göre listeleniyor
   Map<String, List<String>> tytTopics = {
     "Matematik": ["Temel Kavramlar", "Sayılar", "Rasyonel Sayılar"],
     "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Paragraf"],
@@ -24,6 +25,7 @@ class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
     "Geometri": ["Açılar", "Hesaplamalar"],
   };
 
+  // EA konuları kategoriye göre listeleniyor
   Map<String, List<String>> eaTopics = {
     "Edebiyat": ["Şiir Türleri", "Roman - Hikaye"],
     "Coğrafya": ["Türkiye’nin Yer Şekilleri", "Nüfus"],
@@ -32,6 +34,7 @@ class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
     "Matematik": ["Türev", "İntegral"],
   };
 
+  // AYT konuları kategoriye göre listeleniyor
   Map<String, List<String>> aytTopics = {
     "Fizik": ["Hareket", "Kuvvet ve Newton", "Enerji"],
     "Kimya": ["Atom ve Periyodik Sistem", "Kimyasal Türler"],
@@ -40,43 +43,44 @@ class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
     "Matematik": ["Türev", "İntegral"],
   };
 
-  Map<String, Set<String>> completedTopics = {};
+  Map<String, Set<String>> completedTopics = {}; // İşaretlenen tamamlanmış konular
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 3, vsync: this); // 3 sekme için controller
   }
 
+  // Checkbox tıklanınca çağrılır, konuyu tamamlanmış olarak işaretler/kaldırır
   void toggleTopic(String category, String topic) {
     setState(() {
       completedTopics.putIfAbsent(category, () => {});
       if (completedTopics[category]!.contains(topic)) {
-        completedTopics[category]!.remove(topic);
+        completedTopics[category]!.remove(topic); // İşaret kaldırılır
       } else {
-        completedTopics[category]!.add(topic);
+        completedTopics[category]!.add(topic); // İşaret eklenir
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final theme = Theme.of(context); // Tema bilgisini alıyoruz
 
     return BasePage(
-      title: "Konu Takibi",
+      title: "Konu Takibi", // Sayfa başlığı
       content: Column(
         children: [
           Material(
-            color: theme.appBarTheme.backgroundColor, //blacktheme
+            color: theme.appBarTheme.backgroundColor, // AppBar arkaplanı tema uyumlu
             child: TabBar(
-              controller: _tabController,
-              labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600),
-              indicatorColor: theme.colorScheme.secondary,
+              controller: _tabController, // Sekmeler arası geçiş kontrolü
+              labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600), // Sekme yazı stili
+              indicatorColor: theme.colorScheme.secondary, // Seçili sekme alt çizgi rengi
               tabs: const [
-                Tab(text: "TYT"),
-                Tab(text: "AYT"),
-                Tab(text: "EA"),
+                Tab(text: "TYT"), // İlk sekme
+                Tab(text: "AYT"), // İkinci sekme
+                Tab(text: "EA"),  // Üçüncü sekme
               ],
             ),
           ),
@@ -84,9 +88,9 @@ class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
             child: TabBarView(
               controller: _tabController,
               children: [
-                buildChecklist(context, tytTopics),
-                buildChecklist(context, aytTopics),
-                buildChecklist(context, eaTopics),
+                buildChecklist(context, tytTopics), // TYT konusu listesi
+                buildChecklist(context, aytTopics), // AYT konusu listesi
+                buildChecklist(context, eaTopics),  // EA konusu listesi
               ],
             ),
           ),
@@ -95,33 +99,34 @@ class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
     );
   }
 
+  // Konu listesini kategori ve konu başlıklarıyla oluşturur
   Widget buildChecklist(BuildContext context, Map<String, List<String>> topics) {
     final theme = Theme.of(context);
 
     return Container(
-      color: theme.scaffoldBackgroundColor, // Tema rengi
+      color: theme.scaffoldBackgroundColor, // Temaya uygun arkaplan rengi
       child: ListView(
         padding: EdgeInsets.all(12),
         children: topics.entries.map((entry) {
-          String category = entry.key;
+          String category = entry.key; // Kategori adı
           return Container(
             margin: EdgeInsets.only(bottom: 16),
             decoration: BoxDecoration(
-              color: theme.cardColor, // Tema uyumlu kart rengi
+              color: theme.cardColor, // Kart arkaplanı tema uyumlu
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: theme.shadowColor.withOpacity(0.2),
+                  color: theme.shadowColor.withOpacity(0.2), // Hafif gölge
                   blurRadius: 6,
                   offset: Offset(0, 4),
                 ),
               ],
             ),
             child: ExpansionTile(
-              collapsedBackgroundColor: Colors.transparent,
-              backgroundColor: Colors.transparent,
+              collapsedBackgroundColor: Colors.transparent, // Açılmamış arkaplan
+              backgroundColor: Colors.transparent, // Açılmış arkaplan
               title: Text(
-                category,
+                category, // Kategori başlığı
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -129,29 +134,28 @@ class _KonutakipState extends State<Konutakip> with TickerProviderStateMixin {
                 ),
               ),
               children: entry.value.map((topic) {
-                bool isChecked = completedTopics[category]?.contains(topic) ?? false;
+                bool isChecked = completedTopics[category]?.contains(topic) ?? false; // Checkbox durumu
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: theme.canvasColor,
+                      color: theme.canvasColor, // İçerik arkaplanı
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: theme.dividerColor),
+                      border: Border.all(color: theme.dividerColor), // Çerçeve rengi
                     ),
                     child: CheckboxListTile(
-                      activeColor: theme.colorScheme.secondary,
+                      activeColor: theme.colorScheme.secondary, // İşaret rengi
                       title: Text(
-                        topic,
+                        topic, // Konu başlığı
                         style: GoogleFonts.quicksand(
-                          decoration: isChecked ? TextDecoration.lineThrough : null,
-                            color: isChecked
-                                ? theme.disabledColor.withOpacity(0.7)
-                                : theme.textTheme.bodyLarge?.color,
-
+                          decoration: isChecked ? TextDecoration.lineThrough : null, // Tamamlandı ise üstü çizili
+                          color: isChecked
+                              ? theme.disabledColor.withOpacity(0.7) // Tamamlanmış renk tonu
+                              : theme.textTheme.bodyLarge?.color, // Normal renk
                         ),
                       ),
-                      value: isChecked,
-                      onChanged: (_) => toggleTopic(category, topic),
+                      value: isChecked, // Checkbox durumu
+                      onChanged: (_) => toggleTopic(category, topic), // Checkbox tıklanınca tetiklenir
                     ),
                   ),
                 );
