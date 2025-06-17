@@ -112,7 +112,7 @@ assets/
 * Daha önceki sınav sonuçlarını listeler.
 * Listeleme, sıralama (artan/azalan) ve arama özellikleri sunar.
 * Grafiksel sunumlar (pie chart vb.) içerir.
-* Firebase ve Supabase'ten verileri çeker ve dinamik olarak görüntüler.
+* Supabase'ten verileri çeker ve dinamik olarak görüntüler.
 
   </div>
   <div>
@@ -142,8 +142,8 @@ assets/
 
 * Kullanıcının adı, soyadı, e-posta adresi, doğum yeri, doğum tarihi, yaşadığı şehir bilgilerini görüntüler.
 * Kullanıcının **Profil Düzenle** sayfasına erişmesini sağlar.
-* Firebase, Supabase ve SharedPreferences'tan verileri çeker ve gösterir.
-
+* Firebase'den verileri çeker ve gösterir.
+* 
   </div>
   <div>
     <img src="https://github.com/user-attachments/assets/5c1cac4a-b170-445c-b195-61e3bca03013" width="200" />
@@ -191,11 +191,16 @@ assets/
 * Firestore ve Storage işlemlerini yönetir.
 * Kullanıcıyı kaydetme, güncelleme işlemlerini sağlar.
 * Kullanıcının **Ad**, **Soyad**, **E-posta**, **Doğum Tarihi**, **Doğum Yeri** ve **Yaşadığı İl**  kullanicilar tablosunda bilgileri saklanır.
+<img src="https://github.com/user-attachments/assets/ca8f45a2-6ba5-440a-8804-fbb2900698b9"  height="200" />
+
 
 ### supabase\_service.dart
 
 * Kullanıcının **Ad**, **Soyad**, **E-posta**, **Doğum Tarihi**, **Doğum Yeri** ve **Yaşadığı İl**  gibi profil bilgileri  kullanicilar tablosunda saklanır.
+    <img src="https://github.com/user-attachments/assets/ff1ea92a-44ba-4d20-b5d8-80bdbd71fcec" height="200" />
 * Ekstra olarak Kullanıcının deneme net sonucları netler tablosunda saklanır. Listelenir.
+
+  <img src="https://github.com/user-attachments/assets/22b0c4c7-f80f-4570-ae9d-7051c99d9ebc" height="200" />
 
 ### shared\_prefs\_service.dart
 
@@ -205,6 +210,10 @@ assets/
 
 * Google, GitHub ve e-posta ile giriş ve kayıt işlemlerini yönetir.
 * Firebase Authentication ile entegre çalışır ve kullanıcı kimlik doğrulamasını sağlar.
+<img src="https://github.com/user-attachments/assets/83f9a307-eb6e-4801-9ec5-4953b3291b19"  height="200"/>
+
+
+
 
 ---
 ## 🎨 themes
