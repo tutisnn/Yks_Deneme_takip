@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../models/User.dart';
 import 'package:yks_deneme_takip/services/firebase_service.dart';
 import '../services/supabase_service.dart';
-import 'package:yks_deneme_takip/services/ shared_prefs_service.dart';
+import 'package:yks_deneme_takip/services/shared_prefs_service.dart';
 import 'Anasayfa.dart';
 import '../widgets/custom_app_bar.dart';
 
